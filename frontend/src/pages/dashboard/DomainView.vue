@@ -94,7 +94,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { Button, Dialog, Dropdown, createDocumentResource } from 'frappe-ui'
+import { Button, Dialog, Dropdown, createDocumentResource, usePageMeta } from 'frappe-ui'
 
 import { raiseToast } from '@/utils'
 import DNSRecords from '@/components/DNSRecords.vue'
@@ -102,12 +102,14 @@ import DashboardLayout from '@/components/DashboardLayout.vue'
 
 const { domainName } = defineProps<{ domainName: string }>()
 
+usePageMeta(() => ({ title: domainName }))
+
 const router = useRouter()
 
 const showConfirmDialog = ref(false)
 
 const domain = createDocumentResource({
-	doctype: 'Mail Principal',
+	doctype: 'Principal',
 	name: domainName,
 	setValue: {
 		onSuccess: () => {
@@ -241,7 +243,7 @@ const dropdownOptions = computed(() => [
 			{
 				label: __('View in Desk'),
 				icon: 'external-link',
-				onClick: () => window.open(`/desk/mail-domain/${domainName}`, '_blank')?.focus(),
+				onClick: () => window.open(`/desk/principal/${domainName}`, '_blank')?.focus(),
 			},
 		],
 	},

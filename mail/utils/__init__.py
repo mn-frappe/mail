@@ -11,9 +11,9 @@ import unicodedata
 import zipfile
 from collections.abc import Callable, Generator
 from contextlib import contextmanager
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from io import BytesIO
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
 
 import bcrypt
 import frappe
@@ -21,10 +21,13 @@ import wrapt
 from bs4 import BeautifulSoup, Comment
 from frappe import _
 from frappe.types.filter import FilterTuple
-from frappe.utils import get_bench_path
-from frappe.utils.caching import redis_cache
+from frappe.utils import cint, get_bench_path
 from markdown_it import MarkdownIt
+from MySQLdb import OperationalError
 from passlib.hash import sha512_crypt
+
+if TYPE_CHECKING:
+	from logging import Logger
 
 INVISIBLE_CHARS = (
 	r"[\u0000-\u001F\u007F-\u009F"  # ASCII control chars
@@ -36,20 +39,112 @@ INVISIBLE_CHARS = (
 )
 
 
-def reconnect_on_failure() -> callable:
+def reconnect_on_failure(max_retries: int = 3) -> callable:
 	"""Decorator to reconnect to the database if a connection error occurs."""
 
 	@wrapt.decorator
 	def wrapper(wrapped, instance, args, kwargs):
-		try:
-			return wrapped(*args, **kwargs)
-		except Exception as e:
-			if frappe.db.is_interface_error(e):
-				frappe.db.connect()
+		retries = 0
+
+		while True:
+			try:
 				return wrapped(*args, **kwargs)
-			raise
+
+			except Exception as e:
+				is_db_error = frappe.db.is_interface_error(e) or isinstance(e, OperationalError)
+
+				if not is_db_error or retries >= max_retries:
+					raise type(e)(f"{e!s} | Retries attempted: {retries}/{max_retries}") from e
+
+				retries += 1
+				frappe.db.connect()
 
 	return wrapper
+
+
+def get_mail_config(key: str | None = None) -> dict[str, Any] | Any:
+	"""Returns the mail configuration from frappe.conf, or an empty dict if not set."""
+
+	default_config = {
+		"ansible_play_timeout": 1500,
+		"blob_bucket_size": 1000,
+		"blob_cache_ttl": 12 * 60 * 60,  # 12 hours
+		"contact_card_bucket_size": 5000,
+		"contact_card_cache_ttl": 2 * 24 * 60 * 60,  # 2 days
+		"data_exchange_export_timeout": 3600,
+		"data_exchange_import_timeout": 3600,
+		"default_dns_ttl": 3600,
+		"default_mail_quota": 1024**3,  # 1 GB
+		"enable_ed25519_dkim": False,
+		"exchange_export_batch_size": 500,
+		"exchange_export_timeout": 3600,
+		"exchange_import_timeout": 3600,
+		"exchange_max_export": 1_000,
+		"exchange_max_import": 1_000,
+		"fetch_lock_timeout": 300,
+		"gravatar_default_avatar": "404",
+		"lock_acquire_timeout": 0,
+		"lock_timeout": 10,
+		"max_accounts": 0,
+		"max_domains": 0,
+		"max_email_sync": 100,
+		"max_groups": 0,
+		"max_lists": 0,
+		"max_message_payload_size": 25 * 1024 * 1024,  # 25 MB
+		"max_push_notifications": 5,
+		"msg_bucket_size": 5_000,
+		"msg_cache_ttl": 2 * 24 * 60 * 60,  # 2 days
+		"process_pending_emails_batch_size": 2_500,
+		"process_pending_emails_max_batch_size": 25_000,
+		"process_pending_emails_timeout": 1500,
+		"push_log_file_count": 10,
+		"push_log_level": "INFO",
+		"push_log_max_size": 5_000_000,
+		"rsa_key_size": 2048,
+		"scan_message_timeout": 2 * 60,  # 2 minutes
+		"server_deployment_timeout": 1500,
+		"server_job_timeout": 1500,
+		"stalwart_cli_command_timeout": 3600,
+		"stalwart_version": "v0.15.4",
+	}
+
+	config = frappe.conf.mail or {}
+	config = {**default_config, **config}
+
+	for k, v in config.items():
+		if k in default_config and not isinstance(v, type(default_config[k])):
+			frappe.throw(
+				_("Mail config key '{0}' has invalid type. Expected {1}.").format(
+					k, type(default_config[k]).__name__
+				)
+			)
+
+	if key:
+		if key not in config:
+			frappe.throw(_("Mail config key '{0}' not found").format(key))
+
+		value = config[key]
+		if not value and type(value) not in (int, float, bool):
+			frappe.throw(_("Mail config key '{0}' is not set").format(key))
+
+		return config[key]
+
+	return config
+
+
+def get_push_logger() -> "Logger":
+	"""Returns a logger instance for mail push notifications."""
+
+	config = get_mail_config()
+
+	max_size = cint(config["push_log_max_size"])
+	file_count = cint(config["push_log_file_count"])
+	logger = frappe.logger("mail.push", allow_site=True, max_size=max_size, file_count=file_count)
+
+	log_level = config["push_log_level"].upper()
+	logger.setLevel(log_level)
+
+	return logger
 
 
 def is_probable_hash(s: str) -> bool:
@@ -369,18 +464,46 @@ def load_compressed_file(file_path: str | None = None, file_data: bytes | None =
 
 
 def extract_compressed_file(file_path: str, destination: str) -> None:
-	"""Extract a .zip, .tar.gz, or .tgz archive to the specified destination directory."""
+	"""Extract a .zip, .tar.gz, or .tgz archive safely."""
+
+	def is_within_directory(base_path, target_path) -> bool:
+		"""Ensure target_path is inside base_path"""
+
+		base_path = os.path.abspath(base_path)
+		target_path = os.path.abspath(target_path)
+		return os.path.commonpath([base_path]) == os.path.commonpath([base_path, target_path])
+
+	def safe_extract_zip(archive, destination) -> None:
+		"""Safely extract ZIP files, preventing path traversal."""
+
+		for member in archive.namelist():
+			member_path = os.path.join(destination, member)
+			if not is_within_directory(destination, member_path):
+				frappe.throw(_("Unsafe file path detected: {0}").format(member))
+		archive.extractall(destination)
+
+	def safe_extract_tar(archive, destination) -> None:
+		"""Safely extract TAR files, preventing path traversal."""
+
+		for member in archive.getmembers():
+			member_path = os.path.join(destination, member.name)
+			if not is_within_directory(destination, member_path):
+				frappe.throw(_("Unsafe file path detected: {0}").format(member.name))
+		archive.extractall(destination)
 
 	if not os.path.exists(file_path):
 		frappe.throw(_("File not found: {0}").format(file_path))
 
+	if not os.path.exists(destination):
+		os.makedirs(destination, exist_ok=True)
+
 	if file_path.endswith(".zip"):
 		with zipfile.ZipFile(file_path, "r") as archive:
-			archive.extractall(destination)
+			safe_extract_zip(archive, destination)
 
 	elif file_path.endswith((".tar.gz", ".tgz")):
 		with tarfile.open(file_path, "r:gz") as archive:
-			archive.extractall(destination)
+			safe_extract_tar(archive, destination)
 
 	else:
 		frappe.throw(_("Unsupported file format: {0}").format(file_path))
@@ -605,16 +728,6 @@ def sanitize_cli_output(text: str) -> str:
 	return text
 
 
-@frappe.whitelist()
-@redis_cache(ttl=3600)
-def check_deliverability(email: str) -> bool:
-	"""Wrapper function of `utils.validation.validate_email_address` for caching."""
-
-	from mail.utils.validation import validate_email_address
-
-	return validate_email_address(email, check_mx=True, verify=True, smtp_timeout=10)
-
-
 def remove_subaddressing(email: str) -> str:
 	"""Removes subaddressing from an email address.
 
@@ -651,13 +764,6 @@ def password_or_none(doc, field: str) -> str | None:
 	"""Returns the password if the field is set, otherwise returns None."""
 
 	return doc.get_password(field) if doc.get(field) else None
-
-
-def batch_dict(d: dict[str, Any], batch_size: int) -> list[dict[str, Any]]:
-	"""Splits a dictionary into smaller dictionaries of a specified batch size."""
-
-	keys = list(d.keys())
-	return [{k: d[k] for k in keys[i : i + batch_size]} for i in range(0, len(keys), batch_size)]
 
 
 def get_dotted_path(func: Callable) -> str:
@@ -764,4 +870,4 @@ def is_catch_all_address(address: str) -> bool:
 def get_stalwart_version() -> str:
 	"""Returns the Stalwart version from configuration or default."""
 
-	return frappe.conf.stalwart_version or "v0.13.4"
+	return get_mail_config("stalwart_version")

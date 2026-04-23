@@ -10,8 +10,8 @@ from frappe.model.document import Document
 from frappe.utils import cint, today
 
 from mail.client.doctype.address_book.address_book import validate_address_book_name_format
-from mail.jmap import get_jmap_client
-from mail.utils import parse_filters
+from mail.jmap import get_contact_card_service
+from mail.utils import get_mail_config, parse_filters
 from mail.utils.dt import parse_iso_datetime
 from mail.utils.validation import has_permission_for_user
 
@@ -79,6 +79,7 @@ class ContactCard(Document):
 						"region": address.region,
 						"country": address.country,
 						"postcode": address.postcode,
+						"time_zone": address.time_zone,
 					}
 				)
 
@@ -127,32 +128,34 @@ class ContactCard(Document):
 	def get_list(filters=None, page_length=20, **kwargs) -> list:
 		filters = parse_filters(filters)
 
-		user = filters.get("user")
-		address_book = filters.get("address_book")
-		if address_book:
-			validate_address_book_name_format(address_book)
-
-			if user and user != address_book.split("|")[0]:
-				frappe.throw(
-					_("Address Book {0} does not belong to User {1}.").format(
-						frappe.bold(address_book), frappe.bold(user)
-					)
-				)
-
-			user, address_book_id = address_book.split("|")
-		else:
-			user = user or frappe.session.user
-			address_book_id = None
+		id = filters.get("id")
+		user = filters.get("user") or frappe.session.user
 
 		if not user or user in ("Guest", "Administrator"):
 			frappe.msgprint(_("Please select a user to view contact cards."), alert=True)
 			return []
 
-		filter = {}
-		if address_book_id:
-			filter["inAddressBook"] = address_book_id
-		limit = cint(kwargs.get("start")) + page_length
-		contact_cards, total = fetch_contact_cards(user, filter, limit=limit)
+		if id:
+			contact_cards = get_contact_cards(user, [id])
+			total = len(contact_cards)
+		else:
+			if address_book := filters.get("address_book"):
+				validate_address_book_name_format(address_book)
+				filters["address_book"] = address_book.split("|")[1]
+
+			filter = {
+				prop: value
+				for field, prop in {
+					"address_book": "inAddressBook",
+					"full_name": "name",
+					"email": "email",
+					"phone": "phone",
+				}.items()
+				if (value := filters.get(field))
+			}
+			limit = cint(kwargs.get("start")) + page_length
+			contact_cards, total = fetch_contact_cards(user, filter, limit=limit)
+
 		frappe.cache.set_value(_get_total_cache_key(user), total, expires_in_sec=600)
 
 		if not contact_cards:
@@ -215,17 +218,25 @@ def add_contact_card(
 	emails: list[dict] | None = None,
 	phones: list[dict] | None = None,
 	addresses: list[dict] | None = None,
-	kind: str = "individual",
+	kind: str | None = None,
 ) -> str:
 	"""Adds a contact card for the given user with the specified parameters."""
 
 	has_permission_for_user(user)
 
 	creation_id = str(uuid7())
-	client = get_jmap_client(user)
-	response = client.contact_card_create(
-		creation_id, address_book_ids, full_name, emails, phones, addresses, kind
-	)
+	contact_card = {
+		"creation_id": creation_id,
+		"address_book_ids": address_book_ids,
+		"full_name": full_name,
+		"emails": emails,
+		"phones": phones,
+		"addresses": addresses,
+		"kind": kind or "individual",
+	}
+
+	service = get_contact_card_service(user)
+	response = service.create([contact_card])
 
 	title = _("Contact Card Creation Error")
 	if response.get("created"):
@@ -234,6 +245,26 @@ def add_contact_card(
 		frappe.throw(_(response["notCreated"][creation_id]["description"]), title=title)
 	else:
 		frappe.throw(_(response["description"]), title=title)
+
+
+@frappe.whitelist()
+def bulk_add_contact_cards(user: str, contact_cards: list[dict], raise_exception: bool = True) -> None:
+	"""Adds multiple contact cards for the given user and returns their IDs."""
+
+	has_permission_for_user(user)
+
+	service = get_contact_card_service(user)
+
+	for card in contact_cards:
+		if not card.get("creation_id"):
+			card["creation_id"] = str(uuid7())
+
+	response = service.create(contact_cards)
+
+	title = _("Contact Card Creation Error")
+	if response.get("notCreated"):
+		if raise_exception:
+			frappe.throw(_("One or more contact cards failed to create"), title=title)
 
 
 @frappe.whitelist()
@@ -249,25 +280,14 @@ def fetch_contact_cards(
 	has_permission_for_user(user)
 
 	contact_cards = []
-	client = get_jmap_client(user)
 
-	while len(contact_cards) < limit:
-		result = client.contact_card_query(filter, position, limit, sort)
-		ids = result["ids"]
-		total = result["total"]
+	service = get_contact_card_service(user)
+	data = service.query(filter, position, limit, sort)
 
-		if not ids:
-			break
+	ids = data.get("ids", [])
+	total = data.get("total", 0)
 
-		contact_cards.extend(get_contact_cards(user, ids))
-
-		if len(contact_cards) >= limit:
-			break
-
-		position += len(ids)
-
-		if position >= total:
-			break
+	contact_cards.extend(get_contact_cards(user, ids))
 
 	return contact_cards[:limit], total
 
@@ -288,10 +308,10 @@ def get_contact_cards(user: str, ids: list[str]) -> list[dict]:
 			ids_to_fetch.append(id)
 
 	if ids_to_fetch:
-		client = get_jmap_client(user)
-		cards = client.contact_card_get(ids_to_fetch)
+		service = get_contact_card_service(user)
+		cards = service.get(ids_to_fetch)
 
-		address_book_map = {ab["id"]: ab["_name"] for ab in client.address_books}
+		address_book_map = {ab["id"]: ab["name"] for ab in service.address_books}
 
 		for card in cards:
 			contact_card = format_contact_card(user, address_book_map, card)
@@ -310,14 +330,24 @@ def update_contact_card(
 	emails: list[dict] | None = None,
 	phones: list[dict] | None = None,
 	addresses: list[dict] | None = None,
-	kind: str = "individual",
+	kind: str | None = None,
 ) -> None:
 	"""Updates an existing contact card with the given parameters."""
 
 	has_permission_for_user(user)
 
-	client = get_jmap_client(user)
-	response = client.contact_card_update(id, address_book_ids, full_name, emails, phones, addresses, kind)
+	contact_card = {
+		"id": id,
+		"address_book_ids": address_book_ids,
+		"full_name": full_name,
+		"emails": emails,
+		"phones": phones,
+		"addresses": addresses,
+		"kind": kind or "individual",
+	}
+
+	service = get_contact_card_service(user)
+	response = service.update([contact_card])
 
 	title = _("Contact Card Update Error")
 	if not response.get("updated"):
@@ -348,8 +378,8 @@ def contact_card_update_address_books(
 
 	has_permission_for_user(user)
 
-	client = get_jmap_client(user)
-	response = client.contact_card_update_address_books(
+	service = get_contact_card_service(user)
+	response = service.update_address_book_ids(
 		ids, add_address_book_id, remove_address_book_id, move_to_address_book_id
 	)
 
@@ -412,8 +442,8 @@ def delete_contact_cards(user: str, ids: list[str]) -> None:
 
 	has_permission_for_user(user)
 
-	client = get_jmap_client(user)
-	client.contact_card_delete(ids)
+	service = get_contact_card_service(user)
+	service.delete(ids)
 	_remove_contact_cards_from_cache(user, ids)
 
 
@@ -456,15 +486,16 @@ def _store_contact_card_in_cache(user: str, id: str, contact_card: dict) -> None
 
 	cache_key = _get_contact_card_cache_key(user, id)
 	list_key = f"jmap:contact_card:{user}:ids"
-	contact_card_bucket_size = cint(frappe.conf.contact_card_bucket_size) or 5000
 
-	contact_card_cache_ttl = cint(frappe.conf.contact_card_cache_ttl) or 2 * 24 * 60 * 60  # 2 days
-	frappe.cache.set_value(cache_key, contact_card, expires_in_sec=contact_card_cache_ttl)
+	bucket_size = cint(get_mail_config("contact_card_bucket_size"))
+	cache_ttl = cint(get_mail_config("contact_card_cache_ttl"))
+
+	frappe.cache.set_value(cache_key, contact_card, expires_in_sec=cache_ttl)
 	frappe.cache.lpush(list_key, id)
 
-	frappe.cache.ltrim(list_key, 0, contact_card_bucket_size - 1)
+	frappe.cache.ltrim(list_key, 0, bucket_size - 1)
 
-	while frappe.cache.llen(list_key) > contact_card_bucket_size:
+	while frappe.cache.llen(list_key) > bucket_size:
 		if oldest_id := frappe.cache.rpop(list_key):
 			frappe.cache.delete_key(_get_contact_card_cache_key(user, oldest_id))
 
@@ -530,27 +561,19 @@ def format_contact_card(user: str, address_book_map: dict, contact_card: dict) -
 
 	addresses = []
 	for address in contact_card.get("addresses", {}).values():
+		time_zone = address.get("timeZone")
 		contexts = address.get("contexts", {})
-		type = next(context for context in contexts.keys()) if contexts else None
-
-		street = None
-		if _street := address.get("street"):
-			if isinstance(_street, dict):
-				components = _street.get("components", [])
-				street = next(
-					(component["value"] for component in components if component["kind"] == "name"), None
-				)
-			elif isinstance(_street, str):
-				street = _street
+		component_map = {c["kind"]: c["value"] for c in address.get("components", [])}
 
 		addresses.append(
 			{
-				"type": type,
-				"street": street,
-				"locality": address.get("locality"),
-				"region": address.get("region"),
-				"country": address.get("country"),
-				"postcode": address.get("postcode"),
+				"type": next(iter(contexts), None),
+				"street": component_map.get("name"),
+				"locality": component_map.get("locality"),
+				"region": component_map.get("region"),
+				"postcode": component_map.get("postcode"),
+				"country": component_map.get("country"),
+				"time_zone": time_zone,
 				"contexts": json.dumps(contexts, indent=4),
 			}
 		)
@@ -565,6 +588,7 @@ def format_contact_card(user: str, address_book_map: dict, contact_card: dict) -
 		"name": f"{user}|{contact_card['id']}",
 		"user": user,
 		"id": contact_card["id"],
+		"uid": contact_card.get("uid"),
 		"kind": contact_card.get("kind"),
 		"name_breakup": json.dumps(contact_card.get("name", {}), indent=4),
 		"full_name": full_name,

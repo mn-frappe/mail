@@ -1,6 +1,7 @@
 import './index.css'
 
 import { createApp } from 'vue'
+import { spritePlugin } from 'frappe-ui/icons'
 import { createPinia } from 'pinia'
 import { frappeRequest, pageMetaPlugin, setConfig } from 'frappe-ui'
 
@@ -20,6 +21,7 @@ app.use(router)
 app.use(createPinia())
 app.use(translationPlugin)
 app.use(pageMetaPlugin)
+app.use(spritePlugin)
 
 const { userResource } = userStore()
 app.provide('$user', userResource)
@@ -53,10 +55,10 @@ const registerServiceWorker = async () => {
 }
 
 router.isReady().then(async () => {
-	if (import.meta.env.DEV)
-		await frappeRequest({ url: '/api/method/mail.www.mail.get_context_for_dev' }).then(
-			(values) => Object.keys(values).forEach((key) => (window[key] = values[key])),
-		)
+	// if (import.meta.env.DEV)
+	// 	await frappeRequest({ url: '/api/method/mail.www.mail.get_context_for_dev' }).then(
+	// 		(values) => Object.keys(values).forEach((key) => (window[key] = values[key])),
+	// 	)
 
 	registerServiceWorker()
 	app.mount('#app')

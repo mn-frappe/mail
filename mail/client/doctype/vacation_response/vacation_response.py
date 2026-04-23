@@ -6,10 +6,15 @@ from datetime import datetime
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import cint, now, today
+from frappe.utils import cint, today
 from frappe.utils.data import convert_utc_to_system_timezone, get_datetime
 
-from mail.jmap import get_jmap_client
+from mail.client.doctype.sieve_script.sieve_script import (
+	activate_last_active_sieve_script,
+	get_active_sieve_script_id,
+	set_last_active_sieve_script_id,
+)
+from mail.jmap import get_vacation_response_service
 from mail.utils import convert_html_to_text
 from mail.utils.dt import convert_to_utc
 from mail.utils.validation import has_permission_for_user
@@ -68,8 +73,8 @@ def get_vacation_response(user: str) -> dict:
 
 	has_permission_for_user(user)
 
-	client = get_jmap_client(user)
-	vc = client.vacation_response_get()
+	service = get_vacation_response_service(user)
+	vc = service.get()
 	return format_vacation_response(user, vc)
 
 
@@ -97,8 +102,28 @@ def update_vacation_response(
 	if not convert_html_to_text(html_body):
 		html_body = None
 
-	client = get_jmap_client(user)
-	client.vacation_response_update(enabled, from_date, to_date, subject, text_body, html_body)
+	current_active_sieve_script_id = get_active_sieve_script_id(user)
+
+	service = get_vacation_response_service(user)
+	previous_vacation_response = service.get()
+
+	vacation_update_result = service.update(
+		{
+			"is_enabled": bool(enabled),
+			"from_date": from_date,
+			"to_date": to_date,
+			"subject": subject,
+			"text_body": text_body,
+			"html_body": html_body,
+		}
+	)
+
+	if vacation_update_result.get("updated"):
+		if enabled:
+			if not previous_vacation_response.get("isEnabled"):
+				set_last_active_sieve_script_id(user, current_active_sieve_script_id)
+		else:
+			activate_last_active_sieve_script(user)
 
 
 def format_vacation_response(user, vc: dict) -> dict:

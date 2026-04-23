@@ -7,8 +7,7 @@ from frappe.core.doctype.user.user import generate_keys
 from frappe.query_builder import Table
 from frappe.utils.caching import request_cache
 
-from mail.utils import user_context
-from mail.utils.cache import get_cluster_for_tenant, get_tenant_for_user
+from mail.utils import reconnect_on_failure, user_context
 
 
 def is_administrator(user: str) -> bool:
@@ -39,39 +38,52 @@ def is_system_manager(user: str) -> bool:
 	return is_administrator(user) or has_role(user, "System Manager")
 
 
-def is_tenant_bound_user(user: str) -> bool:
-	"""Returns True if the user is a tenant bound user else False."""
-
-	return bool(get_tenant_for_user(user))
-
-
 @request_cache
-def is_tenant_owner(tenant: str, user: str) -> bool:
-	"""Returns True if the user is the owner of the tenant else False."""
+def is_mail_admin(user: str) -> bool:
+	"""Returns True if the user is a Mail Admin else False."""
 
-	return frappe.db.get_value("Mail Tenant", tenant, "user") == user
-
-
-@request_cache
-def is_tenant_admin(tenant: str, user: str) -> bool:
-	"""Returns True if the user is an admin of the tenant else False."""
-
-	return has_role(user, "Mail Admin") and frappe.db.exists(
-		"Mail Tenant Member", {"tenant": tenant, "user": user, "is_admin": 1}
-	)
+	return has_role(user, "Mail Admin")
 
 
-@request_cache
-def is_tenant_member(tenant: str, user: str) -> bool:
-	"""Returns True if the user is a member of the tenant else False."""
+def has_user_settings(user: str, raise_exception: bool = False) -> bool:
+	"""Returns True if the user has User Settings else False."""
 
-	return frappe.db.exists("Mail Tenant Member", {"tenant": tenant, "user": user})
+	if frappe.db.exists("User Settings", {"user": user}):
+		return True
+
+	if raise_exception:
+		frappe.throw(_("User {0} does not have User Settings configured.").format(frappe.bold(user)))
+
+	return False
 
 
-def get_account_for_user(user: str) -> str | None:
-	"""Returns the account of the user."""
+def is_jmap_configured(user: str, raise_exception: bool = False) -> bool:
+	"""Returns True if the user has JMAP settings configured else False."""
 
-	return frappe.db.get_value("User", user, "jmap_username")
+	if frappe.db.exists("User Settings", {"user": user, "username": ["!=", None]}):
+		return True
+
+	if raise_exception:
+		frappe.throw(_("User {0} does not have JMAP settings configured.").format(frappe.bold(user)))
+
+	return False
+
+
+def is_local_user(user: str) -> bool:
+	"""Returns True if the user is a local user else False."""
+
+	if has_user_settings(user) and frappe.db.exists(
+		"Principal Settings", {"principal_type": "Individual", "principal_name": user}
+	):
+		return True
+
+	return False
+
+
+def get_jmap_username(user: str) -> str | None:
+	"""Returns the JMAP username of the user."""
+
+	return frappe.db.get_value("User Settings", {"user": user}, "username")
 
 
 def get_user_hashed_password(user: str) -> str | None:
@@ -100,135 +112,74 @@ def get_user_email_address(user: str) -> str | None:
 	return frappe.db.get_value("User", user, "email")
 
 
-def get_tenant_for_domain(domain_name: str) -> str | None:
-	"""Returns the tenant for the domain."""
-
-	return get_principal_tenant(domain_name, raise_exception=False)
-
-
-@frappe.whitelist()
-def get_user_tenant() -> str | None:
-	"""Returns the tenant of the user."""
-
-	return get_tenant_for_user(frappe.session.user)
-
-
-def get_principals_tenant_map(principal_names: list[str]) -> dict[str, str]:
-	"""Returns a mapping of principal names to their associated tenants."""
-
-	bindings = frappe.db.get_all(
-		"Mail Principal Binding",
-		{"principal_name": ["in", principal_names]},
-		["principal_name", "tenant"],
-	)
-
-	return {b.principal_name: b.tenant for b in bindings}
-
-
-def _get_tenant_principals(tenant: str, principal_type: str, order_by: str = "creation desc") -> list[str]:
-	"""Returns a list of principals of the given type for the given tenant."""
+def _get_local_principals(principal_type: str, order_by: str = "creation desc") -> list[str]:
+	"""Returns a list of principal names for the given principal type."""
 
 	return frappe.db.get_all(
-		"Mail Principal Binding",
-		filters={"tenant": tenant, "principal_type": principal_type},
+		"Principal Settings",
+		filters={"principal_type": principal_type},
 		order_by=order_by,
 		pluck="principal_name",
 	)
 
 
-def get_tenant_api_keys(tenant: str, order_by: str = "creation desc") -> list[str]:
-	"""Returns a list of API Key principals for the given tenant."""
+def get_local_api_keys(order_by: str = "creation desc") -> list[str]:
+	"""Returns a list of API Key principals."""
 
-	return _get_tenant_principals(tenant, "API Key", order_by)
-
-
-def get_tenant_domains(tenant: str, order_by: str = "creation desc") -> list[str]:
-	"""Returns a list of domain principals for the given tenant."""
-
-	return _get_tenant_principals(tenant, "Domain", order_by)
+	return _get_local_principals("API Key", order_by)
 
 
-def get_tenant_groups(tenant: str, order_by: str = "creation desc") -> list[str]:
-	"""Returns a list of group principals for the given tenant."""
+def get_local_domains(order_by: str = "creation desc") -> list[str]:
+	"""Returns a list of Domain principals."""
 
-	return _get_tenant_principals(tenant, "Group", order_by)
-
-
-def get_tenant_individuals(tenant: str, order_by: str = "creation desc") -> list[str]:
-	"""Returns a list of individual principals for the given tenant."""
-
-	return _get_tenant_principals(tenant, "Individual", order_by)
+	return _get_local_principals("Domain", order_by)
 
 
-def get_tenant_mailing_lists(tenant: str, order_by: str = "creation desc") -> list[str]:
-	"""Returns a list of list principals for the given tenant."""
+def get_local_groups(order_by: str = "creation desc") -> list[str]:
+	"""Returns a list of Group principals."""
 
-	return _get_tenant_principals(tenant, "List", order_by)
-
-
-def get_tenant_oauth_clients(tenant: str, order_by: str = "creation desc") -> list[str]:
-	"""Returns a list of OAuth Client principals for the given tenant."""
-
-	return _get_tenant_principals(tenant, "OAuth Client", order_by)
+	return _get_local_principals("Group", order_by)
 
 
-def get_tenant_roles(tenant: str, order_by: str = "creation desc") -> list[str]:
-	"""Returns a list of Role principals for the given tenant."""
+def get_local_individuals(order_by: str = "creation desc") -> list[str]:
+	"""Returns a list of Individual principals."""
 
-	return _get_tenant_principals(tenant, "Role", order_by)
+	return _get_local_principals("Individual", order_by)
 
 
-def get_tenant_emails(tenant: str, order_by: str = "creation desc") -> list[str]:
-	"""Returns a list of email addresses associated with the given tenant."""
+def get_local_mailing_lists(order_by: str = "creation desc") -> list[str]:
+	"""Returns a list of List principals."""
+
+	return _get_local_principals("List", order_by)
+
+
+def get_local_oauth_clients(order_by: str = "creation desc") -> list[str]:
+	"""Returns a list of OAuth Client principals."""
+
+	return _get_local_principals("OAuth Client", order_by)
+
+
+def get_local_roles(order_by: str = "creation desc") -> list[str]:
+	"""Returns a list of Role principals."""
+
+	return _get_local_principals("Role", order_by)
+
+
+def get_local_emails(order_by: str = "creation desc") -> list[str]:
+	"""Returns a list of associated email addresses."""
 
 	return frappe.db.get_all(
-		"Mail Principal Binding",
-		filters={"tenant": tenant, "principal_type": ["in", ["Group", "Individual", "List"]]},
+		"Principal Settings",
+		filters={"principal_type": ["in", ["Group", "Individual", "List"]]},
 		order_by=order_by,
 		pluck="principal_name",
 	)
-
-
-def get_principal_tenant(principal_name: str, raise_exception: bool = True) -> str | None:
-	"""Returns the tenant associated with the given principal name."""
-
-	if tenant := frappe.db.get_value("Mail Principal Binding", {"principal_name": principal_name}, "tenant"):
-		return tenant
-
-	if raise_exception:
-		frappe.throw(
-			_("No Mail Principal Binding found for principal name: {0}").format(frappe.bold(principal_name))
-		)
-
-
-def get_caldav_settings(user: str) -> dict:
-	"""Returns the CalDAV settings for the user."""
-
-	caldav_settings = {}
-
-	user_doc = frappe.get_doc("User", user)
-	if user_doc.jmap_server_url and user_doc.jmap_username and user_doc.jmap_app_password:
-		cluster = get_cluster_for_tenant(get_tenant_for_user(user))
-		base_url = frappe.db.get_value("Mail Cluster", cluster, "base_url")
-		caldav_url = urljoin(base_url, ".well-known/caldav")
-
-		caldav_settings.update(
-			{
-				"url": caldav_url,
-				"auth": (
-					user_doc.jmap_username,
-					user_doc.get_password("jmap_app_password"),
-				),
-			}
-		)
-
-	return caldav_settings
 
 
 def get_sync_state(user: str, type: Literal["email"]) -> str | None:
 	"""Returns the Sync State for the given user and type."""
 
-	return frappe.db.get_value("User", user, f"jmap_{type}_current_state")
+	return frappe.db.get_value("User Settings", {"user": user}, f"{type}_current_state")
 
 
 @frappe.whitelist(methods=["POST"])
@@ -246,21 +197,22 @@ def generate_user_keys(user: str) -> dict:
 def update_sync_state(user: str, type: Literal["email"], state: str) -> None:
 	"""Updates the Sync State for the given user and type."""
 
-	state_last_update = f"jmap_{type}_state_last_update"
-	previous_state = f"jmap_{type}_previous_state"
-	current_state = f"jmap_{type}_current_state"
+	state_last_update = f"{type}_state_last_update"
+	previous_state = f"{type}_previous_state"
+	current_state = f"{type}_current_state"
 
-	USER = frappe.qb.DocType("User")
+	USER_SETTINGS = frappe.qb.DocType("User Settings")
 	(
-		frappe.qb.update(USER)
-		.set(getattr(USER, state_last_update), frappe.utils.now())
-		.set(getattr(USER, previous_state), getattr(USER, current_state))
-		.set(getattr(USER, current_state), state)
-		.where(USER.name == user)
+		frappe.qb.update(USER_SETTINGS)
+		.set(getattr(USER_SETTINGS, state_last_update), frappe.utils.now())
+		.set(getattr(USER_SETTINGS, previous_state), getattr(USER_SETTINGS, current_state))
+		.set(getattr(USER_SETTINGS, current_state), state)
+		.where(USER_SETTINGS.user == user)
 	).run()
 
 
+@reconnect_on_failure()
 def clear_sync_state(user: str, type: Literal["email"]) -> None:
 	"""Clear the Sync State for the given user and type."""
 
-	frappe.db.set_value("User", user, f"jmap_{type}_current_state", None, update_modified=False)
+	frappe.db.set_value("User Settings", {"user": user}, f"{type}_current_state", None, update_modified=False)

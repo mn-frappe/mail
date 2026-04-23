@@ -27,16 +27,16 @@
 			/>
 			<div
 				v-else-if="isSelected && isMobile"
-				class="bg-surface-gray-3 flex h-10 min-h-10 w-10 min-w-10 rounded-full"
+				class="bg-surface-gray-7 flex h-10 min-h-10 w-10 min-w-10 rounded-full"
 				@click.stop.prevent="emit('setSelected', false)"
 			>
-				<Check class="text-ink-gray-5 m-auto h-5 w-5" />
+				<Check class="text-ink-white m-auto h-5 w-5 stroke-[3px]" />
 			</div>
 			<Avatar
-				v-else
+				v-show="!isSelected && (!isHovered || isMobile)"
 				:label="getFirstAlphabet(mail.from_name) || getFirstAlphabet(mail.from_email)"
+				:image="mail.user_image"
 				:size="isFullWidth ? 'lg' : '2xl'"
-				class="border"
 				@click.stop.prevent="emit('setSelected', true)"
 			/>
 		</div>
@@ -209,13 +209,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { Check, Download, Loader, Mail, MailOpen, Trash2 } from 'lucide-vue-next'
 import { Avatar, Badge, Button, Checkbox, Popover, Tooltip } from 'frappe-ui'
 
 import { getAttachmentUrl } from '@/resources'
 import { getFileIcon, getFirstAlphabet, getFormattedRecipients } from '@/utils'
-import { useLayout, useScreenSize } from '@/utils/composables'
+import { useScreenSize } from '@/utils/composables'
 import { userStore } from '@/stores/user'
 import AttachmentCapsule from '@/components/AttachmentCapsule.vue'
 import AttachmentViewer from '@/components/AttachmentViewer.vue'
@@ -231,8 +231,8 @@ const { mailbox, mail, isSelected } = defineProps<{
 
 const emit = defineEmits(['setSeen', 'trashThread', 'deleteThread', 'setSelected'])
 
+const user = inject('$user')
 const { isMobile } = useScreenSize()
-const { showReadingPane } = useLayout()
 const { mailboxIds } = userStore()
 
 const mailboxes = computed(() => mail.mailboxes.map((m) => m.mailbox_id))
@@ -241,7 +241,7 @@ const attachments = computed(
 	() => mail.attachments.filter((m) => m.filename && m.disposition === 'attachment') || [],
 )
 
-const isFullWidth = computed(() => !(showReadingPane.value || isMobile.value))
+const isFullWidth = computed(() => !(user.data.show_reading_pane || isMobile.value))
 
 const header = computed(() => {
 	const isOutgoing =

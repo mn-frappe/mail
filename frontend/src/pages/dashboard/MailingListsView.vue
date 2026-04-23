@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref, useTemplateRef } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import {
 	Button,
@@ -53,13 +53,14 @@ import {
 	ListSelectBanner,
 	ListView,
 	createResource,
+	usePageMeta,
 } from 'frappe-ui'
 
 import { raiseToast } from '@/utils'
 import DashboardLayout from '@/components/DashboardLayout.vue'
 import AddMailingListModal from '@/components/Modals/AddMailingListModal.vue'
 
-const user = inject('$user')
+usePageMeta(() => ({ title: __('Mailing Lists') }))
 
 const listView = useTemplateRef('listView')
 
@@ -71,12 +72,11 @@ const showDeleteLists = ref(false)
 const lists = createResource({
 	url: 'mail.api.admin.get_mailing_lists',
 	auto: true,
-	makeParams: () => ({ txt: search.value }),
-	transform: (data) => data.map((l) => ({ ...l, total_members: l.total_members.toString() })),
-	cache: ['mailTenantMailingLists', user.data?.tenant, search.value],
+	makeParams: () => ({ search: search.value }),
+	cache: ['mailMailingLists', search.value],
 })
 
-watchDebounced(() => search.value, lists.reload, { debounce: 500 })
+watchDebounced(() => search.value, lists.reload, { debounce: 300 })
 
 const deleteLists = createResource({
 	url: 'mail.api.admin.delete_mailing_lists',
@@ -96,13 +96,7 @@ const deleteLists = createResource({
 const deleteListsOptions = {
 	title: __('Delete Mailing Lists'),
 	message: __('Are you sure you want to delete the selected mailing lists?'),
-	actions: [
-		{
-			label: __('Confirm'),
-			variant: 'solid',
-			onClick: deleteLists.submit,
-		},
-	],
+	actions: [{ label: __('Confirm'), variant: 'solid', onClick: deleteLists.submit }],
 }
 
 const LIST_OPTIONS = {
@@ -113,6 +107,9 @@ const LIST_OPTIONS = {
 
 const LIST_COLUMNS = [
 	{ label: __('Mailing List'), key: 'name' },
-	{ label: __('Total Members'), key: 'total_members' },
+	{ label: __('Name'), key: 'full_name' },
+	{ label: __('Emails'), key: 'email_count' },
+	{ label: __('Members'), key: 'member_count' },
+	{ label: __('External Members'), key: 'external_member_count' },
 ]
 </script>

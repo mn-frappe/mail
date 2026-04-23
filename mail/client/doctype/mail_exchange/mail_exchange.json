@@ -9,7 +9,6 @@
   "section_break_vxtc",
   "column_break_frsy",
   "user",
-  "tenant",
   "operation",
   "import_format",
   "import_metadata",
@@ -190,18 +189,6 @@
    "no_copy": 1
   },
   {
-   "fieldname": "tenant",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "in_standard_filter": 1,
-   "label": "Tenant",
-   "no_copy": 1,
-   "options": "Mail Tenant",
-   "read_only": 1,
-   "search_index": 1,
-   "set_only_once": 1
-  },
-  {
    "collapsible": 1,
    "collapsible_depends_on": "eval: doc.docstatus == 0",
    "fieldname": "section_break_ovtu",
@@ -257,12 +244,12 @@
    "label": "Deduplicate by Message-ID"
   },
   {
-   "depends_on": "eval: doc.operation == \"Import\" && [\"eml\", \"maildir\"].includes(doc.import_format)",
+   "depends_on": "eval: doc.operation == \"Import\" && [\"eml\", \"mbox\", \"maildir\"].includes(doc.import_format)",
    "description": "Example: <code>{\"mailboxIds\": { \"a\": true }, \"keywords\": {\"$seen\": true}}</code>",
    "fieldname": "import_metadata",
    "fieldtype": "JSON",
    "label": "Metadata",
-   "mandatory_depends_on": "eval: doc.operation == \"Import\" && [\"eml\", \"maildir\"].includes(doc.import_format)"
+   "mandatory_depends_on": "eval: doc.operation == \"Import\" && [\"eml\", \"mbox\", \"maildir\"].includes(doc.import_format)"
   },
   {
    "fieldname": "column_break_julx",
@@ -273,13 +260,15 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-06 11:12:32.337722",
+ "max_attachments": 1,
+ "modified": "2026-04-13 12:54:11.165567",
  "modified_by": "Administrator",
  "module": "Client",
  "name": "Mail Exchange",
  "owner": "Administrator",
  "permissions": [
   {
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -304,7 +293,7 @@
    "create": 1,
    "delete": 1,
    "read": 1,
-   "role": "Mail User",
+   "role": "All",
    "submit": 1,
    "write": 1
   }

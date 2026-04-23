@@ -89,9 +89,9 @@
 							thread.data.length > 1 || mail.draft,
 						'sm:border':
 							(thread.data.length > 1 && !mail.draft) ||
-							(mail.draft && activeTheme === 'dark'),
+							(mail.draft && dataTheme === 'dark'),
 						'cursor-pointer': isCollapsed(mail),
-						'sm:shadow-elevation-light-md': mail.draft && activeTheme === 'light',
+						'sm:shadow-elevation-light-md': mail.draft && dataTheme === 'light',
 					}"
 					@click="mail.collapsed = false"
 				>
@@ -219,16 +219,42 @@
 						<div v-show="isCollapsed(mail)" class="truncate">{{ mail.preview }}</div>
 
 						<div v-show="!isCollapsed(mail)">
-							<EmailContent v-if="mail.html_body" :content="mail.html_body" />
-							<pre
-								v-else-if="mail.text_body"
-								class="text-wrap pt-4 text-base !leading-5 sm:text-sm"
+							<Alert
+								v-if="blockedAddresses.data.includes(mail.from_email)"
+								:title="__('This sender is blocked')"
+								:description="
+									__(
+										`{0} is currently on your block list. You won't receive new messages from this source until you unblock them.`,
+										[mail.from_name || mail.from_email],
+									)
+								"
+								class="mb-4"
+								:dismissable="false"
 							>
-							{{ mail.text_body }}
-							</pre
+								<template #footer>
+									<div class="col-span-full">
+										<Button
+											:label="__('Unblock')"
+											variant="outline"
+											@click="unblockEmailAddress.submit(mail.from_email)"
+										/>
+									</div>
+								</template>
+							</Alert>
+							<EmailContent
+								v-if="hasHtmlContent(mail.html_body)"
+								:content="mail.html_body"
+							/>
+							<pre
+								v-else
+								class="whitespace-pre-wrap break-words pt-4 text-base !leading-5 sm:text-sm"
+								>{{ mail.html_body || mail.text_body }}</pre
 							>
 
-							<div v-if="mail.attachments?.length" class="mt-8 flex flex-wrap">
+							<div
+								v-if="filteredAttachments(mail).length"
+								class="mt-8 flex flex-wrap"
+							>
 								<AttachmentCapsule
 									v-for="(attachment, idx) in filteredAttachments(mail)"
 									:key="idx"
@@ -312,13 +338,15 @@ import {
 	ReplyAll,
 	Trash2,
 } from 'lucide-vue-next'
-import { Avatar, Badge, Button, Dropdown, Tooltip, createResource } from 'frappe-ui'
+import { Alert, Avatar, Badge, Button, Dropdown, Tooltip, createResource } from 'frappe-ui'
 
 import {
 	extractQuotedContent,
 	getFirstAlphabet,
 	getFormattedRecipients,
 	getGroupedRecipients,
+	hasHtmlContent,
+	raiseToast,
 	shouldIgnoreKeypress,
 } from '@/utils'
 import { useScreenSize, useTheme } from '@/utils/composables'
@@ -355,11 +383,12 @@ const emit = defineEmits([
 
 const { isMobile } = useScreenSize()
 const dayjs = inject('$dayjs')
-const { mailboxes, mailboxIds, identities } = userStore()
+const user = inject('$user')
+const { mailboxes, mailboxIds, identities, blockedAddresses } = userStore()
+const { dataTheme } = useTheme()
 
 const route = useRoute()
 const router = useRouter()
-const { activeTheme } = useTheme()
 
 const draftMails = reactive<{ [key: string]: ComposeMailData }>({})
 
@@ -424,8 +453,6 @@ const reload = () => {
 
 watch(() => threadID, reload)
 
-const user = inject('$user')
-
 const moveToOptions = computed(() => {
 	const excludedMailboxes = new Set([
 		mailboxIds.sent,
@@ -480,6 +507,15 @@ const threadActions = computed((): MailAction[] =>
 	].filter((action) => action.condition !== false),
 )
 
+const unblockEmailAddress = createResource({
+	url: 'mail.api.mail.unblock_email_addresses',
+	makeParams: (email) => ({ emails: [email] }),
+	onSuccess: () => {
+		raiseToast(__('Email address unblocked.'))
+		blockedAddresses.reload()
+	},
+})
+
 const handleStarred = (ids: string[], flagged: 0 | 1) =>
 	ids.forEach((id) => (thread.data.find((m: Mail) => m.id === id).flagged = flagged))
 
@@ -518,7 +554,9 @@ const replyForwardActions = computed(() =>
 const showMailDetails = ref<string>()
 
 const filteredAttachments = (mail: Mail) =>
-	mail.attachments.filter((a: Attachment) => a.disposition === 'attachment')
+	mail.attachments.filter(
+		(a: Attachment) => a.disposition === 'attachment' || !a.type.startsWith('image/'),
+	)
 
 const showAttachmentViewer = ref(false)
 const attachments = ref<Attachment[]>([])
@@ -535,7 +573,6 @@ const isCollapsed = (mail: Mail) =>
 
 const showReplyAll = (mail: Mail) =>
 	!mail.draft &&
-	mail.from_email !== user.data.email &&
 	mail.groupedRecipients.to
 		?.concat(mail.groupedRecipients.cc)
 		.filter((m) => m !== user.data.email).length > 0
@@ -571,7 +608,7 @@ const replyAll = (mail: Mail) =>
 
 const forward = (mail: Mail) =>
 	createLocalDraft(mail, {
-		subject: `Fwd: ${mail.subject}`,
+		subject: `Fwd: ${mail.subject || ''}`,
 		html_body: getForwardedContent(mail),
 		attachments: mail.attachments || [],
 		forwarded_from_id: mail.id,
@@ -640,6 +677,7 @@ const getSourceMail = (mail: string) =>
 const getReplyDetails = (mail: Mail) => ({
 	subject: mail.subject?.startsWith('Re: ') ? mail.subject : `Re: ${mail.subject}`,
 	quoted_content: getQuotedContent(mail),
+	attachments: mail.attachments?.filter((a: Attachment) => a.disposition === 'inline') || [],
 	in_reply_to: mail.message_id,
 	in_reply_to_id: mail.id,
 })
@@ -667,19 +705,24 @@ const getReplyAllRecipients = (mail: Mail) => {
 const isUserEmail = (email: string) =>
 	identities.data.map((i: Identity) => i.email).includes(email)
 
+const getBodyContent = (mail: Mail) => {
+	if (hasHtmlContent(mail.html_body)) return mail.html_body
+	return `<pre style="white-space: pre-wrap; word-break: break-word">${mail.html_body || mail.text_body || '&nbsp;'}</pre>`
+}
+
 const getQuotedContent = (mail: Mail) =>
 	`
 		<div class="frappe_mail_quote">
 			On ${dayjs(mail.received_at).format('DD MMM YYYY [at] h:mm A')}, ${mail.from_email} wrote:
 			<blockquote style="margin-left: 8px">
-				${mail.html_body || '&nbsp;'}
+				${getBodyContent(mail)}
 			</blockquote>
 		</div>
 	`
 
 const getForwardedContent = (mail: Mail) =>
 	`
-		<div class="frappe_mail_quote">
+		<div class="frappe_mail_fwd">
 			<br><br>
 			---------- Forwarded message ---------<br>
 			From: ${mail.from_name} < ${mail.from_email} ><br>
@@ -688,7 +731,7 @@ const getForwardedContent = (mail: Mail) =>
 			To: ${mail.groupedRecipients.to.join(', ')}<br>
 			${mail.groupedRecipients.cc.length ? `Cc: ${mail.groupedRecipients.cc.join(', ')}<br>` : ''}
 			<br><br>
-			${mail.html_body || '&nbsp;'}
+			${getBodyContent(mail)}
 		</div>
 	`
 </script>

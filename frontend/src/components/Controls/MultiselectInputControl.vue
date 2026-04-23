@@ -10,7 +10,7 @@
 			:key="value"
 			theme="gray"
 			variant="subtle"
-			class="!text-ink-gray-7 bg-surface-gray-2 flex min-h-7 cursor-default items-center rounded px-2 text-base"
+			class="bg-surface-gray-2 flex min-h-7 cursor-default items-center rounded px-2 text-base"
 			@keydown.delete.capture.stop="removeLastValue"
 		>
 			<span :class="{ 'max-w-24 truncate': isMobile && !isFocused }">{{ value }}</span>
@@ -69,7 +69,7 @@
 												:image="option.image"
 												size="lg"
 											/>
-											<div class="text-ink-gray-7 flex flex-col gap-1 p-1">
+											<div class="flex flex-col gap-1 p-1">
 												<div class="text-sm font-medium">
 													{{ option.label }}
 												</div>
@@ -147,23 +147,16 @@ const displayedValues = computed(() => {
 })
 
 const mailContacts = createResource({
-	url: 'mail.api.mail.get_mail_contacts',
-	makeParams: (params: { txt: string }) => ({ txt: params.txt }),
-	transform: (data: Array<{ full_name?: string; email: string; user_image?: string }>) =>
-		data
-			.filter((option) => option.email)
-			.map((option) => ({
-				label: option.full_name || option.email,
-				value: option.email,
-				image: option.user_image,
-			})),
+	url: 'mail.api.contacts.get_contacts',
+	makeParams: (text: string) => ({
+		filter: { operator: 'OR', conditions: [{ text }, { email: text }] },
+	}),
+	transform: (data) =>
+		data.map((option) => ({ label: option.full_name || option.email, value: option.email })),
 	auto: false,
 })
 
-const debouncedSearch = useDebounceFn(
-	(searchText: string) => mailContacts.reload({ txt: searchText }),
-	300,
-)
+const debouncedSearch = useDebounceFn((text: string) => mailContacts.reload(text), 300)
 
 const options = computed<Option[]>(() => {
 	const searchedContacts =

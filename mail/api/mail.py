@@ -1,15 +1,19 @@
+import hashlib
 from datetime import UTC, datetime
 
 import frappe
-from bs4 import BeautifulSoup
+import pydenticon
+import requests
 from frappe import _
-from frappe.utils import format_datetime, get_url, random_string
+from frappe.utils import format_datetime, random_string
 
+from mail.api.contacts import create_contacts_if_not_exists
+from mail.api.sieve import update_sieve_script_for_mailbox
+from mail.client.doctype.blocked_email_address.blocked_email_address import get_blocked_email_addresses
 from mail.client.doctype.mail_message.mail_message import (
 	delete_messages,
 	empty_mailbox,
 	fetch_blob,
-	fetch_blobs,
 	fetch_thread,
 	fetch_threads,
 	get_message_ids,
@@ -20,9 +24,15 @@ from mail.client.doctype.mail_message.mail_message import (
 	set_spam_status,
 )
 from mail.client.doctype.mail_queue.mail_queue import MailQueue
-from mail.jmap import get_mailbox_id_by_role
-from mail.utils import convert_html_to_text
-from mail.utils.user import has_role
+from mail.client.doctype.mailbox.mailbox import add_mailbox, delete_mailboxes
+from mail.client.doctype.mailbox_settings.mailbox_settings import set_mailbox_settings
+from mail.jmap import get_email_service, get_mailbox_id_by_role
+from mail.utils import convert_html_to_text, get_mail_config
+from mail.utils.cache import get_user_emails
+from mail.utils.user import is_jmap_configured
+from mail.utils.validation import has_permission_for_user
+
+AVATAR_CACHE_TTL = 60 * 60 * 24
 
 
 @frappe.whitelist()
@@ -30,20 +40,103 @@ def get_mailboxes() -> list[dict]:
 	"""Serializes and returns the user's mailboxes."""
 
 	user = frappe.session.user
-	if not has_role(user, "Mail User") or user == "Administrator":
+	if not is_jmap_configured(user):
+		return []
+
+	mailboxes = get_user_mailboxes(user)
+	if not mailboxes:
 		return []
 
 	fields = ["id", "_name", "role", "total_threads", "unread_threads"]
-	mailboxes = get_user_mailboxes(user)
-	return [
-		{field: mailbox[field] for field in fields} for mailbox in mailboxes if mailbox["subscribed"] == 1
-	]
+
+	mailbox_settings = frappe.db.get_all(
+		"Mailbox Settings",
+		filters={"user": user, "mailbox_id": ["in", [m["id"] for m in mailboxes]]},
+		fields=["mailbox_id", "icon", "color", "disable_push_notification"],
+	)
+
+	settings_map = {
+		s.mailbox_id: {
+			"icon": s.icon,
+			"color": s.color,
+			"disable_push_notification": s.disable_push_notification,
+		}
+		for s in mailbox_settings
+	}
+
+	result = []
+	for mailbox in mailboxes:
+		if mailbox["subscribed"] == 1:
+			mailbox_data = {field: mailbox[field] for field in fields}
+			mailbox_data.update(settings_map.get(mailbox["id"], {}))
+			result.append(mailbox_data)
+
+	return result
 
 
 def get_user_mailboxes(user) -> list[dict]:
 	"""Returns the user's mailboxes."""
 
 	return frappe.get_all("Mailbox", filters={"user": user})
+
+
+def get_avatar_url(email: str) -> str:
+	"""Returns the avatar URL for the given email."""
+
+	return f"/api/method/mail.api.mail.get_avatar?email={email}"
+
+
+def add_user_images_to_emails(mails: list[dict], is_thread: bool = False) -> list[dict]:
+	"""Append avatar URLs to the given list of emails."""
+
+	if not mails:
+		return mails
+
+	email_map: dict[str, str] = {}
+	rcpt_order = {"To": 0, "Cc": 1, "Bcc": 2}
+	user_emails = {e.lower() for e in get_user_emails(frappe.session.user)}
+
+	for mail in mails:
+		name = mail["name"]
+		if not name:
+			continue
+
+		from_email = (mail.get("from_email") or "").lower()
+
+		if not from_email:
+			continue
+
+		selected_email = from_email
+
+		if not is_thread and from_email in user_emails:
+			recipients = sorted(mail["recipients"], key=lambda r: rcpt_order[r["type"] or 99])
+
+			for rcpt in recipients:
+				rcpt_email = (rcpt.get("email") or "").lower()
+				if rcpt_email and rcpt_email not in user_emails:
+					selected_email = rcpt_email
+					break
+
+		email_map[name] = selected_email
+
+	unique_emails = {e for e in email_map.values() if e}
+
+	user_image_map = {}
+	if unique_emails:
+		user_data = frappe.db.get_all(
+			"User",
+			filters={"name": ["in", list(unique_emails)]},
+			fields=["name", "user_image"],
+		)
+		user_image_map = {u.name: u.user_image for u in user_data if u.user_image}
+
+	images = {email: user_image_map.get(email) or get_avatar_url(email) for email in unique_emails}
+
+	for mail in mails:
+		email = email_map.get(mail["name"])
+		mail["user_image"] = images.get(email) if email else None
+
+	return mails
 
 
 @frappe.whitelist()
@@ -78,24 +171,30 @@ def get_threads(mailbox: str, limit: int, filter_by: str | None = None) -> list:
 	else:
 		filter = {"operator": "AND", "conditions": conditions}
 
-	return [serialize_thread(thread) for thread in fetch_threads(user, filter, 0, limit)]
+	threads = [serialize_thread(t) for t in fetch_threads(user, filter, 0, limit)]
+
+	return add_user_images_to_emails(threads, is_thread=False)
 
 
 @frappe.whitelist()
 def get_thread(thread_id: str) -> list[dict]:
 	"""Returns mails for the given thread id."""
 
-	return [serialize_mail(mail) for mail in fetch_thread(frappe.session.user, thread_id)]
+	mails = [serialize_mail(m) for m in fetch_thread(frappe.session.user, thread_id)]
+	return add_user_images_to_emails(mails, is_thread=True)
 
 
 @frappe.whitelist()
-def get_attachment(blob_id: str, filename: str | None = None) -> None:
+def get_attachment(user: str, blob_id: str, filename: str | None = None) -> None:
 	"""Fetches and returns the attachment."""
 
-	if not blob_id:
-		frappe.throw(_("Blob ID is required"))
+	if not user:
+		frappe.throw(_("User is required."))
 
-	content = fetch_blob(frappe.session.user, blob_id, filename)
+	if not blob_id:
+		frappe.throw(_("Blob ID is required."))
+
+	content = fetch_blob(user, blob_id, filename)
 
 	frappe.local.response.filename = filename or blob_id
 	frappe.local.response.filecontent = content
@@ -150,28 +249,16 @@ def serialize_mail(mail: dict) -> dict:
 		"reply_to",
 	]
 
-	attachments = serialize_attachments(mail.get("attachments", []))
-	if attachments:
-		blobs = []
-		for attachment in attachments:
-			if attachment["disposition"] == "inline" and attachment["cid"] and attachment["blob_id"]:
-				blobs.append((attachment["blob_id"], attachment["filename"]))
-				url = get_attachment_url(attachment["blob_id"], attachment["filename"])
-				mail["html_body"] = convert_img_src_from_cid_to_url(mail["html_body"], attachment["cid"], url)
-
-		if blobs:
-			fetch_blobs(mail["user"], blobs)
-
 	return {
 		**{field: mail[field] for field in mail_fields},
-		"attachments": attachments,
+		"attachments": serialize_attachments(mail.get("attachments", [])),
 	}
 
 
 def serialize_attachments(attachments: list[dict]) -> list[dict]:
 	"""Serializes attachment for response."""
 
-	attachment_fields = ["filename", "type", "size", "blob_id", "disposition", "cid"]
+	attachment_fields = ["filename", "type", "size", "blob_id", "disposition", "cid", "url"]
 
 	return [
 		{field: attachment[field] for field in attachment_fields}
@@ -180,37 +267,11 @@ def serialize_attachments(attachments: list[dict]) -> list[dict]:
 	]
 
 
-def get_attachment_url(blob_id: str, filename: str | None = None) -> str:
-	"""Returns the URL for the attachment."""
-
-	return get_url(f"/api/method/mail.api.mail.get_attachment?blob_id={blob_id}&filename={filename or ''}")
-
-
 @frappe.whitelist()
 def fetch_attachment(blob_id: str) -> bytes:
 	"""Returns the content of an attachment."""
 
 	return fetch_blob(frappe.session.user, blob_id)
-
-
-@frappe.whitelist()
-def get_mail_contacts(txt=None) -> list:
-	"""Returns the mail contacts for the current user."""
-
-	filters = {"user": frappe.session.user}
-	if txt:
-		filters["email"] = ["like", f"%{txt}%"]
-
-	contacts = frappe.get_all("Mail Contact", filters=filters, fields=["email"], page_length=10)
-
-	for contact in contacts:
-		details = frappe.db.get_value(
-			"User", {"email": contact.email}, ["user_image", "full_name", "email"], as_dict=1
-		)
-		if details:
-			contact.update(details)
-
-	return contacts
 
 
 @frappe.whitelist()
@@ -232,7 +293,7 @@ def create_mail(
 
 	doc_attachments = []
 	for d in attachments:
-		cid = random_string(10)
+		cid = d.get("cid") or random_string(10)
 		doc_attachments.append(
 			{
 				"file_url": d.get("file_url", ""),
@@ -244,8 +305,6 @@ def create_mail(
 				"cid": cid,
 			}
 		)
-		if d.get("disposition") == "inline":
-			html_body = convert_img_src_from_file_url_to_cid(html_body, d.get("file_url"), cid)
 
 	recipients = [{"type": "To", "email": email} for email in to]
 	recipients += [{"type": "Cc", "email": email} for email in cc]
@@ -264,6 +323,9 @@ def create_mail(
 		recipients=recipients,
 		save_as_draft=save_as_draft,
 	)
+
+	if not save_as_draft and doc.status == "Submitted":
+		create_contacts_if_not_exists(doc.recipients)
 
 	return {"id": doc.id, "status": doc.status, "error": doc.error_message}
 
@@ -290,25 +352,38 @@ def update_draft_mail(
 	doc.from_name = from_name
 	doc.subject = subject
 
+	_attachments = {a.cid: a for a in doc.attachments if a.cid}
 	doc.attachments = []
-	for d in attachments or []:
-		cid = d.get("cid", random_string(10))
-		doc.append(
-			"attachments",
-			{
-				"blob_id": d.get("blob_id", ""),
-				"file_url": d.get("file_url", ""),
-				"type": d.get("type", ""),
-				"size": d.get("size", ""),
-				"filename": d.get("filename", ""),
-				"disposition": d.get("disposition"),
-				"cid": cid,
-			},
-		)
-		if d.get("disposition") == "inline":
-			html_body = convert_img_src_from_file_url_to_cid(html_body, d.get("file_url"), cid)
 
-	doc.html_body = convert_img_src_from_base64_to_cid(html_body)
+	for d in attachments or []:
+		if file_url := d.get("file_url"):
+			doc.append(
+				"attachments",
+				{
+					"file_url": file_url,
+					"filename": d.get("filename", ""),
+					"disposition": d.get("disposition"),
+					"cid": d.get("cid") or random_string(10),
+				},
+			)
+		else:
+			existing_attachment = _attachments.get(d["cid"])
+			if not existing_attachment:
+				frappe.throw(_("Attachment with cid {0} not found in the current draft.").format(d["cid"]))
+
+			doc.append(
+				"attachments",
+				{
+					"blob_id": existing_attachment.blob_id,
+					"type": existing_attachment.type,
+					"size": existing_attachment.size,
+					"filename": existing_attachment.filename,
+					"disposition": existing_attachment.disposition,
+					"cid": d["cid"],
+				},
+			)
+
+	doc.html_body = html_body
 	doc.text_body = convert_html_to_text(doc.html_body)
 
 	doc.recipients = []
@@ -321,49 +396,10 @@ def update_draft_mail(
 
 	new_doc = doc.submit() if submit else doc.save_draft()
 
+	if submit and new_doc.status == "Submitted":
+		create_contacts_if_not_exists(doc.recipients)
+
 	return {"id": new_doc.id, "status": new_doc.status, "error": new_doc.error_message}
-
-
-def convert_img_src_from_file_url_to_cid(html_body: str, file_url: str, cid: str) -> str:
-	"""Converts url-based images in HTML body to CID references."""
-
-	soup = BeautifulSoup(html_body, "html.parser")
-	for img in soup.find_all("img", src=file_url):
-		img["src"] = f"cid:{cid}"
-
-	return str(soup)
-
-
-def convert_img_src_from_base64_to_cid(html_body: str) -> str:
-	"""Converts base64 images in HTML body to CID references."""
-
-	soup = BeautifulSoup(html_body, "html.parser")
-	for img in soup.find_all("img", attrs={"data-cid": True}):
-		img["src"] = f"cid:{img['data-cid']}"
-
-	return str(soup)
-
-
-def convert_img_src_from_cid_to_base64(html_body: str, cid: str, type: str, base64_content) -> str:
-	"""Converts CID-based images in HTML body to base 64."""
-
-	soup = BeautifulSoup(html_body, "html.parser")
-	for img in soup.find_all("img", src=f"cid:{cid}"):
-		img["data-cid"] = cid
-		img["src"] = f"data:{type};base64,{base64_content}"
-
-	return str(soup)
-
-
-def convert_img_src_from_cid_to_url(html_body: str, cid: str, url: str) -> str:
-	"""Converts CID-based images in HTML body to URL."""
-
-	soup = BeautifulSoup(html_body, "html.parser")
-	for img in soup.find_all("img", src=f"cid:{cid}"):
-		img["data-cid"] = cid
-		img["src"] = url
-
-	return str(soup)
 
 
 @frappe.whitelist()
@@ -512,11 +548,13 @@ def search_mails(filter: dict | None = None, limit: int = 5) -> tuple[list[dict]
 	if not filter:
 		return ([], 0)
 
-	normalized_filter = normalize_search_filter(filter)
-	return search_messages(frappe.session.user, normalized_filter, limit=limit)
+	normalized_filter = normalize_filter(filter)
+	mails, total = search_messages(frappe.session.user, normalized_filter, limit=limit)
+
+	return add_user_images_to_emails(mails), total
 
 
-def normalize_search_filter(filter: dict) -> dict:
+def normalize_filter(filter: dict) -> dict:
 	"""Normalize and transform filter parameters for email search."""
 
 	filter = filter.copy()
@@ -539,3 +577,158 @@ def normalize_search_filter(filter: dict) -> dict:
 def parse_date_to_utc_iso(date_str: str) -> str:
 	"""Parse date string and convert to ISO format with UTC timezone."""
 	return datetime.strptime(date_str, "%Y-%m-%d").replace(tzinfo=UTC).isoformat()
+
+
+@frappe.whitelist()
+def get_avatar(email: str, size: int = 128, strict: bool = False) -> None:
+	"""Fetch and return avatar for the given email."""
+
+	if not email:
+		frappe.throw(_("Email is required to fetch avatar."))
+
+	email = email.strip().lower()
+	email_hash = hashlib.md5(email.encode()).hexdigest()
+
+	cache_key = f"avatar:{email_hash}:{size}"
+
+	# 1. Try cache
+	avatar = frappe.cache.get_value(cache_key)
+
+	if not avatar:
+		# 2. Try Gravatar
+		default = get_mail_config("gravatar_default_avatar")
+		try:
+			res = requests.get(
+				f"https://secure.gravatar.com/avatar/{email_hash}",
+				params={"d": default, "s": size},
+				timeout=3,
+			)
+			if res.ok:
+				avatar = res.content
+		except requests.RequestException:
+			pass
+
+		# 3. Handle missing gravatar
+		if not avatar:
+			if strict:
+				frappe.throw(_("Avatar not found."), frappe.DoesNotExistError)
+
+			generator = pydenticon.Generator(
+				5,
+				5,
+				foreground=[
+					"#1abc9c",
+					"#2ecc71",
+					"#3498db",
+					"#9b59b6",
+					"#e74c3c",
+				],
+				background="#ffffff",
+			)
+			avatar = generator.generate(email_hash, size, size, output_format="png")
+
+		# Cache the avatar for future requests
+		frappe.cache.set_value(cache_key, avatar, expires_in_sec=AVATAR_CACHE_TTL)
+
+	frappe.local.response.filename = f"{email_hash}.png"
+	frappe.local.response.filecontent = avatar
+	frappe.local.response.mimetype = "image/png"
+	frappe.local.response.type = "binary"
+
+
+def get_email_suggestions(query: str, limit: int = 5) -> list[str]:
+	"""Returns email suggestions based on the given query."""
+
+	if not query:
+		return []
+
+	user = frappe.session.user
+	has_permission_for_user(user)
+
+	service = get_email_service(frappe.session.user)
+	return service.get_email_suggestions(query, limit)
+
+
+@frappe.whitelist()
+def create_mailbox(
+	name: str,
+	parent: str | None = None,
+	icon: str | None = None,
+	color: str | None = None,
+	disable_push_notification: bool = False,
+	automation_rules: dict | None = None,
+) -> str:
+	"""Creates a new mailbox and initializes its settings for the current user."""
+
+	user = frappe.session.user
+	mailbox_id = add_mailbox(user, name, None, parent)
+
+	set_mailbox_settings(
+		user,
+		mailbox_id,
+		icon=icon,
+		color=color,
+		disable_push_notification=disable_push_notification,
+	)
+
+	update_sieve_script_for_mailbox(name, automation_rules)
+
+
+@frappe.whitelist()
+def update_mailbox(
+	id: str,
+	name: str,
+	old_name: str,
+	role: str | None = None,
+	parent: str | None = None,
+	icon: str | None = None,
+	color: str | None = None,
+	disable_push_notification: bool = False,
+	automation_rules: dict | None = None,
+) -> None:
+	"""Updates Mailbox Settings for the given mailbox ID."""
+
+	set_mailbox_settings(
+		frappe.session.user,
+		id,
+		_name=name,
+		role=role,
+		parent=parent,
+		icon=icon,
+		color=color,
+		disable_push_notification=disable_push_notification,
+	)
+
+	update_sieve_script_for_mailbox(name, automation_rules, old_name)
+
+
+@frappe.whitelist()
+def delete_mailbox(id: str, name: str) -> None:
+	"""Deletes the mailbox with the given mailbox ID, followed by its settings."""
+
+	user = frappe.session.user
+	delete_mailboxes(user, [id])
+	update_sieve_script_for_mailbox(name)
+	frappe.db.delete("Mailbox Settings", {"user": user, "mailbox_id": id})
+
+
+@frappe.whitelist()
+def get_blocked_addresses() -> list[dict]:
+	"""Returns the list of blocked email addresses for the current user."""
+
+	return get_blocked_email_addresses(frappe.session.user)
+
+
+@frappe.whitelist()
+def block_email_address(email: str) -> dict:
+	"""Blocks an email address for the current user."""
+
+	doc = frappe.get_doc({"doctype": "Blocked Email Address", "user": frappe.session.user, "email": email})
+	doc.insert()
+
+
+@frappe.whitelist()
+def unblock_email_addresses(emails: list[str]) -> None:
+	"""Unblocks email addresses by deleting Blocked Email Address records."""
+
+	frappe.db.delete("Blocked Email Address", {"user": frappe.session.user, "email": ["in", emails]})

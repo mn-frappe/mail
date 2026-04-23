@@ -6,7 +6,10 @@
 			<Breadcrumbs
 				:items="[{ label: mailboxName, route: { name: 'Mailbox', params: { mailbox } } }]"
 			>
-				<template v-if="mailbox !== 'starred'" #suffix>
+				<template
+					v-if="mailbox !== 'starred' && !mailboxes.loading && !searchResults.loading"
+					#suffix
+				>
 					<span class="text-ink-gray-5 ml-2 self-end pb-px text-xs">
 						{{ noOfThreads }}
 					</span>
@@ -122,7 +125,7 @@
 					<TransitionGroup name="mail-group" tag="div">
 						<div v-for="(group, key) in groupedThreads" :key="key">
 							<Tooltip
-								v-if="groupMessagesBy !== 'none'"
+								v-if="groupMessagesBy !== 'None'"
 								:text="
 									isLastGroup(key)
 										? ''
@@ -147,7 +150,7 @@
 										{{
 											getFormattedDate(
 												key,
-												groupMessagesBy === 'month',
+												groupMessagesBy === 'Month',
 											).toUpperCase()
 										}}
 									</span>
@@ -177,7 +180,8 @@
 									:is-selected="selections.includes(mail.thread_id)"
 									class="border-l-transparent transition-all sm:border-l"
 									:class="{
-										'!bg-surface-blue-1': mail.thread_id === threadID,
+										'!bg-surface-blue-1':
+											mail.thread_id === threadID && !isMobile,
 										'!border-l-blue-500': mail.thread_id === threadInFocus,
 									}"
 									@set-seen="
@@ -197,7 +201,9 @@
 						</div>
 					</TransitionGroup>
 					<div
-						v-if="threadsResource.loading && threadsResource.data.length === limit"
+						v-if="
+							threadsResource.loading && threadsResource.data.length === limit - 50
+						"
 						class="flex items-center justify-center py-4"
 					>
 						<div class="text-ink-gray-5 flex items-center space-x-2">
@@ -303,6 +309,7 @@ import {
 	Tooltip,
 	createResource,
 	toast,
+	usePageMeta,
 } from 'frappe-ui'
 
 import {
@@ -313,7 +320,7 @@ import {
 	shouldIgnoreKeypress,
 	startResizing,
 } from '@/utils'
-import { useLayout, useScreenSize, useSidebar, useUndo } from '@/utils/composables'
+import { useScreenSize, useSidebar, useUndo } from '@/utils/composables'
 import { type MailboxRole, userStore } from '@/stores/user'
 import HeaderActions from '@/components/HeaderActions.vue'
 import NoMails from '@/components/Icons/NoMails.vue'
@@ -321,7 +328,7 @@ import MailListItem from '@/components/MailListItem.vue'
 import MailThread from '@/components/MailThread.vue'
 import ShortcutsModal from '@/components/Modals/ShortcutsModal.vue'
 
-import type { Thread, UserResource } from '@/types'
+import type { COLOR_SCHEME, Thread, UserResource } from '@/types'
 
 const { mailbox, threadID } = defineProps<{ mailbox: string; threadID?: string }>()
 
@@ -329,7 +336,6 @@ const route = useRoute()
 const router = useRouter()
 const { isMobile } = useScreenSize()
 const { openSidebar } = useSidebar()
-const { showReadingPane, groupMessagesBy } = useLayout()
 const { setUndoAction, undo } = useUndo()
 
 const socket = inject('$socket')
@@ -338,12 +344,17 @@ const dayjs = inject('$dayjs')
 
 const { mailboxes, mailboxIds } = userStore()
 
+// Appearance
+
+const showReadingPane = computed(() => !!user.data?.show_reading_pane)
+const groupMessagesBy = computed(() => user.data.group_messages_by)
+
 // Thread Groups
 
 const groupedThreads = computed<Record<string, Thread[]>>(() =>
 	threadsResource.value?.data?.reduce((groups: Record<string, Thread[]>, thread: Thread) => {
 		const date = dayjs(thread.received_at).format(
-			groupMessagesBy.value === 'day' ? 'YYYY-MM-DD' : 'YYYY-MM',
+			groupMessagesBy.value === 'Day' ? 'YYYY-MM-DD' : 'YYYY-MM',
 		)
 		if (!groups[date]) groups[date] = []
 		groups[date].push(thread)
@@ -456,10 +467,18 @@ const modifier = computed(() => (isMac ? '⌘' : 'Ctrl'))
 const isShiftPressed = ref(false)
 const isGPressed = ref(false)
 const gPressTimeout = ref<ReturnType<typeof setTimeout>>()
+const reloadInterval = ref<ReturnType<typeof setInterval>>()
 
 const handleKeyDown = (e: KeyboardEvent) => {
 	isShiftPressed.value = e.shiftKey
 	const key = e.key.toLowerCase()
+
+	// Handle Ctrl/Cmd+Shift+L (Cycle Theme)
+	if ((e.metaKey || e.ctrlKey) && e.shiftKey && key === 'l' && !shouldIgnoreKeypress(e, true)) {
+		e.preventDefault()
+		isGPressed.value = false
+		return cycleTheme()
+	}
 
 	// Handle Ctrl/Cmd+A (Select All)
 	if ((e.metaKey || e.ctrlKey) && key === 'a' && !shouldIgnoreKeypress(e, true)) {
@@ -531,6 +550,28 @@ const handleShowShortcuts = (e: KeyboardEvent) => {
 	e.preventDefault()
 	showShortcuts.value = true
 }
+
+const COLOR_SCHEME_CYCLE = ['System Default', 'Light Mode', 'Dark Mode'] as const
+
+const cycleTheme = () => {
+	const current = user.data.color_scheme
+	const idx = COLOR_SCHEME_CYCLE.indexOf(current as COLOR_SCHEME)
+	const next = COLOR_SCHEME_CYCLE[(idx + 1) % COLOR_SCHEME_CYCLE.length]
+	updateColorScheme.submit(next)
+}
+
+const updateColorScheme = createResource({
+	url: 'frappe.client.set_value',
+	makeParams: (color_scheme: COLOR_SCHEME) => ({
+		doctype: 'User Settings',
+		name: user.data.user_settings,
+		fieldname: { color_scheme },
+	}),
+	onSuccess: (data) => {
+		raiseToast(__('Color scheme updated to {0}.', [data.color_scheme]))
+		user.reload()
+	},
+})
 
 const handleEnter = (e: KeyboardEvent) => {
 	e.preventDefault()
@@ -748,15 +789,21 @@ watch(
 onMounted(() => {
 	window.addEventListener('keydown', handleKeyDown)
 	window.addEventListener('keyup', handleKeyUp)
+	reloadInterval.value = setInterval(() => threadsResource.value.reload(), 30000)
 
 	socket.on('new_mail_created', (updatedMailboxes: string[]) => {
-		if (updatedMailboxes.includes(mailbox)) reloadThreads()
+		if (updatedMailboxes.includes(mailbox)) threadsResource.value.reload()
 	})
+
+	socket.on('mail_exchange_completed', (payload: { success: boolean; message: string }) =>
+		raiseToast(payload.message, payload.success ? 'success' : 'error'),
+	)
 })
 
 onUnmounted(() => {
 	window.removeEventListener('keydown', handleKeyDown)
 	window.removeEventListener('keyup', handleKeyUp)
+	if (reloadInterval.value) clearInterval(reloadInterval.value)
 })
 
 const loadMoreThreads = useDebounceFn((e) => {
@@ -1108,6 +1155,18 @@ const noOfThreads = computed(() => {
 	if (mailbox === 'search')
 		return `${noOfSearchResults.value} ${noOfSearchResults.value == 1 ? __('result') : __('results')}`
 	return `${mailboxObj.value?.total_threads} ${mailboxObj.value?.total_threads == 1 ? __('thread') : __('threads')}`
+})
+const unreadThreadsPrefix = computed(() =>
+	mailboxObj.value?.unread_threads ? `(${mailboxObj.value.unread_threads})` : '',
+)
+
+const currentThread = computed(() =>
+	threadsResource.value?.data?.find((t: Thread) => t.thread_id === threadID),
+)
+
+usePageMeta(() => {
+	if (threadID) return { title: currentThread.value?.subject || __('[No Subject]') }
+	return { title: `${unreadThreadsPrefix.value} ${mailboxName.value}` }
 })
 
 const title = computed(() => {

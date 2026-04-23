@@ -1,5 +1,7 @@
 export * from './doctypes'
 
+export type COLOR_SCHEME = 'System Default' | 'Light Mode' | 'Dark Mode'
+
 export interface User {
 	name: string
 	email: string
@@ -9,22 +11,24 @@ export interface User {
 	username: string | null
 	user_image: string | null
 	api_key: string | null
-	tenant: string | null
-	jmap_default_outgoing_email?: string
+	user_settings?: string
+	default_outgoing_email?: string
+	color_scheme?: COLOR_SCHEME
+	group_messages_by?: 'None' | 'Day' | 'Month'
+	show_reading_pane?: 0 | 1
 
 	enabled: boolean
-	is_mail_user: boolean
 	is_mail_admin: boolean
-	is_tenant_owner?: boolean
 	is_system_manager: boolean
+	is_jmap_configured: boolean
 
-	tenant_name?: string
 	mailboxes: { id: string; name: string; role: string }[]
 }
 
 export interface UserResource {
 	data: User
 	promise: Promise<User>
+	reload: () => void
 }
 
 export interface Recipient {
@@ -45,6 +49,7 @@ export interface Attachment {
 	size: string
 	file_url: string | null
 	disposition: string
+	cid?: string
 }
 
 export interface Mail {
@@ -70,6 +75,7 @@ export interface Mail {
 	}
 	reply_to: { display_name: string; email: string }[]
 	attachments: Attachment[]
+	user_image?: string
 	collapsed?: boolean
 }
 
@@ -109,6 +115,7 @@ export interface Thread {
 	answered: 0 | 1
 	forwarded: 0 | 1
 	attachments: Attachment[]
+	user_image?: string
 }
 
 export interface MailboxData {
@@ -117,6 +124,9 @@ export interface MailboxData {
 	total_threads: number
 	unread_threads: number
 	_name: string
+	icon?: string
+	color?: string
+	disable_push_notification?: 0 | 1
 }
 
 export interface NotificationPayload {

@@ -7,7 +7,6 @@
   "details_tab",
   "section_break_b7jt",
   "enabled",
-  "public",
   "column_break_fkha",
   "hostname",
   "spf_identifier",
@@ -270,14 +269,6 @@
   {
    "fieldname": "column_break_egzt",
    "fieldtype": "Column Break"
-  },
-  {
-   "default": "0",
-   "description": "Make this cluster available for selection when creating a new tenant.",
-   "fieldname": "public",
-   "fieldtype": "Check",
-   "label": "Public",
-   "search_index": 1
   },
   {
    "fieldname": "jmap_tab",
@@ -582,11 +573,11 @@
    "reqd": 1
   },
   {
-   "default": "500000000",
+   "default": "5120",
    "description": "Defines the total size of files that a user can upload within a certain period.",
    "fieldname": "jmap_protocol_upload_quota_size",
    "fieldtype": "Int",
-   "label": "Total Size (Bytes)",
+   "label": "Total Size (MB)",
    "non_negative": 1,
    "reqd": 1
   },
@@ -904,16 +895,11 @@
  "links": [
   {
    "group": "Reference",
-   "link_doctype": "Mail Tenant",
-   "link_fieldname": "cluster"
-  },
-  {
-   "group": "Reference",
    "link_doctype": "Mail Server",
    "link_fieldname": "cluster"
   }
  ],
- "modified": "2025-12-23 21:58:16.231800",
+ "modified": "2026-04-12 23:58:33.348728",
  "modified_by": "Administrator",
  "module": "Server",
  "name": "Mail Cluster",

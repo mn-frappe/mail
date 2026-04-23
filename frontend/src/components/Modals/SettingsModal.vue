@@ -40,22 +40,28 @@
 <script setup lang="ts">
 import { computed, inject, markRaw, ref } from 'vue'
 import {
+	Ban,
 	Code,
-	DatabaseBackup,
 	Feather,
 	Fingerprint,
+	HardDriveDownload,
+	HardDriveUpload,
 	Mailbox,
 	Palette,
 	TreePalm,
 	User,
+	Zap,
 } from 'lucide-vue-next'
 import { Button, Dialog } from 'frappe-ui'
 
 import AccountSettings from '@/components/Settings/AccountSettings.vue'
 import AdvancedSettings from '@/components/Settings/AdvancedSettings.vue'
 import AppearanceSettings from '@/components/Settings/AppearanceSettings.vue'
+import AutomationSettings from '@/components/Settings/AutomationSettings.vue'
+import BlockListSettings from '@/components/Settings/BlockListSettings.vue'
+import ExportSettings from '@/components/Settings/ExportSettings.vue'
 import IdentitySettings from '@/components/Settings/IdentitySettings.vue'
-import MailDataExchangeSettings from '@/components/Settings/MailDataExchangeSettings.vue'
+import ImportSettings from '@/components/Settings/ImportSettings.vue'
 import ProfileSettings from '@/components/Settings/ProfileSettings.vue'
 import SignatureSettings from '@/components/Settings/SignatureSettings.vue'
 import VacationResponseSettings from '@/components/Settings/VacationResponseSettings.vue'
@@ -75,13 +81,13 @@ const tabs = computed(() => {
 			label: __('Account'),
 			icon: Mailbox,
 			component: markRaw(AccountSettings),
-			condition: user.data.is_mail_user,
+			condition: user.data.is_jmap_configured,
 		},
 		{
 			label: __('Identity'),
 			icon: Fingerprint,
 			component: markRaw(IdentitySettings),
-			condition: user.data.is_mail_user,
+			condition: user.data.is_jmap_configured,
 		},
 		{
 			label: __('Appearance'),
@@ -92,25 +98,43 @@ const tabs = computed(() => {
 			label: __('Signature'),
 			icon: Feather,
 			component: markRaw(SignatureSettings),
-			condition: user.data.is_mail_user,
+			condition: user.data.is_jmap_configured,
 		},
 		{
 			label: __('Vacation Response'),
 			icon: TreePalm,
 			component: markRaw(VacationResponseSettings),
-			condition: user.data.is_mail_user,
+			condition: user.data.is_jmap_configured,
 		},
 		{
-			label: __('Mail Data Exchange'),
-			icon: DatabaseBackup,
-			component: markRaw(MailDataExchangeSettings),
-			condition: user.data.is_mail_user && user.data.tenant,
+			label: __('Automation'),
+			icon: Zap,
+			component: markRaw(AutomationSettings),
+			condition: user.data.is_jmap_configure,
+		},
+		{
+			label: __('Block List'),
+			icon: Ban,
+			component: markRaw(BlockListSettings),
+			condition: user.data.is_jmap_configured,
+		},
+		{
+			label: __('Import'),
+			icon: HardDriveDownload,
+			component: markRaw(ImportSettings),
+			condition: user.data.is_jmap_configured,
+		},
+		{
+			label: __('Export'),
+			icon: HardDriveUpload,
+			component: markRaw(ExportSettings),
+			condition: user.data.is_jmap_configured,
 		},
 		{
 			label: __('Advanced'),
 			icon: Code,
 			component: markRaw(AdvancedSettings),
-			condition: user.data.is_mail_user,
+			condition: user.data.is_jmap_configured,
 		},
 	]
 	return allTabs.filter((tab) => tab.condition === undefined || tab.condition)

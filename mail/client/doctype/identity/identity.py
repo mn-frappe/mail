@@ -10,10 +10,9 @@ from frappe.model.document import Document
 from frappe.utils import cint, today
 
 from mail.backend import get_mail_backend_api
-from mail.jmap import get_jmap_client
+from mail.jmap import get_identity_service
 from mail.utils import parse_filters
-from mail.utils.cache import get_cluster_for_tenant
-from mail.utils.user import get_tenant_for_user, is_administrator, is_tenant_admin
+from mail.utils.user import is_administrator, is_mail_admin
 from mail.utils.validation import has_permission_for_user
 
 
@@ -72,13 +71,19 @@ class Identity(Document):
 	@staticmethod
 	def get_list(filters=None, page_length=20, **kwargs) -> list:
 		filters = parse_filters(filters)
+		id = filters.get("id")
 		user = filters.get("user") or frappe.session.user
 
 		if not user or user in ("Guest", "Administrator"):
 			frappe.msgprint(_("Please select a user to view identities."), alert=True)
 			return []
 
-		identities = fetch_identities(user, limit=page_length)
+		identities = []
+		if id:
+			if identity := get_identity(user, id, raise_exception=False):
+				identities.append(identity)
+		else:
+			identities = fetch_identities(user, limit=page_length)
 
 		if not identities:
 			frappe.msgprint(_("No identities found."), alert=True)
@@ -117,8 +122,7 @@ def _add_identity(
 ) -> str:
 	"""Adds an identity for the given user with the specified parameters."""
 
-	tenant = get_tenant_for_user(user)
-	if not is_administrator(frappe.session.user) and not is_tenant_admin(tenant, frappe.session.user):
+	if not is_administrator(frappe.session.user) and not is_mail_admin(frappe.session.user):
 		frappe.throw(
 			_("User {0} does not have permission to create identity for user {1}.").format(
 				frappe.bold(frappe.session.user), frappe.bold(user)
@@ -132,7 +136,7 @@ def _add_identity(
 			[
 				"Identity/set",
 				{
-					"accountId": get_jmap_client(user, ignore_permissions=True).primary_account_id,
+					"accountId": get_identity_service(user, ignore_permissions=True).primary_account_id,
 					"create": {
 						creation_id: {
 							"email": email,
@@ -149,7 +153,7 @@ def _add_identity(
 		],
 	}
 
-	backend = get_mail_backend_api("Mail Cluster", get_cluster_for_tenant(tenant))
+	backend = get_mail_backend_api()
 	response = backend.request("POST", "/jmap", json=payload)
 
 	title = _("Identity Creation Error")
@@ -167,10 +171,7 @@ def _add_identity(
 def has_permission_for_identity(user: str) -> bool:
 	"""Checks if the user has permission for the identity."""
 
-	tenant = get_tenant_for_user(user)
-	if not has_permission_for_user(user, raise_exception=False) and not is_tenant_admin(
-		tenant, frappe.session.user
-	):
+	if not has_permission_for_user(user, raise_exception=False) and not is_mail_admin(frappe.session.user):
 		frappe.throw(
 			_("User {0} does not have permission to view identities for user {1}.").format(
 				frappe.bold(frappe.session.user), frappe.bold(user)
@@ -211,8 +212,18 @@ def add_identity(
 	has_permission_for_user(user)
 
 	creation_id = str(uuid7())
-	client = get_jmap_client(user)
-	response = client.identity_create(creation_id, email, name, reply_to, bcc, text_signature, html_signature)
+	identity = {
+		"creation_id": creation_id,
+		"email": email,
+		"name": name,
+		"reply_to": reply_to,
+		"bcc": bcc,
+		"text_signature": text_signature,
+		"html_signature": html_signature,
+	}
+
+	service = get_identity_service(user)
+	response = service.create([identity])
 
 	title = _("Identity Creation Error")
 	if response.get("created"):
@@ -224,19 +235,20 @@ def add_identity(
 
 
 @frappe.whitelist()
-def get_identity(user: str, id: str) -> dict:
+def get_identity(user: str, id: str, raise_exception: bool = True) -> dict | None:
 	"""Returns identity details for the given name in the format 'user|id'."""
 
 	has_permission_for_identity(user)
 
-	client = get_jmap_client(user, ignore_permissions=True)
-	if identities := client.identity_get([id]):
+	service = get_identity_service(user)
+	if identities := service.get([id]):
 		return format_identity(user, identities[0])
 
-	frappe.throw(
-		_("Identity with ID {0} not found in user {1}.").format(frappe.bold(id), frappe.bold(user)),
-		title=_("Identity Not Found"),
-	)
+	if raise_exception:
+		frappe.throw(
+			_("Identity with ID {0} not found in user {1}.").format(frappe.bold(id), frappe.bold(user)),
+			title=_("Identity Not Found"),
+		)
 
 
 @frappe.whitelist()
@@ -253,8 +265,17 @@ def update_identity(
 
 	has_permission_for_user(user)
 
-	client = get_jmap_client(user)
-	response = client.identity_update(id, name, reply_to, bcc, text_signature, html_signature)
+	identity = {
+		"id": id,
+		"name": name,
+		"reply_to": reply_to,
+		"bcc": bcc,
+		"text_signature": text_signature,
+		"html_signature": html_signature,
+	}
+
+	service = get_identity_service(user)
+	response = service.update([identity])
 
 	if not response.get("updated"):
 		title = _("Identity Update Error")
@@ -270,8 +291,8 @@ def delete_identities(user: str, ids: list[str]) -> None:
 
 	has_permission_for_identity(user)
 
-	client = get_jmap_client(user, ignore_permissions=True)
-	response = client.identity_delete(ids)
+	service = get_identity_service(user, ignore_permissions=True)
+	response = service.delete(ids)
 
 	if response.get("notDestroyed"):
 		error_messages = []
@@ -288,15 +309,16 @@ def fetch_identities(user: str, page: int = 1, limit: int = 10) -> list:
 	"""Returns a list of identities for the given user."""
 
 	if not has_permission_for_user(user, raise_exception=False):
-		if not is_tenant_admin(get_tenant_for_user(user), frappe.session.user):
+		if not is_mail_admin(frappe.session.user):
 			frappe.throw(
 				_("User {0} does not have permission to view identities for user {1}.").format(
 					frappe.bold(frappe.session.user), frappe.bold(user)
 				)
 			)
 
-	client = get_jmap_client(user, ignore_permissions=True)
-	identities = client.identity_get()
+	service = get_identity_service(user, ignore_permissions=True)
+	identities = service.get()
+
 	formatted_identities = [format_identity(user, identity) for identity in identities]
 	frappe.cache.set_value(_get_total_cache_key(user), len(identities), expires_in_sec=600)
 

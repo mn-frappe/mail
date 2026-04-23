@@ -9,7 +9,7 @@
 					cy="70"
 					:r="RADIUS"
 					fill="none"
-					:stroke="activeTheme === 'dark' ? '#2B2B2B' : '#F3F3F3'"
+					:stroke="dataTheme === 'dark' ? '#2B2B2B' : '#F3F3F3'"
 					stroke-width="8"
 				/>
 				<!-- Used storage arc -->
@@ -18,7 +18,7 @@
 					cy="70"
 					:r="RADIUS"
 					fill="none"
-					:stroke="activeTheme === 'dark' ? '#D4D4D4' : '#383838'"
+					:stroke="dataTheme === 'dark' ? '#D4D4D4' : '#383838'"
 					stroke-width="8"
 					:stroke-dasharray="CIRCUMFERENCE"
 					:stroke-dashoffset="animate ? usedOffset : CIRCUMFERENCE"
@@ -70,8 +70,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useTheme } from '@/utils/composables'
 
 const { quota, usedQuota } = defineProps<{ quota: number; usedQuota: number }>()
-
-const { activeTheme } = useTheme()
+const { dataTheme } = useTheme()
 
 const animate = ref(false)
 

@@ -1,3 +1,4 @@
+import json
 from typing import Literal
 
 import frappe
@@ -6,12 +7,13 @@ from frappe.utils import cint, get_datetime, get_url, now_datetime
 from frappe.utils.data import sha256_hash
 
 from mail.api.admin import add_member
+from mail.api.mail import normalize_filter
 from mail.client.doctype.identity.identity import fetch_identities
 from mail.server.doctype.mail_account_request.mail_account_request import create_user
 from mail.utils import convert_html_to_text, user_context
-from mail.utils.cache import get_personal_signup_domains
+from mail.utils.cache import get_signup_domains
 from mail.utils.rate_limiter import dynamic_rate_limit
-from mail.utils.user import get_tenant_for_domain, get_user_tenant
+from mail.utils.user import has_user_settings, is_jmap_configured, is_mail_admin, is_system_manager
 from mail.utils.validation import is_email_assigned
 
 
@@ -26,7 +28,7 @@ def validate_email_assigned(email: str) -> None:
 
 @frappe.whitelist(allow_guest=True)
 @dynamic_rate_limit()
-def personal_signup(
+def signup(
 	username: str,
 	domain: str,
 	email: str,
@@ -34,34 +36,16 @@ def personal_signup(
 	first_name: str,
 	last_name: str | None = None,
 ) -> None:
-	"""Create a new Mail Account for personal signup"""
+	"""Create a new Mail Account for signup"""
 
-	if not frappe.db.get_single_value("Mail Settings", "allow_personal_signup"):
-		frappe.throw(_("Personal signup is disabled."))
+	if not frappe.db.get_single_value("Mail Settings", "allow_signup"):
+		frappe.throw(_("Signup is disabled."))
 
-	if domain not in get_personal_signup_domains():
-		frappe.throw(_("Domain {0} is not allowed for personal signup.").format(domain))
+	if domain not in get_signup_domains():
+		frappe.throw(_("Domain {0} is not allowed for signup.").format(domain))
 
 	with user_context("Administrator"):
-		tenant = get_tenant_for_domain(domain)
-		add_member(tenant, username, domain, "Mail User", False, email, first_name, last_name, password)
-
-
-@frappe.whitelist(allow_guest=True)
-@dynamic_rate_limit()
-def business_signup(email: str) -> str:
-	"""Create a new Mail Account Request for business signup"""
-
-	if not frappe.db.get_single_value("Mail Settings", "allow_business_signup"):
-		frappe.throw(_("Business signup is disabled."))
-
-	account_request = frappe.new_doc("Mail Account Request")
-	account_request.email = email
-	account_request.is_admin = 1
-	account_request.send_invite = 1
-	account_request.insert(ignore_permissions=True)
-
-	return account_request.name
+		add_member(username, domain, ["User"], False, email, first_name, last_name, password)
 
 
 @frappe.whitelist(allow_guest=True)
@@ -96,7 +80,7 @@ def get_account_request(request_key: str) -> dict | None:
 	if account_request := frappe.db.get_value(
 		"Mail Account Request",
 		{"request_key": request_key},
-		["email", "is_verified", "expires_at", "account"],
+		["backup_email", "is_verified", "expires_at", "account"],
 		as_dict=True,
 	):
 		is_expired = 0
@@ -120,9 +104,7 @@ def create_account(request_key: str, first_name: str, last_name: str, password: 
 	if account_request.account:
 		account_request.create_account(first_name, last_name, password)
 	else:
-		create_user(
-			account_request.email, first_name, last_name, password, account_request.email, ["Mail Admin"]
-		)
+		create_user(account_request.backup_email, first_name, last_name, password, ["Mail Admin"])
 
 
 @frappe.whitelist(allow_guest=True)
@@ -133,49 +115,60 @@ def get_user_info() -> dict | None:
 	if user == "Guest":
 		return None
 
-	user_dict = frappe.db.get_value(
-		"User",
-		user,
-		[
-			"name",
-			"email",
-			"enabled",
-			"user_image",
-			"full_name",
-			"first_name",
-			"last_name",
-			"user_type",
-			"username",
-			"api_key",
-			"jmap_default_outgoing_email",
-		],
-		as_dict=1,
-	)
-	user_roles = frappe.get_roles(user)
-	user_dict.tenant = get_user_tenant()
-	user_dict.is_mail_user = "Mail User" in user_roles and user != "Administrator"
-	user_dict.is_mail_admin = "Mail Admin" in user_roles
-	user_dict.is_system_manager = "System Manager" in user_roles or user == "Administrator"
+	if not has_user_settings(user):
+		user_settings = frappe.new_doc("User Settings")
+		user_settings.user = user
+		user_settings.insert(ignore_permissions=True)
 
-	if user_dict.tenant:
-		user_dict.tenant_name, tenant_owner = frappe.db.get_value(
-			"Mail Tenant", user_dict.tenant, ["tenant_name", "user"]
+	USER = frappe.qb.DocType("User")
+	USER_SETTINGS = frappe.qb.DocType("User Settings")
+
+	result = (
+		frappe.qb.from_(USER)
+		.join(USER_SETTINGS)
+		.on(USER.name == USER_SETTINGS.user)
+		.select(
+			USER.name,
+			USER.email,
+			USER.enabled,
+			USER.user_image,
+			USER.full_name,
+			USER.first_name,
+			USER.last_name,
+			USER.user_type,
+			USER.username,
+			USER.api_key,
+			USER_SETTINGS.default_outgoing_email,
+			USER_SETTINGS.color_scheme,
+			USER_SETTINGS.group_messages_by,
+			USER_SETTINGS.show_reading_pane,
+			USER_SETTINGS.name.as_("user_settings"),
 		)
-		user_dict.is_tenant_owner = tenant_owner == user
+		.where(USER.name == user)
+	).run(as_dict=True)
 
-	return user_dict
+	if not result:
+		return None
+
+	data = result[0]
+
+	data.is_mail_admin = is_mail_admin(user)
+	data.is_system_manager = is_system_manager(user)
+	data.is_jmap_configured = is_jmap_configured(user)
+
+	return data
 
 
-def get_backup_email(email: str) -> str:
+def get_backup_email(user: str) -> str:
 	"""Return backup email for a user or the user's email if backup doesn't exist"""
 
-	if backup_email := frappe.db.get_value("User", email, "backup_email"):
+	if backup_email := frappe.db.get_value("User Settings", {"user": user}, "backup_email"):
 		return backup_email
 
-	if frappe.db.exists("User", email):
-		return email
+	if frappe.db.exists("User", user):
+		return frappe.db.get_value("User", user, "email")
 
-	frappe.throw(_("User {0} does not exist.").format(frappe.bold(email)))
+	frappe.throw(_("User {0} does not exist.").format(frappe.bold(user)))
 
 
 def set_reset_password_key(email: str) -> str:
@@ -201,23 +194,24 @@ def censor_email(email: str) -> str:
 
 @frappe.whitelist(allow_guest=True)
 @dynamic_rate_limit()
-def send_reset_password_link(email: str) -> str:
+def send_reset_password_link(user: str) -> str:
 	"""Send reset password link to the user"""
 
-	user = get_backup_email(email)
-	key = set_reset_password_key(email)
+	email = get_backup_email(user)
+	key = set_reset_password_key(user)
 
 	frappe.sendmail(
-		recipients=user,
+		recipients=email,
 		subject=_("Reset Password"),
 		template="reset_password",
 		args={"link": get_url("/mail/reset-password/" + key)},
 		now=True,
 	)
 
-	if user == email:
-		return user
-	return censor_email(user)
+	if email == user:
+		return email
+
+	return censor_email(email)
 
 
 @frappe.whitelist(allow_guest=True)
@@ -229,20 +223,46 @@ def get_user_for_reset_password_key(key: str) -> str:
 
 
 @frappe.whitelist()
-def create_mail_data_exchange(
-	operation: Literal["Import", "Export"],
-	import_format: Literal["jmap", "mbox", "maildir", "maildir-nested"],
-	import_file: str,
-	export_archive_type: Literal[".zip", ".tgz", ".tar.gz"],
+def create_mail_import(
+	format: Literal["eml", "jmap", "mbox", "maildir", "maildir-nested"],
+	file: str,
+	mailbox: str | None = None,
+	seen: bool = False,
 ) -> None:
-	"""Creates mail data exchange"""
+	"""Creates mail exchange of operation import"""
 
-	doc = frappe.new_doc("Mail Data Exchange")
+	doc = frappe.new_doc("Mail Exchange")
 	doc.user = frappe.session.user
-	doc.operation = operation
-	doc.import_format = import_format
-	doc.import_file = import_file
-	doc.export_archive_type = export_archive_type
+	doc.operation = "Import"
+	doc.import_format = format
+	doc.import_file = file
+	if format in ["eml", "maildir"] and mailbox:
+		doc.import_metadata = json.dumps({"mailboxIds": {mailbox: True}, "keywords": {"$seen": seen}})
+	doc.insert()
+	doc.submit()
+
+
+@frappe.whitelist()
+def create_mail_export(
+	format: Literal["jmap", "mbox", "maildir", "maildir-nested"],
+	archive_type: Literal[".zip", ".tgz", ".tar.gz"],
+	sort: Literal["Received At (ASC)", "Received At (DESC)"],
+	limit: int | None = None,
+	filter: dict | None = None,
+) -> None:
+	"""Creates mail exchange of operation export"""
+
+	doc = frappe.new_doc("Mail Exchange")
+	doc.user = frappe.session.user
+	doc.operation = "Export"
+	doc.export_format = format
+	doc.export_archive_type = archive_type
+	doc.export_sort = sort
+	doc.export_limit = limit
+	if filter:
+		filter = {k: v for k, v in filter.items() if v}
+		if filter:
+			doc.export_filter = json.dumps(normalize_filter(filter))
 	doc.insert()
 	doc.submit()
 
@@ -285,6 +305,8 @@ def get_identities() -> list[dict]:
 
 @frappe.whitelist()
 def set_signature(identity: str, signature: str) -> None:
+	"""Set the email signature for an identity"""
+
 	doc = frappe.get_doc("Identity", identity)
 	doc.html_signature = signature
 	doc.text_signature = convert_html_to_text(signature)

@@ -27,7 +27,7 @@ import { useTheme } from '@/utils/composables'
 
 const { content } = defineProps<{ content: string }>()
 
-const { activeTheme } = useTheme()
+const { dataTheme } = useTheme()
 
 const isIframeReady = ref(false)
 
@@ -69,7 +69,6 @@ const srcdoc = computed(() => {
 			&middot;&middot;&middot;
 		</button>
 	`
-
 	const transformedContent = DOMPurify.sanitize(content, DOMPURIFY_CONFIG)
 		.replace(
 			/<div\s+([^>]*)\bclass="([^"]*)"\s*([^>]*)>([\s\S]*?)<\/div>/gi,
@@ -91,7 +90,8 @@ const srcdoc = computed(() => {
 		<html>
 		<head>
 			<meta name="viewport" content="width=device-width, initial-scale=1">
-			<meta name="color-scheme" content="${activeTheme.value}">
+			<meta name="color-scheme" content="${dataTheme.value}">
+			<meta charset="UTF-8">
 			<style>
 				body {
 					font-family: InterVar, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -130,6 +130,12 @@ const srcdoc = computed(() => {
 					overflow: hidden !important;
 				}
 
+				pre, code {
+					font-family: 'Courier New', Courier, monospace;
+					white-space: pre;
+					overflow-x: auto;
+				}
+
 				@media (max-width: 640px) {
                     /* Only override specific problematic patterns */
                     table[width="600"], table[width="600px"] {
@@ -162,10 +168,11 @@ const srcdoc = computed(() => {
 
 				// Forward link clicks to parent
 				document.addEventListener('click', (e) => {
-					if (e.target.tagName === 'A') {
+					const anchor = e.target.closest('a');
+					if (anchor) {
 						e.preventDefault();
-						if (e.target.getAttribute('href')?.trim()) {
-							window.open(e.target.href, '_blank');
+						if (anchor.getAttribute('href')?.trim()) {
+							window.open(anchor.href, '_blank');
 						}
 					}
 				});
@@ -176,7 +183,7 @@ const srcdoc = computed(() => {
 	`
 })
 
-const colors = computed(() => THEME_CONFIG[activeTheme.value])
+const colors = computed(() => THEME_CONFIG[dataTheme.value])
 
 const DOMPURIFY_CONFIG = {
 	ALLOWED_TAGS: [
@@ -214,6 +221,8 @@ const DOMPURIFY_CONFIG = {
 		'ul',
 		'ol',
 		'li',
+		'pre',
+		'code',
 	],
 	ALLOWED_ATTR: [
 		'style',
@@ -247,8 +256,8 @@ const DOMPURIFY_CONFIG = {
 	KEEP_CONTENT: true,
 	ALLOW_UNKNOWN_PROTOCOLS: false,
 	WHOLE_DOCUMENT: true,
-	ADD_TAGS: ['meta', 'style'],
-	ADD_ATTR: ['cellpadding', 'cellspacing', 'border', 'bgcolor', 'xmlns'],
+	ADD_TAGS: ['meta', 'style', 'pre', 'code'],
+	ADD_ATTR: ['cellpadding', 'cellspacing', 'border', 'bgcolor', 'xmlns', 'charset'],
 	REMOVE_EMPTY: false,
 }
 
@@ -284,7 +293,9 @@ const THEME_CONFIG = {
 						if (
 							trimmed.length > 0 &&
 							!hasBackground(child.parentElement) &&
-							child.parentElement.tagName !== 'A'
+							child.parentElement.tagName !== 'A' &&
+							child.parentElement.tagName !== 'PRE' &&
+							child.parentElement.tagName !== 'CODE'
 						) {
 							child.parentElement.style.setProperty('color', '#D4D4D4');
 						}

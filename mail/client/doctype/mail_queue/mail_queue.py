@@ -26,14 +26,17 @@ from frappe.utils import (
 	now_datetime,
 	random_string,
 	time_diff_in_seconds,
+	validate_email_address,
 )
 
-from mail import __version__
-from mail.jmap import get_identities, get_jmap_client
-from mail.utils.cache import get_tenant_for_user
+from mail.jmap import get_email_service, get_identities, get_jmap_connection
+from mail.jmap.models import EmailAddress, EmailAttachment, EmailCreateModel, EmailHeader, EmailRecipient
+from mail.jmap.services.mail.email import EmailService
+from mail.jmap.services.mail.mailbox import MailboxService
+from mail.utils import get_mail_config
 from mail.utils.dt import parsedate_to_datetime
-from mail.utils.user import has_role, is_administrator, is_tenant_bound_user
-from mail.utils.validation import has_permission_for_user, validate_email_address
+from mail.utils.user import is_administrator, is_local_user
+from mail.utils.validation import has_permission_for_user
 
 
 class MailQueue(Document):
@@ -348,19 +351,16 @@ class MailQueue(Document):
 	def validate_from_domain(self) -> None:
 		"""Validates the from domain."""
 
-		if not is_tenant_bound_user(self.user):
+		if not is_local_user(self.user):
 			return
 
-		tenant = get_tenant_for_user(self.user)
 		from_domain = self.from_email.split("@")[-1]
 
-		if not frappe.db.exists(
-			"Mail Principal Binding", {"tenant": tenant, "principal_name": from_domain, "is_verified": 1}
-		):
+		if not frappe.db.exists("Principal Settings", {"principal_name": from_domain, "is_verified": 1}):
 			frappe.throw(
 				_(
-					"The From email domain {0} is not available for tenant {1}. Please ensure that the domain is associated with the tenant and has been verified."
-				).format(frappe.bold(from_domain), frappe.bold(tenant))
+					"The domain {0} is not verified. Please verify the domain or use an email address with a verified domain."
+				).format(frappe.bold(from_domain))
 			)
 
 	def validate_destroy_after_submit(self) -> None:
@@ -370,9 +370,9 @@ class MailQueue(Document):
 			return
 
 		if self.newsletter:
-			if frappe.db.get_value("User", self.user, "jmap_destroy_newsletter_after_submit"):
+			if frappe.db.get_value("User Settings", {"user": self.user}, "destroy_newsletter_after_submit"):
 				self.destroy_after_submit = 1
-		elif frappe.db.get_value("User", self.user, "jmap_destroy_email_after_submit"):
+		elif frappe.db.get_value("User Settings", {"user": self.user}, "destroy_email_after_submit"):
 			self.destroy_after_submit = 1
 
 	def validate_delivery_mode(self) -> None:
@@ -441,8 +441,7 @@ class MailQueue(Document):
 			if not rcpt["type"] or not rcpt["email"]:
 				continue
 
-			if not validate_email_address(rcpt["email"], check_mx=False, verify=False):
-				frappe.throw(_("Invalid email address: {0}").format(frappe.bold(rcpt["email"])))
+			validate_email_address(rcpt["email"], throw=True)
 
 			recipients.append(
 				{
@@ -462,24 +461,32 @@ class MailQueue(Document):
 
 		user = self.user if frappe.session.user == "Administrator" else frappe.session.user
 
-		blob_ids = []
-		attachments = []
+		normalized = []
+		seen_blob_ids = set()
+
 		for a in json_loads(self.attachments, default=[]):
+			disposition = a["disposition"]
+			cid = a.get("cid", random_string(length=10))
+
 			if blob_id := a.get("blob_id"):
-				if blob_id not in blob_ids:
-					attachments.append(
-						{
-							"blob_id": blob_id,
-							"type": a["type"],
-							"size": a["size"],
-							"filename": a["filename"],
-							"disposition": a["disposition"],
-							"cid": a["cid"]
-							if a["disposition"] == "inline"
-							else a.get("cid", random_string(length=10)),
-						}
-					)
-					blob_ids.append(blob_id)
+				if blob_id in seen_blob_ids:
+					continue
+
+				if not a.get("type"):
+					frappe.throw(_("type is required for blob attachments."))
+
+				normalized.append(
+					{
+						"blob_id": blob_id,
+						"type": a["type"],
+						"size": a["size"],
+						"filename": a["filename"],
+						"disposition": disposition,
+						"cid": cid,
+					}
+				)
+				seen_blob_ids.add(blob_id)
+
 			elif file_url := a.get("file_url"):
 				if file_url.startswith("/private/files"):
 					MailQueue._get_file(file_url=file_url, user=user, check_permission=True)
@@ -490,20 +497,19 @@ class MailQueue(Document):
 						).format(file_url)
 					)
 
-				attachments.append(
+				normalized.append(
 					{
 						"file_url": file_url,
 						"filename": a.get("filename") or Path(file_url).name,
-						"disposition": a["disposition"],
-						"cid": a["cid"]
-						if a["disposition"] == "inline"
-						else a.get("cid", random_string(length=10)),
+						"disposition": disposition,
+						"cid": cid,
 					}
 				)
+
 			else:
 				frappe.throw(_("Either blob_id or file_url is required for attachments."))
 
-		self.attachments = json.dumps(attachments)
+		self.attachments = json.dumps(normalized)
 
 	def validate_message_id(self) -> None:
 		"""Validates the message ID."""
@@ -545,8 +551,8 @@ class MailQueue(Document):
 
 		if self.in_reply_to and not self.in_reply_to_id:
 			try:
-				client = get_jmap_client(self.user)
-				result = client.email_query({"header": ["Message-ID", self.in_reply_to]})
+				service = get_email_service(self.user)
+				result = service.query({"header": ["Message-ID", self.in_reply_to]})
 				if ids := result["ids"]:
 					self.in_reply_to_id = ids[0]
 			except Exception:
@@ -581,56 +587,83 @@ class MailQueue(Document):
 		kwargs = {}
 
 		try:
-			client = get_jmap_client(self.user)
-			draft_mailbox_id = client.get_mailbox_id_by_role(
+			connection = get_jmap_connection(self.user)
+			email_service = EmailService(self.user, connection)
+			mailbox_service = MailboxService(self.user, connection)
+
+			draft_mailbox_id = mailbox_service.get_mailbox_id_by_role(
 				"drafts", create_if_not_exists=True, raise_exception=True
 			)
-			sent_mailbox_id = client.get_mailbox_id_by_role(
+			sent_mailbox_id = mailbox_service.get_mailbox_id_by_role(
 				"sent", create_if_not_exists=True, raise_exception=True
 			)
 
-			headers = {}
-			reply_to = []
-			attachments = []
+			headers: list[EmailHeader] = []
+			reply_to: list[EmailAddress] = []
+			attachments: list[EmailAttachment] = []
 
 			if not self.raw_message:
-				headers = json_loads(self.headers, default={})
-				reply_to = json_loads(self.reply_to, default=[])
+				headers = [
+					EmailHeader(name=key, value=value)
+					for key, value in json_loads(self.headers, default={}).items()
+				]
+				reply_to = [
+					EmailAddress(name=r["display_name"], email=r["email"].lower())
+					for r in json_loads(self.reply_to, default=[])
+				]
 
+				_attachments = []
 				for a in json_loads(self.attachments, default=[]):
 					blob_id = a.get("blob_id")
 					if not blob_id:
 						file = MailQueue._get_file(file_url=a["file_url"], check_permission=False)
 						content = file.get_content()
 						content_type = guess_type(file.file_name)[0]
-						blob = client.upload_blob(content, content_type)
+						blob = email_service.upload_blob(content, content_type)
 						a.update({"type": blob["type"], "size": blob["size"], "blob_id": blob["blobId"]})
-					attachments.append(a)
+					_attachments.append(a)
 
-				kwargs["attachments"] = json.dumps(attachments)
+				kwargs["attachments"] = json.dumps(_attachments)
+				attachments = [
+					EmailAttachment(
+						name=a["filename"],
+						type=a["type"],
+						cid=a["cid"],
+						blob_id=a["blob_id"],
+						disposition=a["disposition"],
+					)
+					for a in _attachments
+				]
 
-			response = client.email_create(
-				self.name,
-				self.from_email,
-				json_loads(self.recipients),
-				self.from_name,
-				self.subject,
-				self.sent_at,
-				self.message_id,
-				reply_to,
-				self.in_reply_to,
-				headers,
-				self.text_body,
-				self.html_body,
-				attachments,
-				self.raw_message,
-				self.id,
-				bool(self.save_as_draft),
-				self._priority,
-				bool(self.destroy_after_submit),
-				self.forwarded_from_id,
-				self.in_reply_to_id,
+			recipients = [
+				EmailRecipient(type=r["type"].lower(), name=r["display_name"], email=r["email"].lower())
+				for r in json_loads(self.recipients)
+			]
+
+			email = EmailCreateModel(
+				creation_id=self.name,
+				from_email=self.from_email,
+				recipients=recipients,
+				from_name=self.from_name,
+				subject=self.subject,
+				sent_at=self.sent_at,
+				message_id=self.message_id,
+				reply_to=reply_to,
+				in_reply_to=self.in_reply_to,
+				headers=headers,
+				text_body=self.text_body,
+				html_body=self.html_body,
+				attachments=attachments,
+				raw_message=self.raw_message,
+				existing_id=self.id,
+				save_as_draft=(self.save_as_draft),
+				priority=self._priority,
+				destroy_after_submit=bool(self.destroy_after_submit),
+				forwarded_id=self.forwarded_from_id,
+				reply_to_id=self.in_reply_to_id,
 			)
+
+			response = email_service.create([email])
 
 			kwargs.update({"status": "Failed", "_response": json.dumps(response)})
 			if data := response["methodResponses"][0][1].get("created", {}).get(f"draft-{self.name}"):
@@ -780,8 +813,8 @@ def process_pending_emails(mails: list[str]) -> None:
 def enqueue_process_pending_emails(batch_size: int | None = None, max_batch_size: int | None = None) -> None:
 	"""Enqueue process pending emails."""
 
-	batch_size = batch_size or cint(frappe.conf.process_pending_emails_batch_size) or 2_500
-	max_batch_size = max_batch_size or cint(frappe.conf.process_pending_emails_max_batch_size) or 25_000
+	batch_size = batch_size or cint(get_mail_config("process_pending_emails_batch_size"))
+	max_batch_size = max_batch_size or cint(get_mail_config("process_pending_emails_max_batch_size"))
 
 	if batch_size > max_batch_size:
 		batch_size = max_batch_size
@@ -826,7 +859,7 @@ def enqueue_process_pending_emails(batch_size: int | None = None, max_batch_size
 			frappe.enqueue(
 				process_pending_emails,
 				queue="long",
-				timeout=cint(frappe.conf.process_pending_emails_timeout) or 1500,
+				timeout=cint(get_mail_config("process_pending_emails_timeout")),
 				job_name=f"process_pending_emails_{i}_{len(batch)}",
 				enqueue_after_commit=False,
 				mails=batch,
@@ -847,10 +880,8 @@ def get_permission_query_condition(user: str | None = None) -> str:
 
 	if is_administrator(user):
 		return ""
-	elif has_role(user, "Mail User"):
-		return f"(`tabMail Queue`.user = '{user}')"
-	else:
-		return "1=0"
+
+	return f"(`tabMail Queue`.user = '{user}')"
 
 
 def has_permission(doc: Document, ptype: str, user: str | None = None) -> bool:

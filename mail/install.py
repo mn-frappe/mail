@@ -12,8 +12,8 @@ from mail.utils import get_mail_app_path, get_stalwart_cli_path, get_stalwart_ve
 
 def after_install() -> None:
 	add_rate_limits()
-	create_default_tenant()
 	create_new_folder("Frappe Mail", "Home")
+	generate_jmap_push_keys()
 
 
 def after_migrate() -> None:
@@ -25,8 +25,7 @@ def add_rate_limits() -> None:
 
 	rate_limits = [
 		# mail.api.account
-		{"method_path": "mail.api.account.personal_signup", "limit": 5, "seconds": 60 * 60},
-		{"method_path": "mail.api.account.business_signup", "limit": 5, "seconds": 60 * 60},
+		{"method_path": "mail.api.account.signup", "limit": 5, "seconds": 60 * 60},
 		{"method_path": "mail.api.account.resend_otp", "limit": 5, "seconds": 60 * 60},
 		{"method_path": "mail.api.account.verify_otp", "limit": 5, "seconds": 60 * 60},
 		{"method_path": "mail.api.account.get_account_request", "limit": 5, "seconds": 60 * 60},
@@ -53,14 +52,12 @@ def add_rate_limits() -> None:
 		create_rate_limit(**rl)
 
 
-def create_default_tenant() -> None:
-	"""Create the default tenant."""
+def generate_jmap_push_keys() -> None:
+	"""Generates new JMAP push subscription encryption keys and saves them in Mail Settings."""
 
-	tenant = frappe.new_doc("Mail Tenant")
-	tenant.tenant_name = "Frappe Mail"
-	tenant.user = "Administrator"
-	tenant.allow_personal_signup = 1
-	tenant.insert(ignore_permissions=True)
+	settings = frappe.get_single("Mail Settings")
+	if not settings.jmap_push_p256dh or not settings.jmap_push_private_key or not settings.jmap_push_auth:
+		settings._generate_jmap_push_keys()
 
 
 def install_stalwart_cli() -> str:

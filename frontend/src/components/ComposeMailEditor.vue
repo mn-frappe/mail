@@ -4,6 +4,7 @@
 		editor-class="prose-sm max-w-none"
 		:extensions="[CustomImageExtension, CustomParagraphExtension]"
 		:content="mail.html_body.replaceAll('<div><br></div>', '<div></div>')"
+		:upload-function
 		class="flex flex-col max-sm:overflow-y-auto"
 		:class="{ 'pointer-events-none opacity-50': !show, 'sm:h-[75vh]': !isInThread }"
 		:style="isMobile && { height: editorHeight }"
@@ -52,7 +53,14 @@
 					</Dropdown>
 					<div class="flex flex-1 flex-col gap-2.5">
 						<div class="flex gap-2">
-							<span class="text-ink-gray-4 text-sm leading-7"> {{ __('To') }} </span>
+							<Tooltip :text="__('Select from contacts')">
+								<span
+									class="text-ink-gray-4 cursor-pointer text-sm leading-7 hover:underline"
+									@click="insertContacts('to')"
+								>
+									{{ __('To') }}
+								</span>
+							</Tooltip>
 							<MultiselectInputControl
 								ref="toInput"
 								v-model="mail.to"
@@ -80,9 +88,14 @@
 						</div>
 						<template v-if="showCcBcc">
 							<div class="flex gap-2">
-								<span class="text-ink-gray-4 text-sm leading-7">
-									{{ __('Cc') }}
-								</span>
+								<Tooltip :text="__('Select from contacts')">
+									<span
+										class="text-ink-gray-4 cursor-pointer text-sm leading-7 hover:underline"
+										@click="insertContacts('cc')"
+									>
+										{{ __('Cc') }}
+									</span>
+								</Tooltip>
 								<MultiselectInputControl
 									ref="ccInput"
 									v-model="mail.cc"
@@ -95,9 +108,14 @@
 								/>
 							</div>
 							<div class="flex gap-2">
-								<span class="text-ink-gray-4 text-sm leading-7">
-									{{ __('Bcc') }}
-								</span>
+								<Tooltip :text="__('Select from contacts')">
+									<span
+										class="text-ink-gray-4 cursor-pointer text-sm leading-7 hover:underline"
+										@click="insertContacts('bcc')"
+									>
+										{{ __('Bcc') }}
+									</span>
+								</Tooltip>
 								<MultiselectInputControl
 									v-model="mail.bcc"
 									class="flex-1 text-sm"
@@ -205,6 +223,11 @@
 			/>
 		</template>
 	</TextEditor>
+
+	<ContactsModal
+		v-model="showContactsModal"
+		@insert="(selections) => mail[insertContactsInto].push(...selections)"
+	/>
 </template>
 
 <script setup lang="ts">
@@ -238,12 +261,20 @@ import {
 	ImageExtension,
 	Progress,
 	TextEditor,
+	Tooltip,
 	createResource,
 	useFileUpload,
 } from 'frappe-ui'
 
 import { getAttachmentUrl } from '@/resources'
-import { formatBytes, isOverlayPresent, raiseToast, validateEmail } from '@/utils'
+import {
+	formatBytes,
+	isOverlayPresent,
+	processInlineImages,
+	raiseToast,
+	randomString,
+	validateEmail,
+} from '@/utils'
 import { useScreenSize, useVisualViewport } from '@/utils/composables'
 import { CustomParagraphExtension } from '@/utils/text-editor'
 import { userStore } from '@/stores/user'
@@ -251,6 +282,8 @@ import ComposeMailToolbar from '@/components/ComposeMailToolbar.vue'
 import MultiselectInputControl from '@/components/Controls/MultiselectInputControl.vue'
 
 import type { Attachment, ComposeMailData, File as FileDoc, Identity, UserResource } from '@/types'
+
+import ContactsModal from './Modals/ContactsModal.vue'
 
 const show = defineModel<boolean>()
 
@@ -279,6 +312,14 @@ const textEditor = useTemplateRef('textEditor')
 const toInput = useTemplateRef('toInput')
 const ccInput = useTemplateRef('ccInput')
 
+const showContactsModal = ref(false)
+const insertContactsInto = ref('')
+
+const insertContacts = (insertInto: string) => {
+	insertContactsInto.value = insertInto
+	showContactsModal.value = true
+}
+
 const showCcBcc = ref(!!mailDetails?.cc?.length || !!mailDetails?.bcc?.length)
 const toggleCcBcc = () => {
 	showCcBcc.value = !showCcBcc.value
@@ -301,7 +342,7 @@ const user = inject('$user') as UserResource
 const mail = reactive<ComposeMailData>({
 	name: mailDetails?.name || '',
 	id: mailDetails?.id || '',
-	from_email: mailDetails?.from_email || user.data.jmap_default_outgoing_email || user.data.name,
+	from_email: mailDetails?.from_email || user.data.default_outgoing_email || user.data.name,
 	to: mailDetails?.to || [],
 	cc: mailDetails?.cc || [],
 	bcc: mailDetails?.bcc || [],
@@ -404,8 +445,8 @@ const createMail = createResource({
 	url: 'mail.api.mail.create_mail',
 	makeParams: ({ save_as_draft }: { save_as_draft: boolean }) => ({
 		...mail,
+		...processInlineImages(mail),
 		from_name: getIdentity(mail.from_email!)._name,
-		html_body: mail.html_body! + mail.quoted_content,
 		save_as_draft,
 	}),
 	onSuccess: onMailUpdateSuccess,
@@ -416,8 +457,8 @@ const updateDraft = createResource({
 	url: 'mail.api.mail.update_draft_mail',
 	makeParams: ({ submit }: { submit: boolean }) => ({
 		...mail,
+		...processInlineImages(mail),
 		from_name: getIdentity(mail.from_email!)._name,
-		html_body: mail.html_body! + mail.quoted_content,
 		submit,
 	}),
 	onSuccess: onMailUpdateSuccess,
@@ -481,22 +522,21 @@ const isOnlySignature = computed(() => {
 })
 
 const isBodyEmpty = computed(() => {
-	let isEmpty = true
-	if (mail.html_body) {
-		const element = document.createElement('div')
-		element.innerHTML = mail.html_body
-		isEmpty =
-			!element.textContent?.trim() &&
-			Array.from(element.children).every((d) => !d.textContent?.trim())
-	}
+	if (!mail.html_body) return true
 
-	return isEmpty
+	const element = document.createElement('div')
+	element.innerHTML = mail.html_body
+
+	const hasText = element.textContent?.trim()
+	const hasMedia = element.querySelector('img, video, svg') !== null
+
+	return !hasText && !hasMedia
 })
 
 const isMailEmpty = computed(() => {
-	const isSubjectEmpty = !mail.subject.length
-	const isQuotedContentEmpty = !mail.quoted_content?.length
-	const isAttachmentsEmpty = !mail.attachments.length
+	const isSubjectEmpty = !mail.subject
+	const isQuotedContentEmpty = !mail.quoted_content
+	const isAttachmentsEmpty = !mail.attachments?.length
 
 	return (
 		isSubjectEmpty &&
@@ -538,29 +578,31 @@ const openAttachment = async (blob_id?: string, type?: string) => {
 
 const uploadFunction = async (file: File) => {
 	const fileUpload = useFileUpload()
-	const fileDoc = (await fileUpload.upload(file, {
-		private: true,
-		folder: 'Home/Frappe Mail',
-	})) as FileDoc
-	mail.attachments.push({
-		file_name: fileDoc.file_name,
-		file_url: fileDoc.file_url,
-		disposition: 'inline',
-	})
-	return { src: fileDoc.file_url }
+	return fileUpload.upload(file, { private: true, folder: 'Home/Frappe Mail' })
 }
 
 const CustomImageExtension = ImageExtension.extend({
-	name: 'customImage',
-	addOptions: () => ({ uploadFunction }),
-	addAttributes: () => ({
-		'data-cid': {
-			default: null,
-			parseHTML: (element) => element.getAttribute('data-cid'),
-			renderHTML: (attributes) =>
-				attributes['data-cid'] ? { 'data-cid': attributes['data-cid'] } : {},
-		},
-	}),
+	addAttributes() {
+		return {
+			...this.parent?.(),
+			'data-cid': {
+				default: null,
+				parseHTML: (element) => element.getAttribute('data-cid'),
+				renderHTML: (attributes) => {
+					const src = attributes.src || ''
+					if (
+						!attributes['data-cid'] &&
+						(src.startsWith('/files') || src.startsWith('/private/files'))
+					)
+						attributes['data-cid'] = randomString(10)
+					return { 'data-cid': attributes['data-cid'] }
+				},
+			},
+		}
+	},
+}).configure({
+	HTMLAttributes: { width: '600', style: 'max-width:100%; height:auto' },
+	uploadFunction,
 })
 
 const TYPE_ICON_MAP = {

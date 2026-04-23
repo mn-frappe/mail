@@ -1,9 +1,9 @@
 import frappe
-from frappe.apps import get_apps as get_permitted_apps
+from frappe.apps import get_apps
 from frappe.translate import get_all_translations
 from frappe.utils.caching import redis_cache
 
-from mail.utils.cache import get_personal_signup_domains
+from mail.utils.user import is_system_manager
 
 
 @frappe.whitelist(allow_guest=True)
@@ -11,16 +11,17 @@ def get_signup_settings() -> dict:
 	"""Returns client signup settings."""
 
 	return {
-		"allow_business_signup": frappe.db.get_single_value("Mail Settings", "allow_business_signup"),
-		"allow_personal_signup": frappe.db.get_single_value("Mail Settings", "allow_personal_signup"),
+		"allow_signup": frappe.db.get_single_value("Mail Settings", "allow_signup"),
 	}
 
 
 @frappe.whitelist(allow_guest=True)
 def get_signup_domains() -> list:
-	"""Returns personal signup domains."""
+	"""Returns signup domains."""
 
-	return get_personal_signup_domains()
+	from mail.utils.cache import get_signup_domains as _get_signup_domains
+
+	return _get_signup_domains()
 
 
 @frappe.whitelist(allow_guest=True)
@@ -48,16 +49,17 @@ def get_translations() -> dict:
 
 @frappe.whitelist()
 @redis_cache()
-def get_apps():
-	apps = get_permitted_apps()
-	app_list = [
-		{
-			"name": "frappe",
-			"logo": "/assets/mail/images/desk.png",
-			"title": "Desk",
-			"route": "/app",
-		}
-	]
-	app_list += [app for app in apps if app.get("name") != "mail"]
+def get_permitted_apps():
+	apps = get_apps()
+	if not is_system_manager(frappe.session.user):
+		return apps
 
-	return app_list
+	desk = {
+		"name": "frappe",
+		"logo": "/assets/mail/images/desk.png",
+		"title": "Desk",
+		"route": "/app",
+	}
+	apps.append(desk)
+
+	return apps

@@ -162,12 +162,12 @@ permission_query_conditions = {
 	"Mail Account Request": "mail.server.doctype.mail_account_request.mail_account_request.get_permission_query_condition",
 	"Mail Data Exchange": "mail.server.doctype.mail_data_exchange.mail_data_exchange.get_permission_query_condition",
 	"Mail Domain Request": "mail.server.doctype.mail_domain_request.mail_domain_request.get_permission_query_condition",
-	"Mail Principal Binding": "mail.server.doctype.mail_principal_binding.mail_principal_binding.get_permission_query_condition",
-	"Mail Tenant": "mail.server.doctype.mail_tenant.mail_tenant.get_permission_query_condition",
-	"Mail Tenant Member": "mail.server.doctype.mail_tenant_member.mail_tenant_member.get_permission_query_condition",
+	"Principal Settings": "mail.server.doctype.principal_settings.principal_settings.get_permission_query_condition",
 	# Client
 	"Mail Exchange": "mail.client.doctype.mail_exchange.mail_exchange.get_permission_query_condition",
 	"Mail Queue": "mail.client.doctype.mail_queue.mail_queue.get_permission_query_condition",
+	"Mailbox Settings": "mail.client.doctype.mailbox_settings.mailbox_settings.get_permission_query_condition",
+	"User Settings": "mail.client.doctype.user_settings.user_settings.get_permission_query_condition",
 }
 
 has_permission = {
@@ -175,19 +175,24 @@ has_permission = {
 	"Mail Account Request": "mail.server.doctype.mail_account_request.mail_account_request.has_permission",
 	"Mail Data Exchange": "mail.server.doctype.mail_data_exchange.mail_data_exchange.has_permission",
 	"Mail Domain Request": "mail.server.doctype.mail_domain_request.mail_domain_request.has_permission",
-	"Mail Principal": "mail.server.doctype.mail_principal.mail_principal.has_permission",
-	"Mail Principal Binding": "mail.server.doctype.mail_principal_binding.mail_principal_binding.has_permission",
-	"Mail Tenant": "mail.server.doctype.mail_tenant.mail_tenant.has_permission",
-	"Mail Tenant Member": "mail.server.doctype.mail_tenant_member.mail_tenant_member.has_permission",
+	"Principal": "mail.server.doctype.principal.principal.has_permission",
+	"Principal Settings": "mail.server.doctype.principal_settings.principal_settings.has_permission",
 	# Client
 	"Address Book": "mail.client.doctype.address_book.address_book.has_permission",
+	"Calendar": "mail.client.doctype.calendar.calendar.has_permission",
+	"Calendar Event": "mail.client.doctype.calendar_event.calendar_event.has_permission",
 	"Contact Card": "mail.client.doctype.contact_card.contact_card.has_permission",
+	"Event Notification": "mail.client.doctype.event_notification.event_notification.has_permission",
 	"Identity": "mail.client.doctype.identity.identity.has_permission",
 	"Mail Exchange": "mail.client.doctype.mail_exchange.mail_exchange.has_permission",
 	"Mail Queue": "mail.client.doctype.mail_queue.mail_queue.has_permission",
 	"Mailbox": "mail.client.doctype.mailbox.mailbox.has_permission",
+	"Mailbox Settings": "mail.client.doctype.mailbox_settings.mailbox_settings.has_permission",
+	"Participant Identity": "mail.client.doctype.participant_identity.participant_identity.has_permission",
 	"Push Subscription": "mail.client.doctype.push_subscription.push_subscription.has_permission",
 	"Quota": "mail.client.doctype.quota.quota.has_permission",
+	"Sieve Script": "mail.client.doctype.sieve_script.sieve_script.has_permission",
+	"User Settings": "mail.client.doctype.user_settings.user_settings.has_permission",
 	"Vacation Response": "mail.client.doctype.vacation_response.vacation_response.has_permission",
 }
 
@@ -210,7 +215,6 @@ website_route_rules = [
 doc_events = {
 	"User": {
 		"on_update": [
-			"mail.events.validate_jmap_settings",
 			"mail.events.update_account_password",
 		],
 	},
@@ -283,15 +287,16 @@ scheduler_events = {
 
 ignore_links_on_delete = [
 	# Server
-	"Mail Tenant Member",
-	"Mail Tenant",
-	"Mail Domain Request",
-	"Mail Data Exchange",
 	"Mail Account Request",
+	"Mail Data Exchange",
+	"Mail Domain Request",
 	# Client
+	"Mail Exchange",
 	"Mail Queue",
 	"Mail Signature",
 	"Mail Sync History",
+	"Mailbox Settings",
+	"User Settings",
 ]
 
 # Request Events
@@ -341,7 +346,7 @@ default_log_clearing_doctypes = {"Mail Queue": 3, "Spam Check Log": 7}
 fixtures = [
 	{
 		"dt": "Role",
-		"filters": [["role_name", "in", ["Mail Admin", "Mail User"]]],
+		"filters": [["role_name", "in", ["Mail Admin"]]],
 	},
 ]
 

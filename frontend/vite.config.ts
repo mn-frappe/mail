@@ -1,9 +1,12 @@
+import fs from 'fs'
 import path from 'path'
 
 import vue from '@vitejs/plugin-vue'
 import frappeui from 'frappe-ui/vite'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+
+const frappeUIPath = path.resolve(__dirname, '../frappe-ui/src/index.ts')
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -20,8 +23,6 @@ export default defineConfig(({ mode }) => ({
 					frappe: ['file'],
 					mail: [
 						'mail_message',
-						'mail_tenant',
-						'mail_tenant_member',
 						'mail_domain_request',
 						'mail_account_request',
 						'mail_contact',
@@ -30,6 +31,7 @@ export default defineConfig(({ mode }) => ({
 						'identity',
 						'mail_signature',
 						'vacation_response',
+						'sieve_script',
 					],
 				},
 			},
@@ -99,9 +101,13 @@ export default defineConfig(({ mode }) => ({
 		}),
 	],
 	resolve: {
-		alias: {
-			'@': path.resolve(__dirname, 'src'),
-		},
+		alias: [
+			{ find: '@', replacement: path.resolve(__dirname, 'src') },
+			...(fs.existsSync(frappeUIPath)
+				? [{ find: /^frappe-ui$/, replacement: frappeUIPath }]
+				: []),
+		],
+		dedupe: ['vue', 'prosemirror-state', 'prosemirror-view'],
 	},
 	optimizeDeps: {
 		include: [

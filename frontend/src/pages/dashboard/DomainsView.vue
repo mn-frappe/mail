@@ -53,7 +53,7 @@
 	<AddDomainModal v-model="showAddDomain" @reload-domains="domains.reload()" />
 </template>
 <script setup lang="ts">
-import { inject, ref } from 'vue'
+import { ref } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import {
 	Badge,
@@ -66,12 +66,13 @@ import {
 	ListRows,
 	ListView,
 	createResource,
+	usePageMeta,
 } from 'frappe-ui'
 
 import DashboardLayout from '@/components/DashboardLayout.vue'
 import AddDomainModal from '@/components/Modals/AddDomainModal.vue'
 
-const user = inject('$user')
+usePageMeta(() => ({ title: __('Domains') }))
 
 const showAddDomain = ref(false)
 const search = ref('')
@@ -84,10 +85,10 @@ const domains = createResource({
 		txt: search.value,
 		is_verified: status.value === 'Verified' ? 1 : status.value === 'Not Verified' ? 0 : null,
 	}),
-	cache: ['mailTenantDomains', user.data.tenant, search.value, status.value],
+	cache: ['mailDomains', search.value, status.value],
 })
 
-watchDebounced(() => search.value, domains.reload, { debounce: 500 })
+watchDebounced(() => search.value, domains.reload, { debounce: 300 })
 
 const LIST_COLUMNS = [
 	{ label: __('Domain'), key: 'name' },

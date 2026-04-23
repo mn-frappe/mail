@@ -24,19 +24,35 @@ ALLOWED_PATHS = [
 	"/api/method/frappe.core.doctype.user.user.test_password_strength",
 	"/api/method/frappe.core.doctype.user.user.update_password",
 	"/api/method/frappe.desk.desk_page.getpage",
+	"/api/method/frappe.push_notification.auth_webhook",
+	"/api/method/frappe.push_notification.subscribe",
+	"/api/method/frappe.push_notification.unsubscribe",
 	"/api/method/ping",
 	"/api/method/login",
 	"/api/method/logout",
 	"/api/method/upload_file",
-	"/api/method/mail.utils.user.get_user_tenant",
 	"/api/method/mail.utils.user.generate_user_keys",
+	"/api/method/mail.www.mail.get_context_for_dev",
+	"/api/method/notification_relay.api.get_config",
+	"/api/method/mail.client.doctype.address_book.address_book.add_address_book",
+	"/api/method/mail.client.doctype.contact_card.contact_card.add_contact_card",
+	"/api/method/mail.client.doctype.contact_card.contact_card.contact_card_add_to_address_book",
+	"/api/method/mail.client.doctype.contact_card.contact_card.contact_card_remove_from_address_book",
+	"/api/method/mail.client.doctype.contact_card.contact_card.delete_contact_cards",
+	"/api/method/mail.client.doctype.calendar_event.calendar_event.add_calendar_event",
+	"/api/method/mail.client.doctype.calendar_event.calendar_event.update_calendar_event",
+	"/api/method/mail.client.doctype.calendar_event.calendar_event.delete_calendar_events",
+	"/api/method/mail.client.doctype.calendar_event.calendar_event.update_calendar_event_instance",
+	"/api/method/mail.client.doctype.calendar_event.calendar_event.delete_calendar_event_instance",
 ]
 
 ALLOWED_WILDCARD_PATHS = [
 	"/api/method/mail.api.",
+	"/api/method/calendar_app.api.",
 	"/api/method/frappe.client.",
 	"/api/method/wiki.",
 	"/api/method/frappe.integrations.oauth2_logins.",
+	"/api/v2/document/",
 ]
 
 DENIED_PATHS = ["/printview", "/printpreview"]

@@ -2,6 +2,12 @@
 	<DashboardLayout v-if="list.originalDoc" :breadcrumbs="BREADCRUMBS">
 		<template #actions>
 			<Button
+				variant="ghost"
+				theme="red"
+				:label="__('Delete')"
+				@click="showDeleteList = true"
+			/>
+			<Button
 				variant="solid"
 				:label="__('Save')"
 				:loading="list.save.loading"
@@ -27,18 +33,18 @@
 						:label="__('Created On')"
 						:value="dayjs(listCreation.data).format('MMM D YYYY, h:mm A')"
 					/>
-					<InformationField :label="__('Organization')" :value="user.data.tenant_name" />
 				</DashboardCard>
-				<EmailListCard
+				<ListCard
 					:rows="list.doc.emails"
 					:title="__('Email Addresses')"
 					:column-label="__('Email Address')"
+					row="email"
 					class="h-[14.5rem]"
 					@add="showAddEmail = true"
 					@remove="
 						(selections) =>
 							(list.doc.emails = list.doc.emails.filter(
-								(e) => !selections.has(e.value),
+								(e) => !selections.has(e.idx),
 							))
 					"
 				/>
@@ -71,7 +77,7 @@
 								:columns="LIST_COLUMNS"
 								:rows="memberList"
 								:options="LIST_OPTIONS"
-								row-key="value"
+								row-key="member"
 								class="max-h-[50rem] min-h-72 flex-1 overflow-auto"
 							>
 								<ListHeader />
@@ -88,7 +94,7 @@
 													list.doc[
 														tabIndex ? 'external_members' : 'members'
 													] = memberList.filter(
-														(m) => !selections.has(m.value),
+														(m) => !selections.has(m.member),
 													)
 													unselectAll()
 												}
@@ -133,18 +139,19 @@
 	<AddEmailModal
 		v-model="showAddEmail"
 		:is-list="false"
-		@add-email="(value) => list.doc.emails.push({ value })"
+		@add-email="(value) => list.doc.emails.push({ email: value })"
 	/>
 	<AddMailingListInternalMembersModal
 		v-if="list?.doc"
 		v-model="showAddInternalMembers"
-		:current-members="list.doc.members.map((m) => m.value)"
+		:current-members="list.doc.members.map((m) => m.member)"
 		@add="(members) => addMembers(members)"
 	/>
 	<AddMailingListExternalMemberModal
 		v-model="showAddExternalMember"
 		@add="(members) => addMembers([members], true)"
 	/>
+	<Dialog v-model="showDeleteList" :options="DELETE_LIST_OPTIONS" />
 </template>
 
 <script setup lang="ts">
@@ -165,21 +172,23 @@ import {
 	Tabs,
 	createDocumentResource,
 	createResource,
+	usePageMeta,
 } from 'frappe-ui'
 
 import { raiseToast } from '@/utils'
 import DashboardCard from '@/components/DashboardCard.vue'
 import DashboardLayout from '@/components/DashboardLayout.vue'
-import EmailListCard from '@/components/EmailListCard.vue'
 import InformationField from '@/components/InformationField.vue'
+import ListCard from '@/components/ListCard.vue'
 import AddEmailModal from '@/components/Modals/AddEmailModal.vue'
 import AddMailingListExternalMemberModal from '@/components/Modals/AddMailingListExternalMemberModal.vue'
 import AddMailingListInternalMembersModal from '@/components/Modals/AddMailingListInternalMembersModal.vue'
 
 const { listName } = defineProps<{ listName: string }>()
 
+usePageMeta(() => ({ title: listName }))
+
 const router = useRouter()
-const user = inject('$user')
 const dayjs = inject('$dayjs')
 
 const tabIndex = ref(0)
@@ -187,12 +196,13 @@ const tabIndex = ref(0)
 const search = ref('')
 
 const showEditGeneral = ref(false)
+const showDeleteList = ref(false)
 const showAddEmail = ref(false)
 const showAddInternalMembers = ref(false)
 const showAddExternalMember = ref(false)
 
 const list = createDocumentResource({
-	doctype: 'Mail Principal',
+	doctype: 'Principal',
 	name: listName,
 	setValue: {
 		onSuccess: () => raiseToast(__('Mailing list updated.')),
@@ -207,9 +217,9 @@ const list = createDocumentResource({
 const listCreation = createResource({
 	url: 'frappe.client.get_value',
 	makeParams: () => ({
-		doctype: 'Mail Principal Binding',
+		doctype: 'Principal Settings',
 		fieldname: 'creation',
-		filters: { tenant: user.data.tenant, principal_name: listName, principal_type: 'List' },
+		filters: { principal_name: listName, principal_type: 'List' },
 		as_dict: false,
 	}),
 	auto: true,
@@ -218,12 +228,12 @@ const listCreation = createResource({
 
 const memberList = computed(() =>
 	(tabIndex.value ? list.doc.external_members : list.doc.members).filter((m) =>
-		m.value.toLowerCase().includes(search.value.toLowerCase()),
+		m.member.toLowerCase().includes(search.value.toLowerCase()),
 	),
 )
 
 const addMembers = (members: string[], external = false) => {
-	const membersObj = members.map((m) => ({ value: m }))
+	const membersObj = members.map((m) => ({ member: m }))
 	if (external) {
 		list.doc.external_members.push(...membersObj)
 		showAddExternalMember.value = false
@@ -233,7 +243,7 @@ const addMembers = (members: string[], external = false) => {
 	}
 }
 
-const LIST_COLUMNS = [{ label: __('Name'), key: 'value' }]
+const LIST_COLUMNS = [{ label: __('Name'), key: 'member' }]
 
 const ADD_OPTIONS = [
 	{
@@ -254,4 +264,25 @@ const BREADCRUMBS = [
 ]
 
 const LIST_OPTIONS = { showTooltip: false, emptyState: { description: __('No members found.') } }
+
+const deleteList = createResource({
+	url: 'mail.api.admin.delete_mailing_lists',
+	makeParams: () => ({ names: [listName] }),
+	onSuccess: () => {
+		raiseToast(__('Mailing list deleted.'))
+		router.push({ name: 'MailingLists' })
+	},
+	onError: (error) => {
+		showDeleteList.value = false
+		raiseToast(error.messages[0], 'error')
+	},
+})
+
+const DELETE_LIST_OPTIONS = {
+	title: __('Delete Mailing List'),
+	message: __(
+		'Are you sure you want to delete this mailing list? This action cannot be undone.',
+	),
+	actions: [{ label: __('Confirm'), variant: 'solid', onClick: deleteList.submit }],
+}
 </script>

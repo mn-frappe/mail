@@ -3,9 +3,6 @@ import { defineStore } from 'pinia'
 import { createResource } from 'frappe-ui'
 
 import router from '@/router'
-import { type GroupMessagesBy, useLayout } from '@/utils/composables'
-
-const { setShowReadingPane, setGroupMessagesBy } = useLayout()
 
 import type { UserResource } from '@/types'
 
@@ -15,24 +12,15 @@ export const userStore = defineStore('mail-users', () => {
 	const userResource: UserResource = createResource({
 		url: 'mail.api.account.get_user_info',
 		onSuccess: (data) => {
-			if (data?.is_mail_admin) {
-				domains.fetch()
-				tenantOwner.fetch(data.tenant)
-			}
+			if (data?.is_mail_admin) domains.fetch()
 
-			if (!data?.is_mail_user) return
+			if (!data?.is_jmap_configured) return
 
 			mailboxes.fetch()
+			addressBooks.fetch()
 			identities.fetch()
-			setShowReadingPane(
-				data.name,
-				localStorage.getItem(`user:${data.name}:showReadingPane`) === 'true',
-			)
-			setGroupMessagesBy(
-				data.name,
-				(localStorage.getItem(`user:${data.name}:groupMessagesBy`) as GroupMessagesBy) ||
-					'day',
-			)
+			sieveScripts.fetch()
+			blockedAddresses.fetch()
 		},
 		onError: (error) => {
 			if (error && error.exc_type === 'AuthenticationError') router.push('/login')
@@ -58,19 +46,24 @@ export const userStore = defineStore('mail-users', () => {
 		return ids
 	})
 
-	const identities = createResource({ url: 'mail.api.account.get_identities' })
+	const addressBooks = createResource({ url: 'mail.api.contacts.get_address_books' })
 
-	const tenantOwner = createResource({
-		url: 'frappe.client.get_value',
-		makeParams: (tenant: string) => ({
-			doctype: 'Mail Tenant',
-			fieldname: 'user',
-			filters: tenant,
-			as_dict: false,
-		}),
-	})
+	const identities = createResource({ url: 'mail.api.account.get_identities' })
 
 	const domains = createResource({ url: 'mail.api.admin.get_verified_domains' })
 
-	return { userResource, mailboxes, mailboxIds, identities, tenantOwner, domains }
+	const sieveScripts = createResource({ url: 'mail.api.sieve.get_sieve_scripts' })
+
+	const blockedAddresses = createResource({ url: 'mail.api.mail.get_blocked_addresses' })
+
+	return {
+		userResource,
+		mailboxes,
+		mailboxIds,
+		addressBooks,
+		identities,
+		domains,
+		sieveScripts,
+		blockedAddresses,
+	}
 })

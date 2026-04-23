@@ -1,5 +1,7 @@
 import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
 
+import { userStore } from '@/stores/user'
+
 export const useScreenSize = () => {
 	const size = reactive({ width: window.innerWidth, height: window.innerHeight })
 
@@ -24,49 +26,6 @@ export const useSidebar = () => {
 	const closeSidebar = () => (isSidebarOpen.value = false)
 
 	return { isSidebarOpen, openSidebar, closeSidebar }
-}
-
-export type Theme = 'light' | 'dark' | 'system'
-
-const currentTheme = ref<Theme>('light')
-
-export const useTheme = () => {
-	const getSystemTheme = (): 'light' | 'dark' =>
-		window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-
-	const setTheme = (theme: Theme) => {
-		currentTheme.value = theme
-		document.documentElement.setAttribute(
-			'data-theme',
-			theme === 'system' ? getSystemTheme() : theme,
-		)
-		localStorage.setItem('theme', theme)
-	}
-
-	const activeTheme = computed<'light' | 'dark'>(() =>
-		currentTheme.value === 'system' ? getSystemTheme() : currentTheme.value,
-	)
-
-	return { currentTheme, getSystemTheme, setTheme, activeTheme }
-}
-
-export type GroupMessagesBy = 'none' | 'day' | 'month'
-
-const showReadingPane = ref(false)
-const groupMessagesBy = ref<GroupMessagesBy>('day')
-
-export const useLayout = () => {
-	const setShowReadingPane = (user: string, show: boolean) => {
-		showReadingPane.value = show
-		localStorage.setItem(`user:${user}:showReadingPane`, String(show))
-	}
-
-	const setGroupMessagesBy = (user: string, groupBy: GroupMessagesBy) => {
-		groupMessagesBy.value = groupBy
-		localStorage.setItem(`user:${user}:groupMessagesBy`, groupBy)
-	}
-
-	return { showReadingPane, setShowReadingPane, groupMessagesBy, setGroupMessagesBy }
 }
 
 export const useTextEditorButtons = () => {
@@ -129,4 +88,20 @@ export const useUndo = () => {
 	}
 
 	return { setUndoAction, undo }
+}
+
+const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+const systemIsDark = ref(mediaQuery.matches)
+mediaQuery.addEventListener('change', () => (systemIsDark.value = mediaQuery.matches))
+
+export const useTheme = () => {
+	const { userResource } = userStore()
+
+	const dataTheme = computed(() => {
+		const colorScheme = userResource.data?.color_scheme || 'System Default'
+		if (colorScheme === 'System Default') return systemIsDark.value ? 'dark' : 'light'
+		return colorScheme === 'Dark Mode' ? 'dark' : 'light'
+	})
+
+	return { dataTheme }
 }

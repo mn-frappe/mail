@@ -6,6 +6,7 @@ import re
 from email.utils import formataddr
 from functools import cached_property
 from typing import Literal
+from urllib.parse import quote
 from uuid import uuid7
 
 import frappe
@@ -13,21 +14,29 @@ from bs4 import BeautifulSoup
 from frappe import _
 from frappe.model.document import Document
 from frappe.push_notification import PushNotification
-from frappe.utils import add_to_date, cint, escape_html, get_datetime, now, time_diff_in_seconds
+from frappe.utils import (
+	add_to_date,
+	cint,
+	escape_html,
+	get_datetime,
+	now,
+	random_string,
+	time_diff_in_seconds,
+)
 
 from mail.client.doctype.mail_queue.mail_queue import MailQueue
-from mail.jmap import get_jmap_client
+from mail.jmap import get_email_service, get_jmap_connection, get_thread_service
+from mail.jmap.services.mail.email import EmailService
+from mail.jmap.services.mail.mailbox import MailboxService
 from mail.utils import (
-	convert_html_to_text,
 	enqueue_job,
-	ensure_html,
-	ensure_text,
-	extract_latest_email_body,
+	get_mail_config,
+	get_push_logger,
 	parse_filters,
 	user_context,
 )
 from mail.utils.cache import get_user_emails
-from mail.utils.dt import parse_iso_datetime
+from mail.utils.dt import convert_to_utc, parse_iso_datetime, to_iso8601_z
 from mail.utils.email_parser import EmailParser
 from mail.utils.lock import acquire_lock, release_lock
 from mail.utils.user import get_sync_state, update_sync_state
@@ -185,6 +194,8 @@ class MailMessage(Document):
 	@staticmethod
 	def get_list(filters=None, page_length=20, **kwargs) -> list:
 		filters = parse_filters(filters)
+
+		id = filters.get("id")
 		user = filters.get("user") or frappe.session.user
 
 		if not user or user in ("Guest", "Administrator"):
@@ -195,8 +206,39 @@ class MailMessage(Document):
 			frappe.msgprint(_("You do not have permission to view messages for this user."), alert=True)
 			return []
 
-		limit = cint(kwargs.get("start")) + page_length
-		messages, total = fetch_messages(user, limit=limit)
+		if id:
+			messages = get_messages(user, ids=[id])
+			total = len(messages)
+		else:
+			filter = {
+				prop: value
+				for field, prop in {
+					"in_mailbox": "inMailbox",
+					"_from": "from",
+					"_to": "to",
+					"_cc": "cc",
+					"_bcc": "bcc",
+					"text": "text",
+					"body": "body",
+					"subject": "subject",
+					"min_size": "minSize",
+					"max_size": "maxSize",
+					"has_keyword": "hasKeyword",
+					"not_keyword": "notKeyword",
+				}.items()
+				if (value := filters.get(field))
+			}
+
+			if filters.get("has_attachment"):
+				filter["hasAttachment"] = True
+
+			for field in ("before", "after"):
+				if value := filters.get(field):
+					filter[field] = to_iso8601_z(convert_to_utc(value))
+
+			limit = cint(kwargs.get("start")) + page_length
+			messages, total = fetch_messages(user, filter, limit=limit)
+
 		frappe.cache.set_value(_get_total_cache_key(user), total, expires_in_sec=600)
 
 		fields_to_remove = [
@@ -480,19 +522,6 @@ class MailMessage(Document):
 			for a in self.attachments
 		]
 
-		for body_part in self._html_body + self._text_body:
-			if body_part.disposition == "inline":
-				attachments.append(
-					{
-						"blob_id": body_part.blob_id,
-						"type": body_part.type,
-						"size": body_part.size,
-						"filename": body_part.filename,
-						"disposition": body_part.disposition,
-						"cid": body_part.cid,
-					}
-				)
-
 		return MailQueue._create(
 			user=self.user,
 			from_name=self.from_name,
@@ -595,25 +624,14 @@ def fetch_messages(
 	has_permission_for_user(user)
 
 	messages = []
-	client = get_jmap_client(user)
 
-	while len(messages) < limit:
-		result = client.email_query(filter, position, limit, sort)
-		ids = result["ids"]
-		total = result["total"]
+	service = get_email_service(user)
+	data = service.query(filter, position, limit, sort)
 
-		if not ids:
-			break
+	ids = data.get("ids", [])
+	total = data.get("total", 0)
 
-		messages.extend(get_messages(user, ids=ids))
-
-		if len(messages) >= limit:
-			break
-
-		position += len(ids)
-
-		if position >= total:
-			break
+	messages.extend(get_messages(user, ids=ids))
 
 	return messages[:limit], total
 
@@ -623,8 +641,8 @@ def fetch_threads(user: str, filter: dict | None = None, position: int = 0, limi
 
 	has_permission_for_user(user)
 
-	client = get_jmap_client(user)
-	ids = client.thread_query(filter, position, limit, fetch_all=False)
+	service = get_email_service(user)
+	ids = service.query_thread(filter, position, limit, fetch_all=False)
 	messages = get_messages(user, ids=ids)
 
 	return messages
@@ -635,8 +653,8 @@ def fetch_thread(user: str, thread_id: str) -> list[dict]:
 
 	has_permission_for_user(user)
 
-	client = get_jmap_client(user)
-	result = client.thread_get([thread_id])
+	service = get_thread_service(user)
+	result = service.get([thread_id])
 	ids = result.get(thread_id, [])
 	messages = get_messages(user, ids=ids)
 
@@ -686,10 +704,10 @@ def get_messages(user: str, ids: list[str]) -> list[dict]:
 			ids_to_fetch.append(id)
 
 	if ids_to_fetch:
-		client = get_jmap_client(user)
-		emails, _state = client.email_get(ids_to_fetch)
+		service = get_email_service(user)
+		emails = service.get(ids_to_fetch)
 
-		mailbox_map = {mb["id"]: mb["_name"] for mb in client.mailboxes}
+		mailbox_map = {mb["id"]: mb["name"] for mb in service.mailboxes}
 
 		for email in emails:
 			message = format_message(user, mailbox_map, email)
@@ -708,14 +726,15 @@ def get_message_ids(user: str, thread_ids: list[str], mailbox_id: str | list[str
 	has_permission_for_user(user)
 
 	try:
-		client = get_jmap_client(user)
-		result = client.thread_get(thread_ids)
+		thread_service = get_thread_service(user)
+		result = thread_service.get(thread_ids)
 		ids = [id for _thread_id, ids in result.items() for id in ids]
 
 		if not mailbox_id:
 			return ids
 
-		emails, _state = client.email_get(ids, properties=["id", "mailboxIds"])
+		email_service = get_email_service(user)
+		emails = email_service.get(ids, properties=["id", "mailboxIds"])
 		if isinstance(mailbox_id, str):
 			return [email["id"] for email in emails if mailbox_id in email["mailboxIds"]]
 		else:
@@ -735,8 +754,8 @@ def delete_messages(user: str, ids: list[str]) -> None:
 	has_permission_for_user(user)
 
 	try:
-		client = get_jmap_client(user)
-		client.email_delete(ids)
+		service = get_email_service(user)
+		service.delete(ids)
 		_remove_messages_from_cache(user, ids)
 	except Exception:
 		frappe.log_error(
@@ -755,18 +774,16 @@ def empty_mailbox(user: str, mailbox_id: str) -> None:
 	has_permission_for_user(user)
 
 	try:
-		client = get_jmap_client(user)
+		service = get_email_service(user)
 
 		while True:
-			result = client.email_query(
-				{"inMailbox": mailbox_id}, position=0, limit=client.max_objects_in_get
-			)
+			result = service.query({"inMailbox": mailbox_id}, position=0, limit=service.max_objects_in_get)
 
 			ids = result["ids"]
 			if not ids:
 				break
 
-			client.email_delete(ids)
+			service.delete(ids)
 			_remove_messages_from_cache(user, ids)
 	except Exception:
 		frappe.log_error(
@@ -785,8 +802,9 @@ def move_messages(user: str, ids: list[str], mailbox_id: str) -> None:
 	has_permission_for_user(user)
 
 	try:
-		client = get_jmap_client(user)
-		client.email_update(ids, mailbox_id)
+		emails = [{"id": id, "mailbox_ids": {mailbox_id: True}} for id in ids]
+		service = get_email_service(user)
+		service.update(emails)
 		_remove_messages_from_cache(user, ids)
 	except Exception:
 		frappe.log_error(
@@ -805,8 +823,9 @@ def set_seen_status(user: str, ids: list[str], seen: bool = True) -> None:
 	has_permission_for_user(user)
 
 	try:
-		client = get_jmap_client(user)
-		client.email_update(ids, keywords={"$seen": bool(seen)})
+		emails = [{"id": id, "keywords": {"$seen": seen}} for id in ids]
+		service = get_email_service(user)
+		service.update(emails)
 
 		for id in ids:
 			if message := _get_message_from_cache(user, id):
@@ -834,8 +853,9 @@ def set_flagged_status(user: str, ids: list[str], flagged: bool = True) -> None:
 	has_permission_for_user(user)
 
 	try:
-		client = get_jmap_client(user)
-		client.email_update(ids, keywords={"$flagged": bool(flagged)})
+		emails = [{"id": id, "keywords": {"$flagged": flagged}} for id in ids]
+		service = get_email_service(user)
+		service.update(emails)
 
 		for id in ids:
 			if message := _get_message_from_cache(user, id):
@@ -863,11 +883,19 @@ def set_spam_status(user: str, ids: list[str], spam: bool = True) -> None:
 	has_permission_for_user(user)
 
 	try:
-		client = get_jmap_client(user)
-		mailbox_id = client.get_mailbox_id_by_role(
+		connection = get_jmap_connection(user)
+		email_service = EmailService(user, connection)
+		mailbox_service = MailboxService(user, connection)
+
+		mailbox_id = mailbox_service.get_mailbox_id_by_role(
 			"junk" if spam else "inbox", create_if_not_exists=True, raise_exception=True
 		)
-		client.email_update(ids, mailbox_id, {"$junk": spam, "$notjunk": not spam})
+		emails = [
+			{"id": id, "mailbox_ids": {mailbox_id: True}, "keywords": {"$junk": spam, "$notjunk": not spam}}
+			for id in ids
+		]
+		email_service.update(emails)
+
 		_remove_messages_from_cache(user, ids)
 	except Exception:
 		frappe.log_error(
@@ -906,8 +934,8 @@ def fetch_blobs(user: str, blobs: list[str] | list[tuple[str, str | None]]) -> d
 		return result
 
 	try:
-		client = get_jmap_client(user)
-		fetched_blobs = client.download_blobs_concurrently(blobs_to_fetch)
+		service = get_email_service(user)
+		fetched_blobs = service.download_blobs_concurrently(blobs_to_fetch)
 
 		for blob_id, content in fetched_blobs.items():
 			_store_blob_in_cache(user, blob_id, content)
@@ -925,11 +953,27 @@ def fetch_blobs(user: str, blobs: list[str] | list[tuple[str, str | None]]) -> d
 def format_message(user: str, mailbox_map: dict, message: dict) -> dict:
 	"""Returns a formatted message dictionary for the provided message data."""
 
+	def convert_img_src_from_cid_to_url(html_body: str, cid: str, url: str) -> str:
+		"""Convert img src from cid to URL in the HTML body."""
+
+		soup = BeautifulSoup(html_body, "html.parser")
+		for img in soup.find_all("img", src=f"cid:{cid}"):
+			img["data-cid"] = cid
+			img["src"] = url
+
+		return str(soup)
+
+	# Ref: https://github.com/stalwartlabs/stalwart/discussions/2891
+	try:
+		received_at = parse_iso_datetime(message["receivedAt"])
+	except Exception:
+		message["receivedAt"] = message["sentAt"] or to_iso8601_z(get_datetime())
+		received_at = parse_iso_datetime(message["receivedAt"])
+
 	if not message["sentAt"]:
 		message["sentAt"] = message["receivedAt"]
 
 	sent_at = parse_iso_datetime(message["sentAt"])
-	received_at = parse_iso_datetime(message["receivedAt"])
 	formatted_message = {
 		"user": user,
 		"sent_at": sent_at,
@@ -972,18 +1016,7 @@ def format_message(user: str, mailbox_map: dict, message: dict) -> dict:
 			if message.get(key)
 			else None
 		)
-
-		if value:
-			value = ensure_html(value) if key == "htmlBody" else ensure_text(value)
-
 		formatted_message[field] = value
-
-	if preview_html := extract_latest_email_body(formatted_message["html_body"]):
-		if preview_text := convert_html_to_text(preview_html)[:196]:
-			if len(preview_text) == 196 and not preview_text.endswith(" "):
-				preview_text += "...."
-
-			formatted_message["preview"] = preview_text
 
 	formatted_message["mailboxes"] = []
 	for mailbox_id, value in message["mailboxIds"].items():
@@ -1018,11 +1051,25 @@ def format_message(user: str, mailbox_map: dict, message: dict) -> dict:
 					"type": p["type"],
 					"charset": p["charset"],
 					"disposition": p["disposition"],
-					"cid": p["cid"],
+					"cid": p["cid"] or random_string(10),
 					"language": str(p["language"]),
 					"location": p["location"],
 				}
 			)
+
+	for attachment in formatted_message["attachments"]:
+		if blob_id := attachment["blob_id"]:
+			params = f"user={user}&blob_id={blob_id}"
+			if filename := attachment["filename"]:
+				params += f"&filename={quote(filename)}"
+			attachment["url"] = f"/api/method/mail.api.mail.get_attachment?{params}"
+
+			if attachment["disposition"] == "inline" and attachment["cid"] and formatted_message["html_body"]:
+				formatted_message["html_body"] = convert_img_src_from_cid_to_url(
+					formatted_message["html_body"],
+					attachment["cid"],
+					attachment["url"],
+				)
 
 	return formatted_message
 
@@ -1057,9 +1104,9 @@ def _store_message_in_cache(user: str, id: str, message: dict) -> None:
 
 	cache_key = _get_message_cache_key(user, id)
 	list_key = f"jmap:message:{user}:ids"
-	msg_bucket_size = cint(frappe.conf.msg_bucket_size) or 5000
+	msg_bucket_size = cint(get_mail_config("msg_bucket_size"))
 
-	msg_cache_ttl = cint(frappe.conf.msg_cache_ttl) or 2 * 24 * 60 * 60  # 2 days
+	msg_cache_ttl = cint(get_mail_config("msg_cache_ttl"))
 	frappe.cache.set_value(cache_key, message, expires_in_sec=msg_cache_ttl)
 	frappe.cache.lpush(list_key, id)
 
@@ -1098,8 +1145,8 @@ def _store_blob_in_cache(user: str, blob_id: str, content: bytes) -> None:
 	cache_key = _get_blob_cache_key(user, blob_id)
 	list_key = f"jmap:blob:{user}:blob_ids"
 
-	blob_cache_ttl = cint(frappe.conf.blob_cache_ttl) or 12 * 60 * 60  # 12 hours
-	blob_bucket_size = cint(frappe.conf.blob_bucket_size) or 1000
+	blob_bucket_size = cint(get_mail_config("blob_bucket_size"))
+	blob_cache_ttl = cint(get_mail_config("blob_cache_ttl"))
 
 	frappe.cache.set_value(cache_key, content, expires_in_sec=blob_cache_ttl)
 	frappe.cache.lpush(list_key, blob_id)
@@ -1111,117 +1158,210 @@ def _store_blob_in_cache(user: str, blob_id: str, content: bytes) -> None:
 			frappe.cache.delete_key(_get_blob_cache_key(user, oldest_id))
 
 
-def fetch_changes(user: str, email_state: str | None = None) -> None:
+def fetch_changes(user: str, email_state: str | None = None, ctx: dict | None = None) -> None:
 	"""Fetch changes from the server and remove MailMessage documents from the cache."""
+
+	ctx = ctx or {}
+
+	logger = get_push_logger()
 
 	current_state = get_sync_state(user, type="email")
 
+	ctx["current_state"] = current_state
+	ctx["email_state"] = email_state
+
 	if not current_state:
+		logger.info({**ctx, "event": "initializing-email-sync-state"})
 		return update_sync_state(user, type="email", state=email_state)
+
 	elif email_state == current_state:
+		logger.info({**ctx, "event": "email-state-unchanged"})
 		return
 
 	try:
-		client = get_jmap_client(user)
-		result = client.email_changes(current_state)
+		logger.info({**ctx, "event": "fetching-changes-from-server"})
+
+		connection = get_jmap_connection(user)
+		email_service = EmailService(user, connection)
+		mailbox_service = MailboxService(user, connection)
+
+		result = email_service.changes(current_state)
 
 		if created_ids := result["created"]:
+			logger.info({**ctx, "event": "new-messages-created", "count": len(created_ids)})
+
 			if messages := get_messages(user, ids=created_ids):
-				inbox_id = client.get_mailbox_id_by_role(
-					"inbox", create_if_not_exists=True, raise_exception=True
-				)
+				subscribed_mailboxes = set([m["id"] for m in mailbox_service.mailboxes if m["isSubscribed"]])
+				logger.debug({**ctx, "subscribed_mailboxes": subscribed_mailboxes})
 
-				mailboxes = set()
+				disabled_mailboxes = set(
+					frappe.db.get_all(
+						"Mailbox Settings", {"user": user, "disable_push_notification": 1}, pluck="mailbox_id"
+					)
+				) | {
+					m["id"]
+					for m in mailbox_service.mailboxes
+					if m["role"] in ["sent", "drafts", "junk", "trash"]
+				}
+				logger.debug({**ctx, "disabled_mailboxes_for_notification": disabled_mailboxes})
+
 				notify_candidates = []
-				for message in messages:
-					if not message["draft"] and not message["seen"]:
-						for mailbox in message["mailboxes"]:
-							mailboxes.add(mailbox["mailbox_id"])
-							if mailbox["mailbox_id"] == inbox_id:
-								notify_candidates.append(message)
+				mailboxes_to_reload = set()
 
-				max_push_notifications = cint(frappe.conf.max_push_notifications) or 5
+				for message in messages:
+					if message["draft"] or message["seen"]:
+						continue
+
+					mailbox_id = None
+					is_candidate = False
+
+					for mailbox in message["mailboxes"]:
+						if mailbox["mailbox_id"] not in subscribed_mailboxes:
+							continue
+
+						mailboxes_to_reload.add(mailbox["mailbox_id"])
+
+						if not is_candidate and mailbox["mailbox_id"] not in disabled_mailboxes:
+							mailbox_id = mailbox["mailbox_id"]
+							is_candidate = True
+
+					if is_candidate:
+						notify_candidates.append((mailbox_id, message))
+
+				logger.debug({**ctx, "notify_candidates_count": len(notify_candidates)})
+
+				max_push_notifications = cint(get_mail_config("max_push_notifications"))
 				recent_messages = notify_candidates[:max_push_notifications]
+
+				logger.debug({**ctx, "recent_notify_candidates_count": len(recent_messages)})
+
 				pn = PushNotification("mail")
+
 				if pn.is_enabled():
+					logger.info({**ctx, "event": "sending-push-notifications", "count": len(recent_messages)})
+
 					url = frappe.utils.get_url()
-					for message in recent_messages:
+					for mailbox_id, message in recent_messages:
 						pn.send_notification_to_user(
 							user,
 							message["from_name"] or message["from_email"],
 							message["subject"] or _("[No subject]"),
-							f"{url}/mail/mailbox/{inbox_id}/{message['thread_id']}",
+							f"{url}/mail/mailbox/{mailbox_id}/{message['thread_id']}",
 							f"{url}/assets/mail/frontend/manifest/manifest-icon-192.maskable.png",
 						)
+				else:
+					logger.info({**ctx, "event": "push-notifications-disabled"})
 
-				if mailboxes:
-					frappe.publish_realtime("new_mail_created", list(mailboxes), user=user)
+				if mailboxes_to_reload:
+					frappe.publish_realtime("new_mail_created", list(mailboxes_to_reload), user=user)
 
 		if updated_ids := result["updated"]:
+			logger.info({**ctx, "event": "messages-updated", "count": len(updated_ids)})
 			_remove_messages_from_cache(user, updated_ids)
 
 		if destroyed_ids := result["destroyed"]:
+			logger.info({**ctx, "event": "messages-deleted", "count": len(destroyed_ids)})
 			_remove_messages_from_cache(user, destroyed_ids)
 
 		new_state = result["newState"]
+
+		ctx["new_state"] = new_state
+		logger.info({**ctx, "event": "updating-email-sync-state"})
+
 		update_sync_state(user, type="email", state=new_state)
 
 		if result["hasMoreChanges"]:
-			fetch_changes(user)
+			logger.info({**ctx, "event": "more-changes-to-fetch"})
+			ctx.pop("current_state", None)
+			ctx.pop("email_state", None)
+			ctx.pop("new_state", None)
+
+			fetch_changes(user, ctx=ctx)
+
 	except Exception:
+		logger.error({**ctx, "event": "fetch-changes-failed"})
 		frappe.log_error(
 			title=_("Failed to fetch changes"),
 			message=frappe.get_traceback(with_context=True),
 		)
 
 
-def locked_fetch_changes(user: str, email_state: str | None, lock_id: str) -> None:
+def locked_fetch_changes(user: str, email_state: str | None, lock_id: str, ctx: dict | None = None) -> None:
 	"""Fetch changes for the specified user with a lock to prevent concurrent execution."""
 
+	ctx = ctx or {}
+
+	logger = get_push_logger()
+
 	try:
-		fetch_changes(user, email_state)
+		logger.info({**ctx, "event": "starting-fetch-changes"})
+		fetch_changes(user, email_state, ctx=ctx)
 	finally:
+		logger.info({**ctx, "event": "releasing-fetch-changes-lock"})
 		release_lock(f"fetch_changes:{user}", lock_id)
 
 
-def enqueue_fetch_changes(user: str, email_state: str | None = None) -> None:
+def enqueue_fetch_changes(user: str, email_state: str | None = None, ctx: dict | None = None) -> None:
 	"""Enqueue the fetch_changes job for the specified user."""
 
+	ctx = ctx or {}
+
+	logger = get_push_logger()
+
+	logger.info({**ctx, "event": "enqueueing-fetch-changes"})
+
 	lockname = f"fetch_changes:{user}"
-	fetch_lock_timeout = cint(frappe.conf.fetch_lock_timeout) or 300
+	fetch_lock_timeout = cint(get_mail_config("fetch_lock_timeout"))
 	identifier = acquire_lock(lockname, acquire_timeout=0, lock_timeout=fetch_lock_timeout)
 
 	if not identifier:
+		logger.info({**ctx, "event": "fetch-changes-lock-not-acquired"})
 		return
 
+	ctx["lock_id"] = identifier
+
 	with user_context("Administrator"):
+		logger.debug({**ctx, "event": "fetch-changes-lock-acquired"})
 		enqueue_job(
 			locked_fetch_changes,
 			user=user,
 			email_state=email_state,
 			lock_id=identifier,
+			ctx=ctx,
 			queue="short",
 			enqueue_after_commit=True,
 		)
 
 
 def schedule_fetch_changes() -> None:
-	"""Scheduled job to fetch changes for users that haven't been synced in the last 3 hours."""
+	"""Schedule fetch_changes for users who have email accounts configured and haven't had their email state updated in the last 3 hours."""
 
 	USER = frappe.qb.DocType("User")
+	USER_SETTINGS = frappe.qb.DocType("User Settings")
+
 	users = (
 		frappe.qb.from_(USER)
+		.join(USER_SETTINGS)
+		.on(USER.name == USER_SETTINGS.user)
 		.select(USER.name)
 		.where(
 			(USER.enabled == 1)
-			& (USER.jmap_username.isnotnull())
+			& (USER_SETTINGS.username.isnotnull())
+			& (USER_SETTINGS.skip_schedule_fetch_changes == 0)
 			& (
-				USER.jmap_email_state_last_update.isnull()
-				| (USER.jmap_email_state_last_update < get_datetime(add_to_date(now(), hours=-3)))
+				USER_SETTINGS.email_state_last_update.isnull()
+				| (USER_SETTINGS.email_state_last_update < get_datetime(add_to_date(now(), hours=-3)))
 			)
 		)
 	).run(pluck="user")
 
 	if users:
-		for user in users:
-			enqueue_fetch_changes(user)
+		req_id = random_string(10)
+		ctx = {"req_id": req_id}
+		logger = get_push_logger()
+
+		logger.info({**ctx, "event": "scheduling-fetch-changes", "user_count": len(users)})
+
+		for idx, user in enumerate(users, start=1):
+			ctx.update({"req_id": f"{req_id}-{idx}", "user": user})
+			enqueue_fetch_changes(user, ctx=ctx)
