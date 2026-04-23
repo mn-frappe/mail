@@ -8,8 +8,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
-from mail.backend import get_mail_backend_api
-from mail.jmap.connection import raise_for_status
+from mail.backend_adapter import get_management_backend_adapter
 from mail.utils import flatten_dict, password_or_none
 
 LOCAL_KEYS = [
@@ -128,11 +127,11 @@ class ServerConfig(Document):
 				"assert_empty": False,
 			}
 		]
-		backend_api = get_mail_backend_api("Mail Server", self.server)
-		response = backend_api.request("POST", "/api/settings", data=json.dumps(data))
-		raise_for_status(response)
+		backend_api = get_management_backend_adapter()
+		response = backend_api.settings_patch(data)
+		response_json = response.data or {}
 
-		if response_json := response.json():
+		if response_json:
 			if response_json.get("error"):
 				frappe.throw(
 					title=_("Failed to update configuration"), msg=json.dumps(response_json, indent=4)

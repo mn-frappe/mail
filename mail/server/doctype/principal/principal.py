@@ -9,7 +9,7 @@ from frappe import _, unscrub
 from frappe.model.document import Document
 from frappe.utils import cint, today, validate_email_address
 
-from mail.backend import MailBackendAPI, get_mail_backend_api
+from mail.backend_adapter import ManagementBackendAdapter, get_management_backend_adapter
 from mail.client.doctype.identity.identity import _add_identity as add_identity
 from mail.jmap import invalidate_jmap_cache
 from mail.server.doctype.principal_settings.principal_settings import (
@@ -45,11 +45,6 @@ from mail.utils.validation import (
 	validate_max_lists,
 	validate_wildcard_email,
 )
-
-RELOAD_ENDPOINT = "/api/reload"
-SETTINGS_ENDPOINT = "/api/settings"
-PRINCIPAL_ENDPOINT = "/api/principal"
-DNS_RECORDS_ENDPOINT = "/api/dns/records"
 
 TYPE_MAP = {
 	"apiKey": "API Key",
@@ -274,7 +269,7 @@ class Principal(Document):
 		if self.type != "Domain":
 			frappe.throw(_("DKIM Keys can only be rotated for Domain principals."))
 
-		backend = get_mail_backend_api()
+		backend = get_management_backend_adapter()
 
 		self._delete_dkim_signature(backend, "rsa-sha256", raise_exception=False)
 		self._create_dkim_signature(backend, "rsa-sha256", raise_exception=False)
@@ -283,7 +278,7 @@ class Principal(Document):
 			self._delete_dkim_signature(backend, "ed25519-sha256", raise_exception=False)
 			self._create_dkim_signature(backend, "ed25519-sha256", raise_exception=False)
 
-		backend.request("GET", RELOAD_ENDPOINT)
+		backend.reload()
 
 		update_principal_settings(self.name, is_verified=0)
 
@@ -347,11 +342,17 @@ class Principal(Document):
 			"externalMembers": _external_members,
 			"locale": self.locale,
 		}
-		backend = get_mail_backend_api()
-		response = backend.request("POST", PRINCIPAL_ENDPOINT, data=json.dumps(payload))
+		backend = get_management_backend_adapter()
+		response = backend.principal_create(payload)
+		response_json = response.data or {}
 
-		if response.json().get("error"):
-			frappe.throw(_("Failed to add principal {0}: {1}").format(frappe.bold(self.name), response.text))
+		if response_json.get("error"):
+			frappe.throw(
+				_("Failed to add principal {0}: {1}").format(
+					frappe.bold(self.name),
+					json.dumps(response_json.get("error"), ensure_ascii=True),
+				)
+			)
 
 		create_principal_settings(self.name, self.type)
 
@@ -362,7 +363,7 @@ class Principal(Document):
 				if bool(get_mail_config("enable_ed25519_dkim")):
 					self._create_dkim_signature(backend, "ed25519-sha256", raise_exception=False)
 
-				backend.request("GET", RELOAD_ENDPOINT)
+				backend.reload()
 			except Exception:
 				frappe.log_error(
 					title=f"Failed to create DKIM signature for domain {self.name}",
@@ -371,7 +372,7 @@ class Principal(Document):
 
 	def _create_dkim_signature(
 		self,
-		backend: MailBackendAPI,
+		backend: ManagementBackendAdapter,
 		algorithm: Literal["rsa-sha256", "ed25519-sha256"],
 		raise_exception: bool = True,
 	) -> None:
@@ -400,9 +401,10 @@ class Principal(Document):
 				"assert_empty": True,
 			}
 		]
-		response = backend.request("POST", SETTINGS_ENDPOINT, data=json.dumps(payload))
+		response = backend.dkim_create(payload)
+		response_json = response.data or {}
 
-		if response.json().get("error"):
+		if response_json.get("error"):
 			message = _("Failed to create DKIM signature for domain {0}").format(frappe.bold(self.name))
 			frappe.log_error(title=message, message=frappe.get_traceback(with_context=True))
 
@@ -447,29 +449,34 @@ class Principal(Document):
 
 	@staticmethod
 	def _fetch(
-		backend: MailBackendAPI, pname: str, skip_dns_records: bool = False, ignore_not_found: bool = True
+		backend: ManagementBackendAdapter,
+		pname: str,
+		skip_dns_records: bool = False,
+		ignore_not_found: bool = True,
 	) -> dict:
 		"""Fetches the principal from the backend."""
 
-		response = backend.request("GET", f"{PRINCIPAL_ENDPOINT}/{pname}")
-		if response.json().get("error") == "notFound":
+		response = backend.principal_get(pname)
+		response_json = response.data or {}
+		if response_json.get("error") == "notFound":
 			if not ignore_not_found:
 				frappe.throw(_("Principal {0} not found in backend.").format(frappe.bold(pname)))
 
 			return {}
 
-		principal = response.json()["data"]
+		principal = response_json.get("data", {})
 
 		dns_records = []
 		if principal["type"] == "domain" and not skip_dns_records:
-			response = backend.request("GET", f"{DNS_RECORDS_ENDPOINT}/{pname}")
-			if response.json().get("error") == "notFound":
+			response = backend.fetch_dns_records(pname)
+			response_json = response.data or {}
+			if response_json.get("error") == "notFound":
 				if not ignore_not_found:
 					frappe.throw(
 						_("DNS Records for principal {0} not found in backend.").format(frappe.bold(pname))
 					)
 			else:
-				dns_records = response.json()["data"]
+				dns_records = response_json.get("data", [])
 
 		principal["dnsRecords"] = dns_records
 
@@ -481,7 +488,7 @@ class Principal(Document):
 		ensure_access_to_backend()
 		validate_mail_config()
 
-		backend = get_mail_backend_api()
+		backend = get_management_backend_adapter()
 		principal = Principal._fetch(
 			backend, self.name, skip_dns_records=skip_dns_records, ignore_not_found=False
 		)
@@ -511,10 +518,11 @@ class Principal(Document):
 		if filter:
 			params["filter"] = filter
 
-		backend = get_mail_backend_api()
-		response = backend.request("GET", f"{PRINCIPAL_ENDPOINT}", params=params)
+		backend = get_management_backend_adapter()
+		response = backend.principal_list(params=params)
+		response_json = response.data or {}
 
-		data = response.json().get("data", {})
+		data = response_json.get("data", {})
 		items = data.get("items", [])
 		total = data.get("total", 0)
 
@@ -528,7 +536,7 @@ class Principal(Document):
 	def _update(self) -> None:
 		"""Updates the principal in the backend."""
 
-		backend = get_mail_backend_api()
+		backend = get_management_backend_adapter()
 		existing_principal = frappe._dict(
 			Principal._fetch(backend, self.name, skip_dns_records=True, ignore_not_found=False)
 		)
@@ -603,11 +611,15 @@ class Principal(Document):
 				for v in values_to_remove:
 					actions.append({"action": "removeItem", "field": server_field, "value": v})
 
-		response = backend.request("PATCH", f"{PRINCIPAL_ENDPOINT}/{self.name}", data=json.dumps(actions))
+		response = backend.principal_update(self.name, actions)
+		response_json = response.data or {}
 
-		if response.json().get("error"):
+		if response_json.get("error"):
 			frappe.throw(
-				_("Failed to update principal {0}: {1}").format(frappe.bold(self.name), response.text)
+				_("Failed to update principal {0}: {1}").format(
+					frappe.bold(self.name),
+					json.dumps(response_json.get("error"), ensure_ascii=True),
+				)
 			)
 
 		if self.name != self._name or self.type != TYPE_MAP[existing_principal.type]:
@@ -638,8 +650,16 @@ class Principal(Document):
 					)
 				)
 
-		backend = get_mail_backend_api()
-		backend.request("DELETE", f"{PRINCIPAL_ENDPOINT}/{self.name}")
+		backend = get_management_backend_adapter()
+		response = backend.principal_delete(self.name)
+		response_json = response.data or {}
+		if response_json.get("error"):
+			frappe.throw(
+				_("Failed to delete principal {0}: {1}").format(
+					frappe.bold(self.name),
+					json.dumps(response_json.get("error"), ensure_ascii=True),
+				)
+			)
 
 		# If the principal is an Individual, delete the User
 		if principal.type == "Individual":
@@ -657,13 +677,13 @@ class Principal(Document):
 			if bool(get_mail_config("enable_ed25519_dkim")):
 				self._delete_dkim_signature(backend, "ed25519-sha256", raise_exception=False)
 
-			backend.request("GET", RELOAD_ENDPOINT)
+			backend.reload()
 
 		delete_principal_settings(self.name)
 
 	def _delete_dkim_signature(
 		self,
-		backend: MailBackendAPI,
+		backend: ManagementBackendAdapter,
 		algorithm: Literal["rsa-sha256", "ed25519-sha256"],
 		raise_exception: bool = True,
 	) -> None:
@@ -679,8 +699,9 @@ class Principal(Document):
 				"prefix": f"signature.{key_type}-{self.name}",
 			}
 		]
-		response = backend.request("POST", SETTINGS_ENDPOINT, data=json.dumps(payload))
-		if response.json().get("error"):
+		response = backend.dkim_delete(payload)
+		response_json = response.data or {}
+		if response_json.get("error"):
 			message = _("Failed to delete DKIM signature for domain {0}").format(frappe.bold(self.name))
 			frappe.log_error(title=message, message=frappe.get_traceback(with_context=True))
 

@@ -8,7 +8,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import today
 
-from mail.backend import get_mail_backend_api
+from mail.backend_adapter import get_management_backend_adapter
 from mail.utils import extract_filter_values
 from mail.utils.dns import get_host_by_ip
 
@@ -80,42 +80,43 @@ class BlockedIP(Document):
 				}
 			)
 
-		backend_api = get_mail_backend_api()
-		backend_api.request(
-			method="POST",
-			endpoint="/api/settings",
-			data=json.dumps(request_data),
-		)
+		backend_api = get_management_backend_adapter()
+		backend_api.settings_patch(request_data)
 
 	def _get(self) -> None:
 		"""Returns the blocked IP from the backend."""
 
 		cluster, ip_address = self.name.split("|")
-		backend_api = get_mail_backend_api()
-		response = backend_api.request(
-			method="GET",
-			endpoint="api/settings/group",
-			params={"prefix": "server.blocked-ip", "limit": 1, "filter": ip_address},
-		)
+		backend_api = get_management_backend_adapter()
+		response = backend_api.settings_group("server.blocked-ip")
 
-		blocked_ip = response.json()["data"]["items"][0]
+		data = (response.data or {}).get("data", {})
+		items = data.get("items", [])
+		blocked_ip = next((item for item in items if item.get("_id") == ip_address), None)
+		if not blocked_ip:
+			frappe.throw(_("Blocked IP {0} not found.").format(ip_address))
+
 		return BlockedIP._format(blocked_ip, cluster)
 
 	@staticmethod
 	def _get_all(cluster: str, page: int = 1, limit: int = 10, text: str | None = None) -> list:
 		"""Returns all blocked IPs for the given cluster."""
 
-		backend_api = get_mail_backend_api()
-		response = backend_api.request(
-			method="GET",
-			endpoint="api/settings/group",
-			params={"page": page, "prefix": "server.blocked-ip", "limit": limit, "filter": text},
-		)
+		backend_api = get_management_backend_adapter()
+		response = backend_api.settings_group("server.blocked-ip")
 
-		data = response.json()["data"]
-		frappe.cache.set_value(get_total_cache_key(cluster, text), data["total"], expires_in_sec=600)
+		data = (response.data or {}).get("data", {})
+		items = data.get("items", [])
+		if text:
+			items = [item for item in items if text in item.get("_id", "")]
 
-		return [BlockedIP._format(item, cluster) for item in data["items"]]
+		start = max((page - 1) * limit, 0)
+		end = start + limit
+		page_items = items[start:end]
+
+		frappe.cache.set_value(get_total_cache_key(cluster, text), len(items), expires_in_sec=600)
+
+		return [BlockedIP._format(item, cluster) for item in page_items]
 
 	def _update(self) -> None:
 		raise NotImplementedError
@@ -128,12 +129,8 @@ class BlockedIP(Document):
 		for ip in ip_addresses:
 			request_data.append({"type": "delete", "keys": [f"server.blocked-ip.{ip}"]})
 
-		backend_api = get_mail_backend_api()
-		backend_api.request(
-			method="POST",
-			endpoint="/api/settings",
-			data=json.dumps(request_data),
-		)
+		backend_api = get_management_backend_adapter()
+		backend_api.settings_patch(request_data)
 
 	@staticmethod
 	def _format(blocked_ip: dict, cluster: str) -> dict:

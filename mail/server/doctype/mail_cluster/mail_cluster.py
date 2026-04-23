@@ -13,8 +13,8 @@ from frappe.model.document import Document
 from frappe.query_builder import Order
 from frappe.utils import cint, random_string
 
-from mail.backend import MailBackendAPI, Principal
-from mail.jmap.connection import raise_for_status
+from mail.backend import Principal
+from mail.backend_adapter import get_management_backend_adapter
 from mail.server.doctype.dns_record.dns_record import create_or_update_dns_record
 from mail.utils import generate_secret, get_mail_config, get_spf_host_for_cluster, hash_password
 from mail.utils.dns import get_dns_record
@@ -304,14 +304,14 @@ class MailCluster(Document):
 		principal = Principal(
 			name=name, type="apiKey", secrets=secret, roles=["admin"], enabledPermissions=["authenticate"]
 		)
-		backend_api = MailBackendAPI(
-			self.base_url,
+		backend_api = get_management_backend_adapter(
+			mode="rest",
+			base_url=self.base_url,
 			username=self.fallback_admin_user,
 			password=self.get_password("fallback_admin_password"),
 		)
-		response = backend_api.request(method="POST", endpoint="/api/principal", json=principal.__dict__)
-		raise_for_status(response)
-		response_json = response.json()
+		response = backend_api.principal_create(principal.__dict__)
+		response_json = response.data or {}
 
 		if error := response_json.get("error"):
 			frappe.throw(error)

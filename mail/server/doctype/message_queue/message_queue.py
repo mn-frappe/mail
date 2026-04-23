@@ -7,7 +7,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
-from mail.backend import get_mail_backend_api
+from mail.backend_adapter import get_management_backend_adapter
 from mail.utils import extract_filter_values, rename_keys
 
 
@@ -82,10 +82,10 @@ class MessageQueue(Document):
 		"""Returns the message details from the server."""
 
 		cluster, id = self.name.split("|")
-		backend_api = get_mail_backend_api()
-		response = backend_api.request(method="GET", endpoint=f"/api/queue/messages/{id}")
+		backend_api = get_management_backend_adapter()
+		response = backend_api.queue_message_get(id)
 
-		message = response.json()["data"]
+		message = (response.data or {}).get("data", {})
 		message = MessageQueue._format(message, cluster, extract_recipients=True)
 		message["message"] = MessageQueue._get_blob(cluster, message["blob_hash"])
 
@@ -95,62 +95,60 @@ class MessageQueue(Document):
 	def _get_blob(cluster: str, blob_id: str) -> str:
 		"""Returns the raw message blob from the server."""
 
-		backend_api = get_mail_backend_api()
-		response = backend_api.request(method="GET", endpoint=f"/api/store/blobs/{blob_id}")
-		return response.text.strip()
+		backend_api = get_management_backend_adapter()
+		response = backend_api.blob_get(blob_id)
+
+		if isinstance(response.data, bytes):
+			return response.data.decode("utf-8", errors="replace").strip()
+
+		return str(response.data or "").strip()
 
 	@staticmethod
 	def _get_all(cluster: str, page: int = 1, limit: int = 10, text: str | None = None) -> list:
 		"""Returns all messages from the server."""
 
-		backend_api = get_mail_backend_api()
-		response = backend_api.request(
-			method="GET",
-			endpoint="/api/queue/messages",
+		backend_api = get_management_backend_adapter()
+		response = backend_api.queue_messages_list(
 			params={"page": page, "limit": limit, "values": 1, "text": text},
 		)
 
-		data = response.json()["data"]
-		frappe.cache.set_value(get_status_cache_key(cluster), data["status"], expires_in_sec=600)
-		frappe.cache.set_value(get_total_cache_key(cluster, text), data["total"], expires_in_sec=600)
+		data = (response.data or {}).get("data", {})
+		status = data.get("status")
+		total = data.get("total", 0)
+		items = data.get("items", [])
 
-		return [MessageQueue._format(item, cluster) for item in data["items"]]
+		frappe.cache.set_value(get_status_cache_key(cluster), status, expires_in_sec=600)
+		frappe.cache.set_value(get_total_cache_key(cluster, text), total, expires_in_sec=600)
+
+		return [MessageQueue._format(item, cluster) for item in items]
 
 	@staticmethod
 	def _update(cluster: str, id: str) -> None:
 		"""Retries delivery of a message to all recipients."""
 
-		backend_api = get_mail_backend_api()
-		backend_api.request(method="PATCH", endpoint=f"/api/queue/messages/{id}")
+		backend_api = get_management_backend_adapter()
+		backend_api.queue_message_retry(id)
 
 	def _delete(self, recipient: str | None = None) -> None:
 		"""Deletes a message or cancels delivery to a specific recipient."""
 
 		cluster, id = self.name.split("|")
-		backend_api = get_mail_backend_api()
-		backend_api.request(
-			method="DELETE", endpoint=f"/api/queue/messages/{id}", params={"filter": recipient}
-		)
+		backend_api = get_management_backend_adapter()
+		backend_api.queue_message_cancel(id, recipient=recipient)
 
 	@staticmethod
 	def _pause(cluster: str) -> None:
 		"""Pauses queue processing on the server."""
 
-		backend_api = get_mail_backend_api()
-		backend_api.request(
-			method="PATCH",
-			endpoint="/api/queue/status/stop",
-		)
+		backend_api = get_management_backend_adapter()
+		backend_api.queue_status_stop()
 
 	@staticmethod
 	def _resume(cluster: str) -> None:
 		"""Resumes queue processing on the server."""
 
-		backend_api = get_mail_backend_api()
-		backend_api.request(
-			method="PATCH",
-			endpoint="/api/queue/status/start",
-		)
+		backend_api = get_management_backend_adapter()
+		backend_api.queue_status_start()
 
 	@staticmethod
 	def _format(message: dict, cluster: str, extract_recipients: bool = False) -> dict:
