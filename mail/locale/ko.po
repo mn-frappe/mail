@@ -1,0 +1,6838 @@
+# Korean translations for mail
+# Copyright (C) 2024
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ko\n"
+"Language-Team: Korean\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid " Save as Draft"
+msgstr "초안으로 저장"
+
+msgid "'Fail'"
+msgstr "'실패'"
+
+msgid "'Pass'"
+msgstr "'통과'"
+
+msgid ".tar.gz"
+msgstr ""
+
+msgid ".tgz"
+msgstr ""
+
+msgid ".zip"
+msgstr ""
+
+msgid "1 item selected"
+msgstr "1개 항목 선택됨"
+
+msgid "1. Ensure the correct IP address is allowed to connect to SpamAssassin."
+msgstr "1. SpamAssassin에 연결하려면 올바른 IP 주소가 허용되는지 확인하세요."
+
+msgid "2. Verify that the SpamAssassin service is running and accepting connections on port {0}."
+msgstr "2. SpamAssassin 서비스가 실행 중이고 포트 {0}에서 연결을 수락하는지 확인하세요."
+
+msgid "3. Review SpamAssassin logs for any unauthorized connection attempts or permission errors."
+msgstr "3. 무단 연결 시도나 권한 오류가 있는지 SpamAssassin 로그를 검토하세요."
+
+msgid "<p>This is the SSH public key generated for the Mail Cluster.</p>\n<p>Copy and add it to the <code>~/.ssh/authorized_keys</code> file of this Mail Server to allow Frappe Mail to securely provision and manage this server.</p>"
+msgstr "<p>이것은 메일 클러스터에 대해 생성된 SSH 공개 키입니다.</p>\n<p>Frappe Mail이 이 서버를 안전하게 프로비저닝하고 관리할 수 있도록 이 메일 서버의 <code>~/.ssh/authorized_keys</code> 파일을 복사하여 추가하세요.</p>"
+
+msgid "<p>This is the SSH public key generated for this Mail Cluster.</p>\n<p>Copy and add it to the <code>~/.ssh/authorized_keys</code> file of the target server(s) to allow Frappe Mail to securely provision and manage this cluster.</p>"
+msgstr "<p>이것은 이 메일 클러스터에 대해 생성된 SSH 공개 키입니다.</p>\n<p>Frappe Mail이 이 클러스터를 안전하게 프로비저닝하고 관리할 수 있도록 대상 서버의 <code>~/.ssh/authorized_keys</code> 파일에 복사하여 추가하세요.</p>"
+
+msgid "<pre><b>Immediate</b> — send right after insert (after_insert).\n<b>Enqueue</b> — enqueue a job (using frappe.enqueue).\n<b>Batch</b> — wait to be picked up by a scheduled background job.\n</pre>"
+msgstr "<pre><b>즉시</b> — 삽입 후 바로 보냅니다(삽입 후).\n<b>큐에 넣기</b> — 작업을 큐에 넣습니다(frappe.enqueue 사용).\n<b>일괄</b> — 예약된 백그라운드 작업이 선택될 때까지 기다립니다.\n</pre>"
+
+msgid "A"
+msgstr ""
+
+msgid "A color to be used when displaying events associated with the calendar."
+msgstr "캘린더와 관련된 이벤트를 표시할 때 사용할 색상입니다."
+
+msgid "A contact card must belong to at least one address book."
+msgstr "연락처 카드는 하나 이상의 주소록에 속해야 합니다."
+
+msgid "A globally unique identifier for the event."
+msgstr "이벤트에 대한 전역 고유 식별자."
+
+msgid "A human-readable description of the event location."
+msgstr "이벤트 위치에 대한 사람이 읽을 수 있는 설명."
+
+msgid "A list of all the type names as defined in the \"JMAP Types Names\" registry (e.g., Email, Calendar, etc.) to which this quota applies."
+msgstr "이 할당량이 적용되는 \"JMAP 유형 이름\" 레지스트리(예: 이메일, 캘린더 등)에 정의된 모든 유형 이름 목록."
+
+msgid "A list of types the client is interested in. A `StateChange` notification will only be sent if the data for one of these types changes."
+msgstr "클라이언트가 관심 있는 유형 목록. 'StateChange' 알림은 이러한 유형 중 하나에 대한 데이터가 변경된 경우에만 전송됩니다."
+
+msgid "A monotonically increasing number representing the version of the event."
+msgstr "이벤트 버전을 나타내는 단조롭게 증가하는 숫자."
+
+msgid "A patch encoding the change between the data in the event property, and the data after the update."
+msgstr "이벤트 속성의 데이터와 업데이트 후 데이터 간의 변경 사항을 인코딩하는 패치."
+
+msgid "A prefix that will be added to the keys of all objects stored in the blob store."
+msgstr "Blob 저장소에 저장된 모든 개체의 키에 추가되는 접두사."
+
+msgid "A reference to the Calendar document to which this event belongs."
+msgstr "이 이벤트가 속한 캘린더 문서에 대한 참조."
+
+msgid "A short, human-readable summary of the event."
+msgstr "사람이 읽을 수 있는 짧은 이벤트 요약."
+
+msgid "A signature the client should insert into new HTML messages that will be sent from this Identity."
+msgstr "클라이언트가 수행해야 하는 서명 이 ID에서 전송될 새 HTML 메시지에 삽입합니다."
+
+msgid "A signature the client should insert into new plaintext messages that will be sent from this Identity."
+msgstr "클라이언트가 이 ID에서 전송될 새 일반 텍스트 메시지에 삽입해야 하는 서명입니다."
+
+msgid "A unique identifier for this alert."
+msgstr "이 경고에 대한 고유 식별자입니다."
+
+msgid "A unique identifier for this event link."
+msgstr "이 이벤트 링크에 대한 고유 식별자입니다."
+
+msgid "A unique identifier for this event location."
+msgstr "이 이벤트 위치에 대한 고유 식별자입니다."
+
+msgid "A unique identifier for this participant."
+msgstr "이 참가자에 대한 고유 식별자입니다."
+
+msgid "AAAA"
+msgstr ""
+
+msgid "ACCEPTED"
+msgstr "승인"
+
+msgid "ACME Providers"
+msgstr "ACME 공급자"
+
+msgid "API"
+msgstr ""
+
+msgid "API Access"
+msgstr "API 액세스"
+
+msgid "API Key"
+msgstr "API 키"
+
+msgid "API Key or Username and Password is required."
+msgstr "API 키 또는 사용자 이름과 비밀번호가 필요합니다."
+
+msgid "API Secret"
+msgstr "API 비밀"
+
+msgid "AbsoluteTrigger"
+msgstr ""
+
+msgid "Accepted"
+msgstr "승인됨"
+
+msgid "Access Key"
+msgstr "액세스 키"
+
+msgid "Access Secret"
+msgstr "액세스 비밀"
+
+msgid "Access denied: Your IP address ({0}) is blocked due to explicit IP restrictions."
+msgstr "액세스 거부됨: 명시적인 IP 제한으로 인해 귀하의 IP 주소({0})가 차단되었습니다."
+
+msgid "Access not allowed for this URL"
+msgstr "이 URL에 액세스가 허용되지 않습니다"
+
+msgid "Access to GoDaddy’s Domain Management and DNS APIs is restricted to accounts with 10 or more domains or an active Pro Discount Domain Club membership. Please verify that your account meets these requirements before proceeding."
+msgstr "GoDaddy의 도메인 관리에 액세스할 수 없습니다. DNS API는 10개 이상의 도메인이 있는 계정 또는 활성 Pro 할인 도메인 클럽 멤버십으로 제한됩니다. 계속하기 전에 귀하의 계정이 이러한 요구 사항을 충족하는지 확인하십시오."
+
+msgid "Account"
+msgstr "계정"
+
+msgid "Account Request"
+msgstr "계정 요청"
+
+msgid "Account domain {0} does not match with domain {1}."
+msgstr "계정 도메인 {0}이(가) 도메인 {1}과(와) 일치하지 않습니다."
+
+msgid "Account is already verified and created."
+msgstr "계정이 이미 확인 및 생성되었습니다."
+
+msgid "Account updated."
+msgstr "계정이 업데이트되었습니다."
+
+msgid "Account username for the DNS provider."
+msgstr "DNS 공급자의 계정 사용자 이름."
+
+msgid "Account {0} is already created."
+msgstr "계정 {0}이(가) 이미 생성되었습니다."
+
+msgid "Action"
+msgstr "작업"
+
+msgid "Action failed. Please try again in some time."
+msgstr "작업이 실패했습니다. 잠시 후에 다시 시도하십시오."
+
+msgid "Actions"
+msgstr "작업"
+
+msgid "Activate"
+msgstr "활성화"
+
+msgid "Activate Script"
+msgstr "스크립트 활성화"
+
+msgid "Activate this script to apply your rules and filters."
+msgstr "규칙과 필터를 적용하려면 이 스크립트를 활성화하십시오."
+
+msgid "Activating"
+msgstr "활성화"
+
+msgid "Activating this script will deactivate the currently active script."
+msgstr "이 스크립트를 활성화하면 현재 활성 스크립트가 비활성화됩니다."
+
+msgid "Active"
+msgstr "활성"
+
+msgid "Active Script {0} Detected"
+msgstr "활성 스크립트 {0} 감지됨"
+
+msgid "Add"
+msgstr "추가"
+
+msgid "Add Address"
+msgstr "주소 추가"
+
+msgid "Add Address Book"
+msgstr "주소록 추가"
+
+msgid "Add Bcc"
+msgstr "숨은 참조 추가"
+
+msgid "Add Contact"
+msgstr "연락처 추가"
+
+msgid "Add Domain"
+msgstr "도메인 추가"
+
+msgid "Add Email"
+msgstr "이메일 추가"
+
+msgid "Add Email Address"
+msgstr "이메일 주소 추가"
+
+msgid "Add Mailing List"
+msgstr "메일링 목록 추가"
+
+msgid "Add Member"
+msgstr "회원 추가"
+
+msgid "Add Phone"
+msgstr "전화 추가"
+
+msgid "Add Reply To"
+msgstr "회신 대상 추가"
+
+msgid "Add Star"
+msgstr "별표 추가"
+
+msgid "Add the following records to your domain's DNS settings. Then click on 'Verify' to complete your domain setup."
+msgstr "도메인의 DNS 설정에 다음 레코드를 추가합니다. 그런 다음 '확인'을 클릭하여 도메인 설정을 완료하세요."
+
+msgid "Add to Address Book"
+msgstr "주소록에 추가"
+
+msgid "Add to Mailing List"
+msgstr "메일링 목록에 추가"
+
+msgid "Additional free-text details about the event."
+msgstr "이벤트에 대한 추가 자유 텍스트 세부정보입니다."
+
+msgid "Address"
+msgstr "주소"
+
+msgid "Address Book"
+msgstr "주소록"
+
+msgid "Address Book Creation Error"
+msgstr "주소록 생성 오류"
+
+msgid "Address Book Deletion Error"
+msgstr "주소록 삭제 오류"
+
+msgid "Address Book Deletion Error(s):<br>{0}"
+msgstr "주소록 삭제 오류:<br>{0}"
+
+msgid "Address Book ID"
+msgstr "주소록 ID"
+
+msgid "Address Book Name"
+msgstr "주소록 이름"
+
+msgid "Address Book Not Found"
+msgstr "주소록 없음 발견"
+
+msgid "Address Book Update Error"
+msgstr "주소록 업데이트 오류"
+
+msgid "Address Book name must be in the format 'user|id'."
+msgstr "주소록 이름은 'user|id' 형식이어야 합니다."
+
+msgid "Address Book with ID {0} not found in user {1}."
+msgstr "ID가 {0}인 주소록을 사용자 {1}에서 찾을 수 없습니다."
+
+msgid "Address Books"
+msgstr "주소록"
+
+msgid "Address Books deleted successfully."
+msgstr "주소록이 삭제되었습니다."
+
+msgid "Address book created."
+msgstr "주소록이 삭제되었습니다."
+
+msgid "Address book deleted."
+msgstr "주소록이 삭제되었습니다."
+
+msgid "Address book updated."
+msgstr "주소록이 업데이트되었습니다."
+
+msgid "Addresses"
+msgstr "주소"
+
+msgid "Admin"
+msgstr "관리"
+
+msgid "Admin Dashboard"
+msgstr "관리 대시보드"
+
+msgid "Admin credentials are not set in Mail Configuration."
+msgstr "관리자 자격 증명이 메일 구성에 설정되지 않았습니다."
+
+msgid "Advanced"
+msgstr "고급"
+
+msgid "After"
+msgstr "후"
+
+msgid "Alerts"
+msgstr "알림"
+
+msgid "Algorithm to use to compress large binary objects."
+msgstr "대형 바이너리 개체를 압축하는 데 사용할 알고리즘입니다."
+
+msgid "Alias"
+msgstr "별칭"
+
+msgid "All"
+msgstr "모두"
+
+msgid "All Contacts"
+msgstr "모든 연락처"
+
+msgid "All Mails"
+msgstr "모두 메일"
+
+msgid "All folders"
+msgstr "모든 폴더"
+
+msgid "All my work-related contacts"
+msgstr "내 모든 업무 관련 연락처"
+
+msgid "All rules and filters associated with this script will stop functioning immediately."
+msgstr "이 스크립트와 연결된 모든 규칙 및 필터는 즉시 작동이 중지됩니다."
+
+msgid "All rules and filters associated with this script will take effect immediately."
+msgstr "이 스크립트와 연결된 모든 규칙 및 필터는 즉시 적용됩니다."
+
+msgid "Allow Invalid Certs"
+msgstr "잘못된 인증서 허용"
+
+msgid "Allow Signup"
+msgstr "가입 허용"
+
+msgid "Allow invalid TLS certificates when connecting to the store."
+msgstr "스토어에 연결할 때 잘못된 TLS 인증서를 허용합니다."
+
+msgid "Allow users to configure encryption at rest for their data."
+msgstr "사용자가 데이터에 대해 미사용 암호화를 구성하도록 허용합니다."
+
+msgid "Allowed IP"
+msgstr "허용된 IP"
+
+msgid "Allowed IP removed successfully."
+msgstr "허용된 IP가 제거되었습니다. 성공적으로."
+
+msgid "Allowed IPs"
+msgstr "허용된 IP"
+
+msgid "Allows users to sign up and select a preferred username."
+msgstr "사용자가 가입하고 원하는 사용자 이름을 선택할 수 있습니다."
+
+msgid "Already have an account? Log in."
+msgstr "이미 계정이 있습니까? 로그인하세요."
+
+msgid "AmazonRoute53"
+msgstr ""
+
+msgid "Amber"
+msgstr ""
+
+msgid "Amended From"
+msgstr ""
+
+msgid "An ID that uniquely identifies the client + device it is running on."
+msgstr "실행 중인 클라이언트 + 디바이스를 고유하게 식별하는 ID."
+
+msgid "An absolute URL where the JMAP server will POST the data for the push message. This MUST begin with `https://`."
+msgstr "JMAP 서버가 푸시 메시지에 대한 데이터를 게시하는 절대 URL입니다. 이는 `https://`로 시작해야 합니다."
+
+msgid "An indication of the number of \"unread\" Threads in the Mailbox."
+msgstr "사서함에서 \"읽지 않은\" 스레드 수를 표시합니다."
+
+msgid "An optional longer-form description of the Address Book."
+msgstr "주소록에 대한 선택적 긴 형식 설명."
+
+msgid "An optional longer-form description of the calendar."
+msgstr "캘린더에 대한 선택적 긴 형식 설명."
+
+msgid "Ansible Play"
+msgstr ""
+
+msgid "Ansible Play Progress"
+msgstr ""
+
+msgid "Ansible Play Task"
+msgstr ""
+
+msgid "Ansible play is already running."
+msgstr "Ansible Play가 이미 실행 중입니다."
+
+msgid "Answered"
+msgstr "답변됨"
+
+msgid "App Password"
+msgstr "앱 비밀번호"
+
+msgid "App Passwords"
+msgstr "앱 비밀번호"
+
+msgid "App-specific password or account password used for authentication with the JMAP server."
+msgstr "앱 비밀번호 또는 계정 비밀번호에 사용됨 JMAP 서버로 인증합니다."
+
+msgid "Appearance"
+msgstr "모양"
+
+msgid "Appearance updated."
+msgstr "모양이 업데이트되었습니다."
+
+msgid "Apply filters to select specific emails for export"
+msgstr "내보낼 특정 이메일을 선택하려면 필터를 적용하세요"
+
+msgid "Apps"
+msgstr "앱"
+
+msgid "Archive Type"
+msgstr "보관 유형"
+
+msgid "Archive Type is required."
+msgstr "보관 유형이 필요합니다."
+
+msgid "Are you sure you want to delete the contact for {0}?"
+msgstr "{0}에 대한 연락처를 삭제하시겠습니까?"
+
+msgid "Are you sure you want to delete the selected contacts?"
+msgstr "선택한 연락처를 삭제하시겠습니까?"
+
+msgid "Are you sure you want to delete the selected invites? This will invalidate them for the recipients if pending."
+msgstr "선택한 초대를 삭제하시겠습니까? 보류 중인 경우 수신자에 대한 해당 내용이 무효화됩니다."
+
+msgid "Are you sure you want to delete the selected mailing lists?"
+msgstr "선택한 메일링 목록을 삭제하시겠습니까?"
+
+msgid "Are you sure you want to delete the selected members? This action cannot be undone."
+msgstr "선택한 회원을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
+
+msgid "Are you sure you want to delete this domain? This action cannot be undone."
+msgstr "이 도메인을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
+
+msgid "Are you sure you want to delete this mailing list? This action cannot be undone."
+msgstr "이 메일링 리스트를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
+
+msgid "Are you sure you want to delete this member? This action cannot be undone."
+msgstr "이 회원을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
+
+msgid "Are you sure you want to delete {0}?"
+msgstr "{0}을(를) 삭제하시겠습니까?"
+
+msgid "Are you sure you want to mark the selected {0} as junk?"
+msgstr "선택한 {0}을(를) 정크로 표시하시겠습니까?"
+
+msgid "Are you sure you want to permanently delete the selected {0}?"
+msgstr "선택한 {0}을(를) 영구적으로 삭제하시겠습니까?"
+
+msgid "Are you sure you want to proceed?"
+msgstr "계속하시겠습니까?"
+
+msgid "Are you sure you want to refresh the DNS records? If there are any changes, you'll need to update the DNS settings with your DNS provider accordingly."
+msgstr "DNS 레코드를 새로 고치시겠습니까? 변경 사항이 있는 경우 이에 따라 DNS 공급자를 사용하여 DNS 설정을 업데이트해야 합니다."
+
+msgid "Are you sure you want to remove the selected addresses?"
+msgstr "선택한 주소를 제거하시겠습니까?"
+
+msgid "Are you sure you want to remove the selected contacts?"
+msgstr "선택한 연락처를 제거하시겠습니까?"
+
+msgid "Are you sure you want to remove the selected emails?"
+msgstr "선택한 이메일을 제거하시겠습니까?"
+
+msgid "Are you sure you want to remove the selected phones?"
+msgstr "선택한 전화를 제거하시겠습니까?"
+
+msgid "Are you sure you want to remove this contact from the selected address books?"
+msgstr "선택한 주소록에서 이 연락처를 제거하시겠습니까?"
+
+msgid "Are you sure you want to rotate the DKIM keys? This will generate new keys for email signing and you'll need to update the DNS settings with your DNS provider accordingly. This may take some time to propagate across DNS servers. Emails sent during this period may fail DKIM verification."
+msgstr "DKIM을 순환하시겠습니까? 열쇠? 이렇게 하면 이메일 서명을 위한 새 키가 생성되며 이에 따라 DNS 공급자를 통해 DNS 설정을 업데이트해야 합니다. DNS 서버 전체에 전파되는 데 시간이 걸릴 수 있습니다. 이 기간 동안 전송된 이메일은 DKIM 확인에 실패할 수 있습니다."
+
+msgid "Are you sure you want to unblock the selected email addresses?"
+msgstr "선택한 이메일 주소를 차단 해제하시겠습니까?"
+
+msgid "Assigned Email"
+msgstr "할당된 이메일"
+
+msgid "Attachment Size (Bytes)"
+msgstr "첨부 파일 크기(바이트)"
+
+msgid "Attachment with cid {0} not found in the current draft."
+msgstr "CID가 {0}인 첨부 파일이 현재 초안에서 찾을 수 없습니다."
+
+msgid "Attachments"
+msgstr "첨부 파일"
+
+msgid "Attempt Interval (Milliseconds)"
+msgstr "시도 간격(밀리초)"
+
+msgid "Attending"
+msgstr "참석"
+
+msgid "Audio"
+msgstr "오디오"
+
+msgid "Audio Preview"
+msgstr "오디오 미리보기"
+
+msgid "Auth"
+msgstr "인증"
+
+msgid "Auth Results"
+msgstr "인증 결과"
+
+msgid "Auth Type"
+msgstr "인증 유형"
+
+msgid "Authentication"
+msgstr "인증"
+
+msgid "Authentication secret for JMAP PushSubscription encryption."
+msgstr "JMAP PushSubscription 암호화를 위한 인증 비밀입니다."
+
+msgid "Auto-config"
+msgstr "자동 구성"
+
+msgid "Auto-discover"
+msgstr "자동 검색"
+
+msgid "Auto-reply to incoming mails while you’re away."
+msgstr "자리를 비운 동안 수신 메일에 자동 회신합니다."
+
+msgid "Automatically creates contact cards for new recipients after an email is sent."
+msgstr "이메일이 전송된 후 새 수신자를 위한 연락처 카드가 자동으로 생성됩니다."
+
+msgid "Automatically creates contacts for new recipients after an email is sent."
+msgstr "이메일이 전송된 후 새 수신자의 연락처가 자동으로 생성됩니다."
+
+msgid "Automatically delete newsletters after they are sent."
+msgstr "뉴스레터가 전송된 후 자동으로 삭제됩니다."
+
+msgid "Automatically deletes the email from your mailbox after it is sent."
+msgstr "이메일이 전송된 후 사서함에서 자동으로 삭제됩니다."
+
+msgid "Automatically deletes the newsletter after it is sent."
+msgstr "뉴스레터가 전송된 후 자동으로 삭제됩니다."
+
+msgid "Automatically mark emails as read when they are moved to this folder."
+msgstr "이메일이 이 폴더로 이동되면 자동으로 읽음으로 표시됩니다."
+
+msgid "Automatically star emails when they are moved to this folder."
+msgstr "이 폴더로 이메일이 이동되면 자동으로 별표 표시됩니다."
+
+msgid "Automation"
+msgstr "자동화"
+
+msgid "Available"
+msgstr "사용 가능"
+
+msgid "Avatar not found."
+msgstr "아바타를 찾을 수 없습니다."
+
+msgid "Azure Blob Storage"
+msgstr "Azure Blob 스토리지"
+
+msgid "BCC"
+msgstr ""
+
+msgid "Back"
+msgstr "뒤로"
+
+msgid "Backend Request Failed"
+msgstr "백엔드 요청 실패"
+
+msgid "Backend request failed with status code {0}. Check Error Log for details."
+msgstr "상태 코드 {0}으로 인해 백엔드 요청이 실패했습니다. 자세한 내용은 오류 로그를 확인하세요."
+
+msgid "Backend request failed. Check Error Log for details."
+msgstr "백엔드 요청이 실패했습니다. 자세한 내용은 오류 로그를 확인하세요."
+
+msgid "Backup Email"
+msgstr "백업 이메일"
+
+msgid "Backup Email is required."
+msgstr "백업 이메일이 필요합니다."
+
+msgid "Bad Cron Expression"
+msgstr "잘못된 크론 표현식"
+
+msgid "Base URL"
+msgstr "기본 URL"
+
+msgid "Base URL is required."
+msgstr "기본 URL이 필요합니다."
+
+msgid "Batch"
+msgstr ""
+
+msgid "Bcc"
+msgstr ""
+
+msgid "Bcc: "
+msgstr ""
+
+msgid "Before"
+msgstr ""
+
+msgid "Bind Addresses"
+msgstr "바인드 주소"
+
+msgid "Blob Hash"
+msgstr "Blob 해시"
+
+msgid "Blob ID"
+msgstr ""
+
+msgid "Blob ID is required."
+msgstr "Blob ID가 필요합니다."
+
+msgid "Blob Storage"
+msgstr ""
+
+msgid "Blobs"
+msgstr "Blob"
+
+msgid "Block"
+msgstr "블록"
+
+msgid "Block List"
+msgstr "차단 목록"
+
+msgid "Block Sender"
+msgstr "발신자 차단"
+
+msgid "Block specific addresses to prevent their messages from appearing in your inbox."
+msgstr "메시지가 받은 편지함에 표시되지 않도록 특정 주소를 차단하세요."
+
+msgid "Blocked Email Address"
+msgstr "차단된 이메일 주소"
+
+msgid "Blocked IP"
+msgstr "차단된 IP"
+
+msgid "Blocked IP removed successfully."
+msgstr "차단된 IP가 성공적으로 제거되었습니다."
+
+msgid "Blocked IPs"
+msgstr "차단된 IP"
+
+msgid "Blocking email address..."
+msgstr "이메일 주소 차단 중..."
+
+msgid "Blue"
+msgstr ""
+
+msgid "Body"
+msgstr "본문"
+
+msgid "Body Parts"
+msgstr "신체 부분"
+
+msgid "Both conditions are met"
+msgstr "두 조건이 모두 충족됨"
+
+msgid "Bucket"
+msgstr "버킷"
+
+msgid "Bucket / Storage Account"
+msgstr "버킷/스토리지 계정"
+
+msgid "Buffered writes"
+msgstr "버퍼링된 쓰기"
+
+msgid "Bulk Delete"
+msgstr "대량 삭제"
+
+msgid "Busy"
+msgstr "바쁨"
+
+msgid "CC"
+msgstr ""
+
+msgid "CNAME"
+msgstr ""
+
+msgid "Cache"
+msgstr "캐시"
+
+msgid "Calendar"
+msgstr "캘린더"
+
+msgid "Calendar Creation Error"
+msgstr "캘린더 생성 오류"
+
+msgid "Calendar Deletion Error"
+msgstr "캘린더 삭제 오류"
+
+msgid "Calendar Deletion Error(s):<br>{0}"
+msgstr "캘린더 삭제 오류:<br>{0}"
+
+msgid "Calendar Event"
+msgstr "캘린더 이벤트"
+
+msgid "Calendar Event Creation Error"
+msgstr "캘린더 이벤트 생성 오류"
+
+msgid "Calendar Event Deletion Error"
+msgstr "캘린더 이벤트 삭제 오류"
+
+msgid "Calendar Event Deletion Error(s):<br>{0}"
+msgstr "캘린더 이벤트 삭제 오류:<br>{0}"
+
+msgid "Calendar Event ID"
+msgstr "캘린더 이벤트 ID"
+
+msgid "Calendar Event Instance Deletion Error"
+msgstr "캘린더 이벤트 인스턴스 삭제 오류"
+
+msgid "Calendar Event Instance Update Error"
+msgstr "캘린더 이벤트 인스턴스 업데이트 오류"
+
+msgid "Calendar Event Not Found"
+msgstr "캘린더 이벤트를 찾을 수 없음"
+
+msgid "Calendar Event Update Error"
+msgstr "캘린더 이벤트 업데이트 오류"
+
+msgid "Calendar Event with ID {0} not found in user {1}."
+msgstr "ID가 {0}인 캘린더 이벤트를 사용자 {1}에서 찾을 수 없습니다."
+
+msgid "Calendar Events deleted successfully."
+msgstr "캘린더 이벤트가 성공적으로 삭제되었습니다."
+
+msgid "Calendar ID"
+msgstr "캘린더 ID"
+
+msgid "Calendar Name"
+msgstr "캘린더 이름"
+
+msgid "Calendar Not Found"
+msgstr "캘린더를 찾을 수 없음"
+
+msgid "Calendar Rights"
+msgstr "캘린더 권한"
+
+msgid "Calendar Update Error"
+msgstr "캘린더 업데이트 오류"
+
+msgid "Calendar name must be in the format 'user|id'."
+msgstr "캘린더 이름은 'user|id' 형식이어야 합니다."
+
+msgid "Calendar with ID {0} not found for user {1}"
+msgstr "캘린더 사용자 {1}의 ID {0}을(를) 찾을 수 없습니다."
+
+msgid "Calendars"
+msgstr "캘린더"
+
+msgid "Calendars deleted successfully."
+msgstr "캘린더가 성공적으로 삭제되었습니다."
+
+msgid "Cancel"
+msgstr "취소"
+
+msgid "Cancel Delivery"
+msgstr "배달 취소"
+
+msgid "Cancelled"
+msgstr "취소됨"
+
+msgid "Cancelling Delivery..."
+msgstr "배달 취소 중..."
+
+msgid "Cannot delete an active sieve script. Please deactivate it first."
+msgstr "활성 시브 스크립트를 삭제할 수 없습니다. 먼저 비활성화하십시오."
+
+msgid "Cannot delete domain {0} as there are addresses associated with it."
+msgstr "연결된 주소가 있으므로 도메인 {0}을(를) 삭제할 수 없습니다."
+
+msgid "Cannot fetch more than {0} emails at a time."
+msgstr "한 번에 {0}개 이상의 이메일을 가져올 수 없습니다."
+
+msgid "Cannot mark an existing event as draft."
+msgstr "기존 이벤트를 초안으로 표시할 수 없습니다."
+
+msgid "Cannot retry a mail with status {0}"
+msgstr "상태가 {0}인 메일을 다시 시도할 수 없습니다."
+
+msgid "Catch-all email addresses are not allowed for principals."
+msgstr "주체에게는 포괄 이메일 주소가 허용되지 않습니다."
+
+msgid "Category"
+msgstr "카테고리"
+
+msgid "Cc"
+msgstr "참조"
+
+msgid "Cc: "
+msgstr "참조: "
+
+msgid "Certificate"
+msgstr "인증서"
+
+msgid "Certificate ID"
+msgstr "인증서 ID"
+
+msgid "Certificate Path"
+msgstr "인증서 경로"
+
+msgid "Challenge Type"
+msgstr "챌린지 유형"
+
+msgid "Change Password"
+msgstr "비밀번호 변경"
+
+msgid "Changed"
+msgstr "변경됨"
+
+msgid "Changed By"
+msgstr "변경한 사람"
+
+msgid "Changes"
+msgstr "변경 사항"
+
+msgid "Changes History"
+msgstr "변경 내역"
+
+msgid "Charset"
+msgstr "문자셋"
+
+msgid "Check to disable push notifications for this folder."
+msgstr "이 폴더에 대한 푸시 알림을 비활성화하려면 선택하십시오."
+
+msgid "Check to disable push notifications for this mailbox."
+msgstr "이 사서함에 대한 푸시 알림을 비활성화하려면 선택하십시오."
+
+msgid "Check to enable spam detection."
+msgstr "스팸 감지를 활성화하려면 선택하세요."
+
+msgid "Checked if the user has indicated they wish to see this Address Book in their client."
+msgstr "사용자가 클라이언트에서 이 주소록을 보고 싶다고 표시했는지 확인합니다."
+
+msgid "Checked if the user has indicated they wish to see this Calendar in their client."
+msgstr "사용자가 클라이언트에서 이 캘린더를 보고 싶다고 표시했는지 확인합니다."
+
+msgid "Choose your preferred interface theme."
+msgstr "원하는 인터페이스 테마를 선택하세요."
+
+msgid "Cleanup"
+msgstr "대청소"
+
+msgid "Clear All (Esc)"
+msgstr "모두 지우기(Esc)"
+
+msgid "Clear All Mails"
+msgstr "모든 메일 지우기"
+
+msgid "Clear Cache"
+msgstr "캐시 지우기"
+
+msgid "Clear Filters"
+msgstr "필터 지우기"
+
+msgid "Clearing Cached Blobs..."
+msgstr "캐시된 Blob 지우는 중..."
+
+msgid "Clearing Cached Contact Cards..."
+msgstr "캐시된 연락처 카드 지우기..."
+
+msgid "Clearing Cached JMAP Connection..."
+msgstr "캐시된 JMAP 연결을 지우는 중..."
+
+msgid "Clearing Cached JMAP Identities..."
+msgstr "캐시된 JMAP ID 지우는 중..."
+
+msgid "Clearing Cached JMAP Mailboxes..."
+msgstr "캐시된 JMAP 메일함을 지우는 중..."
+
+msgid "Clearing Cached Mail Messages..."
+msgstr "캐시된 메일 메시지 지우기..."
+
+msgid "Click to copy"
+msgstr "복사하려면 클릭하세요."
+
+msgid "Client"
+msgstr "고객"
+
+msgid "Client IP"
+msgstr "클라이언트 IP"
+
+msgid "Cloudflare"
+msgstr "클라우드플레어"
+
+msgid "Cluster"
+msgstr "무리"
+
+msgid "Cluster File"
+msgstr "클러스터 파일"
+
+msgid "Cluster IDs"
+msgstr "클러스터 ID"
+
+msgid "Cluster Settings"
+msgstr "클러스터 설정"
+
+msgid "Code copied to clipboard"
+msgstr "클립보드에 복사된 코드"
+
+msgid "Color"
+msgstr "색상"
+
+msgid "Color Scheme"
+msgstr "색 구성표"
+
+msgid "Color assigned to the mailbox for easy identification and UI customization."
+msgstr "손쉬운 식별 및 UI 사용자 정의를 위해 사서함에 색상이 할당되었습니다."
+
+msgid "Color scheme updated to {0}."
+msgstr "색 구성표가 {0}으로 업데이트되었습니다."
+
+msgid "Command"
+msgstr ""
+
+msgid "Command '{0}' failed with exit code {1}"
+msgstr "'{0}' 명령이 종료 코드 {1}로 인해 실패했습니다"
+
+msgid "Commands"
+msgstr "명령"
+
+msgid "Comment"
+msgstr "댓글"
+
+msgid "Comment sent along with the change by the user that made it."
+msgstr "사용자가 변경한 내용과 함께 보낸 설명 it."
+
+msgid "Completed"
+msgstr "완료"
+
+msgid "Completed At"
+msgstr "완료 시간"
+
+msgid "Completed At - Started At"
+msgstr "완료 시간 - 시작 시간"
+
+msgid "Compose"
+msgstr "작성"
+
+msgid "Compose (C)"
+msgstr "작성 (C)"
+
+msgid "Compose Mail"
+msgstr "메일 작성"
+
+msgid "Compose New Mail"
+msgstr "새 메일 작성"
+
+msgid "Compression"
+msgstr "압축"
+
+msgid "Concurrent"
+msgstr "동시"
+
+msgid "Config"
+msgstr "구성"
+
+msgid "Config Checksum"
+msgstr "구성 체크섬"
+
+msgid "Config does not belong to the selected server."
+msgstr "구성이 선택한 서버에 속하지 않습니다."
+
+msgid "Config is required."
+msgstr "구성이 필요합니다."
+
+msgid "Configuration"
+msgstr "구성"
+
+msgid "Configuration updated successfully, but the response from the server was unexpected: {response}"
+msgstr "구성이 성공적으로 업데이트되었지만 서버의 응답이 예상치 못했습니다. {응답}"
+
+msgid "Configuration updated successfully."
+msgstr "구성이 성공적으로 업데이트되었습니다."
+
+msgid "Configure"
+msgstr "구성"
+
+msgid "Confirm"
+msgstr "확인"
+
+msgid "Confirm New Password"
+msgstr "새 비밀번호 확인"
+
+msgid "Confirmed"
+msgstr "확인됨"
+
+msgid "Connection timeout to the database."
+msgstr "데이터베이스 연결 시간 초과."
+
+msgid "Console"
+msgstr "콘솔"
+
+msgid "Contact Card"
+msgstr "연락처 카드"
+
+msgid "Contact Card Address"
+msgstr "연락처 카드 주소"
+
+msgid "Contact Card Address Book"
+msgstr "연락처 카드 주소록"
+
+msgid "Contact Card Creation Error"
+msgstr "연락처 카드 생성 오류"
+
+msgid "Contact Card Email"
+msgstr "연락처 카드 이메일"
+
+msgid "Contact Card Not Found"
+msgstr "연락처 카드를 찾을 수 없음"
+
+msgid "Contact Card Phone"
+msgstr "연락처 카드 전화"
+
+msgid "Contact Card Update Error"
+msgstr "연락처 카드 업데이트 오류"
+
+msgid "Contact Card with ID {0} not found in user {1}."
+msgstr "ID가 {0}인 연락처 카드를 사용자에서 찾을 수 없음 {1}."
+
+msgid "Contact Cards"
+msgstr "연락처 카드"
+
+msgid "Contact Cards deleted successfully."
+msgstr "연락처 카드가 삭제되었습니다."
+
+msgid "Contact Email"
+msgstr "연락처 이메일"
+
+msgid "Contact Emails"
+msgstr "연락처 이메일"
+
+msgid "Contact created."
+msgstr "연락처가 생성되었습니다."
+
+msgid "Contact deleted."
+msgstr "연락처가 삭제되었습니다."
+
+msgid "Contact updated."
+msgstr "연락처가 업데이트되었습니다."
+
+msgid "Contacts"
+msgstr "연락처"
+
+msgid "Contacts added."
+msgstr "연락처가 추가되었습니다."
+
+msgid "Contacts deleted."
+msgstr "연락처가 삭제되었습니다."
+
+msgid "Contacts removed."
+msgstr "연락처가 삭제되었습니다."
+
+msgid "Container"
+msgstr "컨테이너"
+
+msgid "Content"
+msgstr "콘텐츠"
+
+msgid "Content ID"
+msgstr "콘텐츠 ID"
+
+msgid "Content Type"
+msgstr "콘텐츠 유형"
+
+msgid "Contexts"
+msgstr ""
+
+msgid "Controls if the container restarts automatically."
+msgstr "컨테이너가 자동으로 다시 시작되는지 여부를 제어합니다."
+
+msgid "Controls the visibility of event details to users who have access to the calendar."
+msgstr "캘린더에 액세스할 수 있는 사용자에게 이벤트 세부 정보 표시 여부를 제어합니다."
+
+msgid "Copy Code"
+msgstr "코드 복사"
+
+msgid "Copy to Clipboard"
+msgstr "클립보드에 복사"
+
+msgid "Core storage unit where email metadata, folders, and various settings are stored. Essentially, it contains all the data except for large binary objects (blobs)."
+msgstr "이메일 메타데이터, 폴더 및 다양한 설정이 저장되는 핵심 저장 장치입니다. Essentially, it contains all the data except for large binary objects (blobs)."
+
+msgid "Could not connect to SpamAssassin (spamd). Please ensure it's running on {0}:{1}"
+msgstr ""
+
+msgid "Could not connect to {0}:{1}. Error: {2}"
+msgstr "Could not connect to {0}:{1}. 오류: {2}"
+
+msgid "Could not verify {0}:{1} record."
+msgstr "{0}:{1} 레코드를 확인할 수 없습니다."
+
+msgid "Count"
+msgstr "개수"
+
+msgid "Country"
+msgstr "국가"
+
+msgid "Create Account"
+msgstr "계정 생성"
+
+msgid "Create Contacts After Email Submit"
+msgstr "이메일 제출 후 연락처 생성"
+
+msgid "Create Contacts After Sending Email"
+msgstr "이메일 전송 후 연락처 생성"
+
+msgid "Create Export"
+msgstr "내보내기 생성"
+
+msgid "Create Import"
+msgstr "가져오기 생성"
+
+msgid "Create a new account"
+msgstr "새 계정 생성"
+
+msgid "Created"
+msgstr "생성됨"
+
+msgid "Created (UTC)"
+msgstr "작성일(UTC)"
+
+msgid "Created At"
+msgstr "작성 날짜"
+
+msgid "Created On"
+msgstr "생성 날짜"
+
+msgid "Created at"
+msgstr "생성 날짜"
+
+msgid "Creating Account..."
+msgstr "생성 중 계정..."
+
+msgid "Creating Domain..."
+msgstr "도메인 생성 중..."
+
+msgid "Creating Job..."
+msgstr "작업 생성 중..."
+
+msgid "Creation - Sent At"
+msgstr "생성 - 보낸 시간"
+
+msgid "Current Password"
+msgstr "현재 비밀번호"
+
+msgid "Current State (Email)"
+msgstr "현재 상태(이메일)"
+
+msgid "Custom"
+msgstr "사용자 정의"
+
+msgid "Custom Selection"
+msgstr "사용자 정의 선택"
+
+msgid "Cycle Theme"
+msgstr "주기 테마"
+
+msgid "DECLINED"
+msgstr "거부됨"
+
+msgid "DKIM"
+msgstr ""
+
+msgid "DKIM Alignment"
+msgstr "DKIM 정렬"
+
+msgid "DKIM Description"
+msgstr "DKIM 설명"
+
+msgid "DKIM Keys can only be rotated for Domain principals."
+msgstr "DKIM 키는 도메인 주체에 대해서만 순환될 수 있습니다."
+
+msgid "DKIM Keys rotated successfully."
+msgstr "DKIM 키가 성공적으로 순환되었습니다."
+
+msgid "DKIM Result"
+msgstr "DKIM 결과"
+
+msgid "DKIM Results"
+msgstr "DKIM 결과"
+
+msgid "DKIM signature can only be created for Domain principals."
+msgstr "DKIM 서명은 도메인 주체에 대해서만 생성될 수 있습니다."
+
+msgid "DKIM signature can only be deleted for Domain principals."
+msgstr "DKIM 서명은 도메인 주체에 대해서만 삭제할 수 있습니다."
+
+msgid "DMARC"
+msgstr ""
+
+msgid "DMARC Description"
+msgstr "DMARC 설명"
+
+msgid "DMARC Report"
+msgstr "DMARC 보고서"
+
+msgid "DMARC Report Detail"
+msgstr "DMARC 보고서 세부 정보"
+
+msgid "DMARC Report Viewer"
+msgstr "DMARC 보고서 뷰어"
+
+msgid "DMARC report removed successfully."
+msgstr "DMARC 보고서가 성공적으로 제거되었습니다."
+
+msgid "DNS Provider"
+msgstr "DNS 공급자"
+
+msgid "DNS Record"
+msgstr "DNS 레코드"
+
+msgid "DNS Record with the same host and type already exists."
+msgstr "호스트와 유형이 동일한 DNS 레코드가 이미 존재합니다."
+
+msgid "DNS Records"
+msgstr "DNS 레코드"
+
+msgid "DNS Records can only be refreshed for Domain principals."
+msgstr "DNS 레코드는 도메인 주체에 대해서만 새로 고칠 수 있습니다."
+
+msgid "DNS Records can only be verified for Domain principals."
+msgstr "DNS 레코드는 도메인 주체에 대해서만 확인할 수 있습니다."
+
+msgid "DNS Records for principal {0} not found in backend."
+msgstr "백엔드에서 {0} 주체에 대한 DNS 레코드를 찾을 수 없습니다."
+
+msgid "DNS Records refreshed successfully."
+msgstr "DNS 레코드가 성공적으로 새로 고쳐졌습니다."
+
+msgid "DNS Records verified successfully."
+msgstr "DNS 레코드가 성공적으로 확인되었습니다."
+
+msgid "DNS changes may take up to 48 hours to propagate globally."
+msgstr "DNS 변경 사항은 다음과 같습니다. 전 세계적으로 전파되는 데 최대 48시간이 소요됩니다."
+
+msgid "DNS provider or token not configured. Please manually add the {0} to the DNS provider for the domain {1}."
+msgstr "DNS 공급자 또는 토큰이 구성되지 않았습니다. {0}을(를) 도메인 {1}의 DNS 공급자에 수동으로 추가하십시오."
+
+msgid "DNS records for the domain {0} are not verified. Please ensure that the DNS records are correctly configured with your DNS provider."
+msgstr "도메인 {0}의 DNS 레코드가 확인되지 않았습니다. DNS 공급자를 통해 DNS 레코드가 올바르게 구성되었는지 확인하세요."
+
+msgid "DNS records verified."
+msgstr "DNS 레코드가 확인되었습니다."
+
+msgid "DNS verification failed."
+msgstr "DNS 확인에 실패했습니다."
+
+msgid "Daily"
+msgstr "매일"
+
+msgid "Dark Mode"
+msgstr "다크 모드"
+
+msgid "Data Center ID"
+msgstr "데이터 센터 ID"
+
+msgid "Data Exchange"
+msgstr "데이터 교환"
+
+msgid "Data Storage"
+msgstr "데이터 스토리지"
+
+msgid "Data center ID of the FoundationDB cluster."
+msgstr "FoundationDB 클러스터의 데이터 센터 ID."
+
+msgid "Database"
+msgstr "데이터베이스"
+
+msgid "Date: "
+msgstr "날짜: "
+
+msgid "Day"
+msgstr "일"
+
+msgid "Deactivate"
+msgstr "비활성화"
+
+msgid "Debug"
+msgstr "디버그"
+
+msgid "Decrypted payload exceeds maximum allowed size."
+msgstr "복호화된 페이로드가 허용되는 최대 크기를 초과했습니다."
+
+msgid "Decrypted push payload is not valid JSON."
+msgstr "복호화된 푸시 페이로드는 유효한 JSON이 아닙니다."
+
+msgid "Dedicated to indexing for full-text search, enhancing the speed and efficiency of text-based queries."
+msgstr "전체 텍스트 검색을 위한 인덱싱 전용으로 텍스트 기반 쿼리의 속도와 효율성을 향상시킵니다."
+
+msgid "Deduplicate by Message-ID"
+msgstr "중복 제거 기준 메시지-ID"
+
+msgid "Default"
+msgstr "기본"
+
+msgid "Default Email"
+msgstr "기본 이메일"
+
+msgid "Default Language"
+msgstr "기본 언어"
+
+msgid "Default Outgoing Email"
+msgstr "기본 발신 이메일"
+
+msgid "Default Outgoing Email {0} is not found in the identities of the JMAP account."
+msgstr "기본 발신 이메일 {0}을(를) JMAP 계정의 ID에서 찾을 수 없습니다."
+
+msgid "Default Signature"
+msgstr "기본 서명"
+
+msgid "Default email address used as the sender when composing new messages."
+msgstr "새 메시지를 작성할 때 보낸 사람으로 사용되는 기본 이메일 주소."
+
+msgid "Default language to use when language detection is not possible."
+msgstr "언어 감지가 불가능할 때 사용할 기본 언어."
+
+msgid "Define custom listeners for this mail server. If not set, the cluster’s listeners will be used."
+msgstr "이 메일 서버에 대한 사용자 정의 리스너를 정의합니다. 설정되지 않은 경우 클러스터의 리스너가 사용됩니다."
+
+msgid "Defines how the alert time is calculated."
+msgstr "경보 시간 계산 방법을 정의합니다."
+
+msgid "Defines how the container connects to the network."
+msgstr "컨테이너가 네트워크에 연결하는 방법을 정의합니다."
+
+msgid "Defines how the event repeats over time.\n<br><br>\nExample: \n<pre>{\n  \"frequency\": \"yearly\", \n  /*\n    REQUIRED.\n    Allowed values:\n      \"yearly\", \"monthly\", \"weekly\", \"daily\",\n      \"hourly\", \"minutely\", \"secondly\"\n  */\n\n  \"interval\": 1,\n  /*\n    OPTIONAL.\n    Integer ≥ 1.\n    Repeats every N units of `frequency`.\n  */\n\n  \"count\": 10,\n  /*\n    OPTIONAL.\n    Integer ≥ 1.\n    Number of total occurrences.\n    MUTUALLY EXCLUSIVE with `until`.\n  */\n\n  \"until\": \"2026-12-31T23:59:59Z\",\n  /*\n    OPTIONAL.\n    UTC date-time only (RFC 3339).\n    MUTUALLY EXCLUSIVE with `count`.\n  */\n\n  \"firstDayOfWeek\": \"mo\",\n  /*\n    OPTIONAL.\n    Allowed values:\n      \"mo\", \"tu\", \"we\", \"th\", \"fr\", \"sa\", \"su\"\n  */\n\n  \"bySecond\": [0, 30],\n  /*\n    OPTIONAL.\n    Each value: 0–60\n  */\n\n  \"byMinute\": [0, 15, 30, 45],\n  /*\n    OPTIONAL.\n    Each value: 0–59\n  */\n\n  \"byHour\": [9, 12, 18],\n  /*\n    OPTIONAL.\n    Each value: 0–23\n  */\n\n  \"byDay\": [\n    \"mo\",\n    \"we\",\n    \"fr\",\n    \"1mo\",\n    \"-1fr\"\n  ],\n  /*\n    OPTIONAL.\n    Allowed values:\n      \"mo\"  – Monday\n      \"tu\"  – Tuesday\n      \"we\"  – Wednesday\n      \"th\"  – Thursday\n      \"fr\"  – Friday\n      \"sa\"  – Saturday\n      \"su\"  – Sunday\n\n    Positional weekdays (monthly/yearly only):\n      \"1mo\"   → first Monday\n      \"2tu\"   → second Tuesday\n      \"-1fr\"  → last Friday\n  */\n\n  \"byMonthDay\": [1, 15, -1],\n  /*\n    OPTIONAL.\n    Values:\n      1–31   → day of month\n      -1     → last day of month\n      -2     → second-to-last day\n  */\n\n  \"byYearDay\": [1, 100, -1],\n  /*\n    OPTIONAL.\n    Values:\n      1–366  → day of year\n      -1     → last day of year\n  */\n\n  \"byWeekNo\": [1, 26, 52, -1],\n  /*\n    OPTIONAL.\n    ISO week numbers.\n    Values:\n      1–53\n      -1 → last week of year\n    VALID ONLY when frequency = \"yearly\"\n  */\n\n  \"byMonth\": [1, 6, 12],\n  /*\n    OPTIONAL.\n    Values:\n      1  → January\n      6  → June\n      12 → December\n  */\n\n  \"bySetPosition\": [1, -1]\n  /*\n    OPTIONAL.\n    Selects specific occurrences AFTER all other rules are applied.\n    Values:\n      Positive → nth occurrence\n      Negative → nth-from-last occurrence\n  */\n}\n</pre>"
+msgstr "시간이 지남에 따라 이벤트가 반복되는 방식을 정의합니다.\n<br><br>\n예: \n<사전>{\n  \"빈도\": \"매년\", \n  /*\n    필수입니다.\n    허용되는 값:\n      \"매년\", \"월별\", \"주별\", \"매일\",\n      \"매시간\", \"분마다\", \"초마다\"\n  */\n\n  \"간격\": 1,\n  /*\n    선택사항.\n    정수 ≥ 1.\n    '주파수'의 N 단위마다 반복합니다.\n  */\n\n  \"개수\": 10,\n  /*\n    선택사항.\n    정수 ≥ 1.\n    총 발생 횟수입니다.\n    'until'과 상호 배타적입니다.\n  */\n\n  \"까지\": \"2026-12-31T23:59:59Z\",\n  /*\n    선택사항.\n    UTC 날짜-시간만(RFC 3339).\n    `count`와 함께 사용할 수 있습니다.\n  */\n\n  \"firstDayOfWeek\": \"월\",\n  /*\n    선택사항.\n    허용되는 값:\n      \"mo\", \"tu\", \"we\", \"th\", \"fr\", \"sa\", \"su\"\n  */\n\n  \"bySecond\": [0, 30],\n  /*\n    선택사항.\n    각 값: 0–60\n  */\n\n  \"분별\": [0, 15, 30, 45],\n  /*\n    선택사항.\n    각 값: 0–59\n  */\n\n  \"시간별\": [9, 12, 18],\n  /*\n    선택사항.\n    각 값: 0–23\n  */\n\n  \"별일\": [\n    \"모\",\n    \"우리\",\n    \"프랑스\",\n    \"1개월\",\n    \"-1fr\"\n  ],\n  /*\n    선택사항.\n    허용되는 값:\n      \"mo\" – 월요일\n      \"tu\" – 화요일\n      \"우리\" – 수요일\n      \"일\" – 목요일\n      \"fr\" – 금요일\n      \"sa\" – 토요일\n      \"수\" – 일요일\n\n    위치별 평일(월별/연별만 해당):\n      \"1mo\" → 첫 번째 월요일\n      \"2tu\" → 둘째 화요일\n      \"-1fr\" → 지난 금요일\n  */\n\n  \"월별일\": [1, 15, -1],\n  /*\n    선택사항.\n    값:\n      1~31 → 해당 월의 일\n      -1 → 해당 월의 마지막 날\n      -2 → 마지막 날부터 두 번째 날\n  */\n\n  \"byYearDay\": [1, 100, -1],\n  /*\n    선택사항.\n    값:\n      1–366 → 연중 일\n      -1 → 올해의 마지막 날\n  */\n\n  \"byWeekNo\": [1, 26, 52, -1],\n  /*\n    선택사항.\n    ISO 주 번호.\n    값:\n      1~53\n      -1 → 해당 연도의 마지막 주\n    빈도 = \"연간\"인 경우에만 유효합니다.\n  */\n\n  \"월별\": [1, 6, 12],\n  /*\n    선택사항.\n    값:\n      1 → 1월\n      6 → 6월\n      12 → 12월\n  */\n\n  \"bySetPosition\": [1, -1]\n  /*\n    선택사항.\n    다른 모든 규칙이 적용된 후 특정 항목을 선택합니다.\n    값:\n      양수 → n번째 발생\n      음수 → 마지막에서 n번째 발생\n  */\n}\n</pre>"
+
+msgid "Defines the maximum file size for file uploads to the server."
+msgstr "서버에 파일 업로드를 위한 최대 파일 크기를 정의합니다."
+
+msgid "Defines the maximum size of a single request, in bytes, that the server will accept."
+msgstr "|서버가 수락할 단일 요청의 최대 크기(바이트)를 정의합니다."
+
+msgid "Defines the participant’s role(s) in the event.\n<br>\nExample: <code>{\n  \"organizer\": false,\n  \"owner\": false,\n  \"chair\": true,\n  \"optional\": false,\n  \"required\": true,\n  \"informational\": false\n}</code>"
+msgstr "이벤트에서 참가자의 역할을 정의합니다.\n<br>\n예: <코드>{\n  \"주최자\": 거짓,\n  \"소유자\": 거짓,\n  \"의자\": 사실,\n  \"선택 사항\": 거짓,\n  \"필수\": 사실,\n  \"정보\": 거짓\n}</code>"
+
+msgid "Defines the sort order of Address Books when presented in the client's UI."
+msgstr "클라이언트 UI에 표시될 때 주소록의 정렬 순서를 정의합니다."
+
+msgid "Defines the sort order of Mailboxes when presented in the client's UI."
+msgstr "클라이언트 UI에 표시될 때 사서함의 정렬 순서를 정의합니다."
+
+msgid "Defines the sort order of calendars when presented in the client's UI."
+msgstr "클라이언트 UI에 표시될 때 달력의 정렬 순서를 정의합니다."
+
+msgid "Defines the total size of files that a user can upload within a certain period."
+msgstr "특정 기간 내에 사용자가 업로드할 수 있는 파일의 총 크기를 정의합니다."
+
+msgid "Delete"
+msgstr "삭제"
+
+msgid "Delete Address Book"
+msgstr "주소록 삭제"
+
+msgid "Delete Contact"
+msgstr "연락처 삭제"
+
+msgid "Delete Contacts"
+msgstr "연락처 삭제"
+
+msgid "Delete Domain"
+msgstr "도메인 삭제"
+
+msgid "Delete Email After Sending"
+msgstr "보내기 후 이메일 삭제"
+
+msgid "Delete Folder"
+msgstr "폴더 삭제"
+
+msgid "Delete Invites"
+msgstr "초대 삭제"
+
+msgid "Delete Mailing List"
+msgstr "메일링 목록 삭제"
+
+msgid "Delete Mailing Lists"
+msgstr "메일링 삭제 목록"
+
+msgid "Delete Member"
+msgstr "회원 삭제"
+
+msgid "Delete Members"
+msgstr "회원 삭제"
+
+msgid "Delete Message"
+msgstr "메시지 삭제"
+
+msgid "Delete Newsletter After Sending"
+msgstr "보내기 후 뉴스레터 삭제"
+
+msgid "Delete Now"
+msgstr "지금 삭제"
+
+msgid "Delete Sieve Script"
+msgstr "시브 스크립트 삭제"
+
+msgid "Delete Thread"
+msgstr "스레드 삭제"
+
+msgid "Delete Thread (Shift+Delete)"
+msgstr "스레드 삭제(Shift+Delete)"
+
+msgid "Delete Threads (Shift+Delete)"
+msgstr "스레드 삭제(Shift+Delete)"
+
+msgid "Delete {0} {1}"
+msgstr "{0} 삭제 {1}"
+
+msgid "Delete {0} {1} permanently?"
+msgstr "{0} 삭제 {1} 영구적으로?"
+
+msgid "Deleting..."
+msgstr "삭제 중..."
+
+msgid "Delivery Mode"
+msgstr "배달 모드"
+
+msgid "Delivery cancelled successfully."
+msgstr "배달이 성공적으로 취소되었습니다."
+
+msgid "Delivery retried successfully."
+msgstr "배달이 다시 시도되었습니다."
+
+msgid "Depends On"
+msgstr "다음에 따라 달라집니다"
+
+msgid "Deploy"
+msgstr "배포"
+
+msgid "Deploy of Stalwart initiated."
+msgstr "Stalwart 배포가 시작되었습니다."
+
+msgid "Deploying Configuration..."
+msgstr "구성 배포 중..."
+
+msgid "Deployment"
+msgstr "배포"
+
+msgid "Describes the nature of the event change."
+msgstr "이벤트 변경의 특성을 설명합니다."
+
+msgid "Description"
+msgstr "설명"
+
+msgid "Description of this quota."
+msgstr "이 할당량에 대한 설명"
+
+msgid "Destroy After Submit"
+msgstr "제출 후 폐기"
+
+msgid "Destroy Email After Submit"
+msgstr "제출 후 이메일 폐기"
+
+msgid "Destroy Newsletter After Submit"
+msgstr "제출 후 뉴스레터 폐기"
+
+msgid "Destroyed"
+msgstr "파기됨"
+
+msgid "Details"
+msgstr "세부 정보"
+
+msgid "Determines how early before expiration the certificate should be renewed."
+msgstr "인증서 만료 전 얼마나 일찍 갱신해야 하는지 결정합니다."
+
+msgid "Determines the maximum number of change objects that a Changes method can return."
+msgstr "Changes 메서드에서 수행할 수 있는 최대 변경 개체 수를 결정합니다. 반환."
+
+msgid "Determines the maximum number of objects that can be fetched in a single method call."
+msgstr "단일 메소드 호출에서 가져올 수 있는 최대 객체 수를 결정합니다."
+
+msgid "Determines the maximum size for an email message."
+msgstr "이메일 메시지의 최대 크기를 결정합니다."
+
+msgid "Device Client ID"
+msgstr ""
+
+msgid "DigitalOcean"
+msgstr ""
+
+msgid "Directory ID"
+msgstr "디렉터리 ID"
+
+msgid "Directory Storage"
+msgstr "디렉터리 스토리지"
+
+msgid "Directory URL"
+msgstr "디렉터리 URL"
+
+msgid "Disable"
+msgstr "비활성화"
+
+msgid "Disable Push Notification"
+msgstr "푸시 알림 비활성화"
+
+msgid "Disable Push Notifications"
+msgstr "푸시 알림 비활성화"
+
+msgid "Disable email delivery to local domains and perform an MX lookup to route emails externally."
+msgstr "로컬 도메인으로 이메일 전달을 비활성화하고 MX 조회를 수행하여 이메일 라우팅 외부적으로."
+
+msgid "Disable to stop sending and receiving emails form this cluster."
+msgstr "이 클러스터에서 이메일 보내기 및 받기를 중지하려면 비활성화하세요."
+
+msgid "Disable to stop this mail server from sending or receiving emails."
+msgstr "이 메일 서버에서 이메일 보내기 또는 받기를 중지하려면 비활성화하세요."
+
+msgid "Disabled"
+msgstr "비활성화됨"
+
+msgid "Disabling Push Notifications..."
+msgstr "푸시 알림 비활성화 중..."
+
+msgid "Discard"
+msgstr "삭제"
+
+msgid "Discard ({0}+D)"
+msgstr "삭제({0}+D)"
+
+msgid "Discard Draft"
+msgstr "초안 삭제"
+
+msgid "Display"
+msgstr "표시"
+
+msgid "Display Name"
+msgstr "표시 이름"
+
+msgid "Display name of the Sieve script."
+msgstr "Sieve 스크립트의 표시 이름."
+
+msgid "Disposition"
+msgstr ""
+
+msgid "Docker image with tag (e.g. stalwartlabs/stalwart:latest, redis:7-alpine)."
+msgstr "태그가 있는 Docker 이미지(예: stalwartlabs/stalwart:latest, redis:7-alpine)."
+
+msgid "Domain"
+msgstr "도메인"
+
+msgid "Domain Name"
+msgstr "도메인 이름"
+
+msgid "Domain Policy"
+msgstr "도메인 정책"
+
+msgid "Domain Request"
+msgstr "도메인 요청"
+
+msgid "Domain Verification Failed"
+msgstr "도메인 확인 실패"
+
+msgid "Domain Verification Successful"
+msgstr "도메인 확인 성공"
+
+msgid "Domain is already verified and created."
+msgstr "도메인이 이미 확인되었으며 생성되었습니다."
+
+msgid "Domain is mandatory."
+msgstr "도메인은 필수입니다."
+
+msgid "Domain settings updated."
+msgstr "도메인 설정이 업데이트되었습니다."
+
+msgid "Domain {0} already registered."
+msgstr "도메인 {0}이(가) 이미 등록되었습니다."
+
+msgid "Domain {0} has already been registered."
+msgstr "도메인 {0}이(가) 이미 등록되었습니다."
+
+msgid "Domain {0} is not allowed for signup."
+msgstr "도메인 {0}은(는) 가입이 허용되지 않습니다."
+
+msgid "Domain {0} is not verified."
+msgstr "도메인 {0}은(는) 확인되지 않습니다."
+
+msgid "Domain {0} not found."
+msgstr "도메인 {0}을(를) 찾을 수 없습니다."
+
+msgid "Domains"
+msgstr "도메인"
+
+msgid "Domains allowed for signup."
+msgstr "가입이 허용되는 도메인."
+
+msgid "Download"
+msgstr "다운로드"
+
+msgid "Draft"
+msgstr "초안"
+
+msgid "Draft discarded."
+msgstr "초안 삭제되었습니다."
+
+msgid "Draft saved."
+msgstr "초안이 저장되었습니다."
+
+msgid "Drafted"
+msgstr "초안 작성"
+
+msgid "Drafted After (Seconds)"
+msgstr "초안 작성 시간(초)"
+
+msgid "Drafted At"
+msgstr "초안 작성 시간"
+
+msgid "Drafted At - Creation"
+msgstr "초안 작성 시간 - 생성"
+
+msgid "Drop files to upload"
+msgstr "업로드할 파일 삭제"
+
+msgid "Duplicate Mailbox Settings"
+msgstr "중복된 사서함 설정"
+
+msgid "Duplicate Record"
+msgstr "중복 레코드"
+
+msgid "Duration"
+msgstr "기간"
+
+msgid "Duration (Seconds)"
+msgstr "기간(초)"
+
+msgid "Duration is required for non-draft events."
+msgstr "초안이 아닌 이벤트에는 기간이 필요합니다."
+
+msgid "E-mail"
+msgstr "이메일"
+
+msgid "E-mail Size (Bytes)"
+msgstr "이메일 크기(바이트)"
+
+msgid "ECDH P-256 private key used to decrypt incoming encrypted push notifications."
+msgstr "ECDH P-256 개인 키는 수신되는 암호화된 푸시 알림을 해독하는 데 사용됩니다."
+
+msgid "ECDH key exchange failed."
+msgstr "ECDH 키 교환에 실패했습니다."
+
+msgid "Edit"
+msgstr "편집"
+
+msgid "Edit Draft"
+msgstr "초안 편집"
+
+msgid "Edit General Information"
+msgstr "일반 정보 편집"
+
+msgid "Edit Invite"
+msgstr "편집 초대"
+
+msgid "Edit Photo"
+msgstr "사진 편집"
+
+msgid "Edit Quota Usage"
+msgstr "할당량 사용량 편집"
+
+msgid "Edit Sieve Script"
+msgstr "Sieve 스크립트 편집"
+
+msgid "Edit Signature"
+msgstr "서명 편집"
+
+msgid "Either blob_id or file_url is required for attachments."
+msgstr "첨부 파일에는 blob_id 또는 file_url이 필요합니다."
+
+msgid "Either condition is met"
+msgstr "조건이 충족됩니다"
+
+msgid "Either file path or file data is required."
+msgstr "파일 경로 또는 파일 데이터가 필요합니다."
+
+msgid "Either key or IP flag is required."
+msgstr "키 또는 IP 플래그가 필요합니다."
+
+msgid "Either name or file URL is required."
+msgstr "이름 또는 파일 URL이 필요합니다."
+
+msgid "ElasticSearch"
+msgstr ""
+
+msgid "Email"
+msgstr "이메일"
+
+msgid "Email Address"
+msgstr "이메일 주소"
+
+msgid "Email Addresses"
+msgstr "이메일 주소"
+
+msgid "Email Deliverability"
+msgstr "이메일 전달 가능성"
+
+msgid "Email Limits"
+msgstr "이메일 제한"
+
+msgid "Email Transport Security Records"
+msgstr "이메일 전송 보안 기록"
+
+msgid "Email address blocked."
+msgstr "이메일 주소가 차단되었습니다."
+
+msgid "Email address or username used to sign in to your JMAP account."
+msgstr "JMAP 계정에 로그인하는 데 사용되는 이메일 주소 또는 사용자 이름."
+
+msgid "Email address unblocked."
+msgstr "이메일 주소가 차단 해제되었습니다."
+
+msgid "Email address {0} is not associated with the user {1}."
+msgstr "이메일 주소 {0}이(가) 사용자 {1}과(와) 연결되어 있지 않습니다."
+
+msgid "Email addresses unblocked."
+msgstr "이메일 주소가 차단 해제되었습니다."
+
+msgid "Email authentication records that verify your domain and protect outgoing mail from spoofing."
+msgstr "도메인을 확인하고 스푸핑으로부터 보내는 메일을 보호하는 이메일 인증 기록입니다."
+
+msgid "Email does not have a blob ID."
+msgstr "이메일에 blob ID가 없습니다."
+
+msgid "Email domain {0} does not match with domain {1}."
+msgstr "이메일 도메인 {0}이(가) 도메인 {1}과(와) 일치하지 않습니다."
+
+msgid "Email is required to fetch avatar."
+msgstr "이메일 주소는 다음과 같습니다. 아바타를 가져옵니다."
+
+msgid "Email is required to send invite"
+msgstr "초대를 보내려면 이메일이 필요합니다."
+
+msgid "Email must have a valid non-future Received or Date header."
+msgstr "이메일에는 미래가 아닌 유효한 수신 또는 날짜 헤더가 있어야 합니다."
+
+msgid "Email processing aborted: {retries} out of {total_count} emails failed ({failure_rate:.2%} failure rate). Please investigate the issue before retrying."
+msgstr "이메일 처리가 중단되었습니다. 이메일 처리가 중단되었습니다. 이메일 {total_count}개 중 {retries}개가 실패했습니다({failure_rate:.2%} 실패율). 다시 시도하기 전에 문제를 조사하십시오."
+
+msgid "Emails"
+msgstr "이메일"
+
+msgid "Emails From"
+msgstr "이메일 보낸 사람"
+
+msgid "Emails from these addresses will be automatically moved to this folder."
+msgstr "이 주소에서 보낸 이메일은 자동으로 이 폴더로 이동됩니다."
+
+msgid "Emails with these keywords in the subject will be automatically moved to this folder."
+msgstr "제목에 이러한 키워드가 포함된 이메일은 자동으로 이 폴더로 이동됩니다."
+
+msgid "Empty {0}"
+msgstr "빈 {0}"
+
+msgid "Enable"
+msgstr "활성화"
+
+msgid "Enable Calendar Searching"
+msgstr "캘린더 검색 활성화"
+
+msgid "Enable Contacts Searching"
+msgstr "연락처 검색 활성화"
+
+msgid "Enable Email Searching"
+msgstr "이메일 검색 활성화"
+
+msgid "Enable Push Notifications"
+msgstr "푸시 알림 활성화"
+
+msgid "Enable Spam Detection"
+msgstr "스팸 활성화 검색"
+
+msgid "Enable TLS"
+msgstr "TLS 활성화"
+
+msgid "Enable Tracing Searching"
+msgstr "추적 검색 활성화"
+
+msgid "Enable encryption at rest"
+msgstr "미사용 암호화 활성화"
+
+msgid "Enable full-text search indexing for calendar data."
+msgstr "캘린더 데이터에 대한 전체 텍스트 검색 인덱싱을 활성화합니다."
+
+msgid "Enable full-text search indexing for contacts data."
+msgstr "연락처 데이터에 대한 전체 텍스트 검색 인덱싱을 활성화합니다."
+
+msgid "Enable full-text search indexing for email content and metadata."
+msgstr "이메일 콘텐츠 및 메타데이터에 대한 전체 텍스트 검색 인덱싱을 활성화합니다."
+
+msgid "Enable full-text search indexing for tracing data."
+msgstr "추적 데이터에 대한 전체 텍스트 검색 인덱싱을 활성화합니다."
+
+msgid "Enable proxy protocol for connections from these networks."
+msgstr "이러한 네트워크의 연결에 대해 프록시 프로토콜을 활성화합니다."
+
+msgid "Enable the Prometheus metrics endpoint."
+msgstr "Prometheus 지표 엔드포인트를 활성화합니다."
+
+msgid "Enabled"
+msgstr "활성화됨"
+
+msgid "Enabling"
+msgstr "활성화 중"
+
+msgid "Enabling Push Notifications..."
+msgstr "푸시 알림 활성화 중..."
+
+msgid "Encrypt messages that are manually appended by the user using JMAP or IMAP."
+msgstr "JMAP 또는 IMAP을 사용하여 사용자가 수동으로 추가한 메시지를 암호화합니다."
+
+msgid "Encrypt on append"
+msgstr "추가 시 암호화"
+
+msgid "Encrypted payload missing ciphertext data."
+msgstr "암호화된 페이로드에 암호 텍스트 데이터가 누락되었습니다."
+
+msgid "Encrypted push payload is too short."
+msgstr "암호화된 푸시 페이로드가 너무 짧습니다."
+
+msgid "End"
+msgstr "끝"
+
+msgid "Ended At"
+msgstr "종료 시간"
+
+msgid "Ended At - Started At"
+msgstr "종료 시간 - 시작됨 At"
+
+msgid "Endpoint"
+msgstr ""
+
+msgid "Enqueue"
+msgstr ""
+
+msgid "Enter email address"
+msgstr "이메일 주소 입력"
+
+msgid "Env ID"
+msgstr ""
+
+msgid "Envelope From"
+msgstr ""
+
+msgid "Envelope To"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Error Log"
+msgstr ""
+
+msgid "Error Message"
+msgstr ""
+
+msgid "Error parsing playbook {0}: {1}"
+msgstr "Playbook {0} 구문 분석 오류: {1}"
+
+msgid "Error uploading attachment"
+msgstr "첨부 파일 업로드 오류"
+
+msgid "Establishes the maximum length of a mailbox name."
+msgstr "사서함 이름의 최대 길이를 설정합니다."
+
+msgid "Establishes the maximum number of objects that can be modified in a single method call."
+msgstr "단일 메서드 호출에서 수정할 수 있는 최대 객체 수를 설정합니다."
+
+msgid "Event"
+msgstr ""
+
+msgid "Event Alert"
+msgstr "Event 알림"
+
+msgid "Event Calendar"
+msgstr "이벤트 캘린더"
+
+msgid "Event Link"
+msgstr "이벤트 링크"
+
+msgid "Event Location"
+msgstr "이벤트 위치"
+
+msgid "Event Notification"
+msgstr "이벤트 알림"
+
+msgid "Event Notification Deletion Error"
+msgstr "이벤트 알림 삭제 오류"
+
+msgid "Event Notification Deletion Error(s):<br>{0}"
+msgstr "이벤트 알림 삭제 오류:<br>{0}"
+
+msgid "Event Notification Not Found"
+msgstr "이벤트 알림을 찾을 수 없음"
+
+msgid "Event Notification are only created by the server, users cannot create them directly."
+msgstr "이벤트 알림은 서버에서만 생성되므로 사용자가 직접 생성할 수 없습니다."
+
+msgid "Event Notification cannot be updated by the user."
+msgstr "이벤트 알림은 사용자가 업데이트할 수 없습니다."
+
+msgid "Event Notification with ID {0} not found in user {1}."
+msgstr "ID가 {0}인 이벤트 알림을 사용자 {1}에게서 찾을 수 없습니다."
+
+msgid "Event Notifications deleted successfully."
+msgstr "이벤트 알림이 성공적으로 삭제되었습니다."
+
+msgid "Event Participant"
+msgstr "이벤트 참가자"
+
+msgid "Event Patch"
+msgstr "이벤트 패치"
+
+msgid "Example: <code>{\"mailboxIds\": { \"a\": true }, \"keywords\": {\"$seen\": true}}</code>"
+msgstr "예: <code>{\"mailboxIds\": { \"a\": true }, \"keywords\": {\"$seen\": true}}</code>"
+
+msgid "Exception"
+msgstr "예외"
+
+msgid "Exclude Attachments"
+msgstr "첨부 파일 제외"
+
+msgid "Exit Code"
+msgstr "종료 코드"
+
+msgid "Expect Reply"
+msgstr "답장 예상"
+
+msgid "Expire After (Hours)"
+msgstr "다음 시간 이후 만료"
+
+msgid "Expired"
+msgstr "만료됨"
+
+msgid "Expires"
+msgstr "만료"
+
+msgid "Expires At"
+msgstr "만료 시간"
+
+msgid "Export"
+msgstr "내보내기"
+
+msgid "Export Limit cannot exceed {0}."
+msgstr "내보내기 제한은 {0}을(를) 초과할 수 없습니다."
+
+msgid "Export Limit must be greater than zero."
+msgstr "내보내기 제한은 반드시 0보다 커야 합니다."
+
+msgid "Export Mail"
+msgstr "메일 내보내기"
+
+msgid "Export completed"
+msgstr "내보내기 완료됨"
+
+msgid "Export filter must be valid JSON."
+msgstr "내보내기 필터는 유효한 JSON이어야 합니다."
+
+msgid "Export in progress. We'll email you when it's ready."
+msgstr "내보내기가 진행 중입니다. 준비가 되면 이메일로 알려드리겠습니다."
+
+msgid "Export limit exceeded."
+msgstr "내보내기 한도가 초과되었습니다."
+
+msgid "Export logs"
+msgstr "로그 내보내기"
+
+msgid "Export spans"
+msgstr "범위 내보내기"
+
+msgid "External"
+msgstr "외부"
+
+msgid "External Account Binding"
+msgstr "외부 계정 바인딩"
+
+msgid "External Members"
+msgstr "외부 구성원"
+
+msgid "Extra Contact Info"
+msgstr "추가 연락처 정보"
+
+msgid "FQDN of the proxy or load balancer forwarding requests to mail servers."
+msgstr "메일 서버에 요청을 전달하는 프록시 또는 로드 밸런서의 FQDN."
+
+msgid "Failed"
+msgstr "실패"
+
+msgid "Failed to Draft"
+msgstr "초안 실패"
+
+msgid "Failed to Submit"
+msgstr "제출 실패"
+
+msgid "Failed to add principal {0}: {1}"
+msgstr "주 구성원 {0} 추가 실패: {1}"
+
+msgid "Failed to clean import output"
+msgstr "가져오기 출력 정리 실패"
+
+msgid "Failed to construct EC private key."
+msgstr "EC 개인 키 생성 실패"
+
+msgid "Failed to copy code"
+msgstr "코드 복사 실패"
+
+msgid "Failed to create DKIM signature for domain {0}"
+msgstr "도메인 {0}에 대한 DKIM 서명 생성 실패"
+
+msgid "Failed to decrypt push payload (authentication failed)."
+msgstr "실패 푸시 페이로드 복호화(인증 실패)."
+
+msgid "Failed to delete DKIM signature for domain {0}"
+msgstr "도메인 {0}에 대한 DKIM 서명 삭제 실패"
+
+msgid "Failed to delete mail(s)"
+msgstr "메일 삭제 실패"
+
+msgid "Failed to delete mail(s)."
+msgstr "메일 삭제 실패."
+
+msgid "Failed to empty mailbox"
+msgstr "사서함 비우기 실패"
+
+msgid "Failed to empty mailbox."
+msgstr "사서함 비우지 못했습니다."
+
+msgid "Failed to fetch In Reply To ID"
+msgstr "ID에 대한 회신 가져오기 실패"
+
+msgid "Failed to fetch blob(s)"
+msgstr "BLOB 가져오기 실패"
+
+msgid "Failed to fetch blob(s)."
+msgstr "BLOB 가져오기 실패."
+
+msgid "Failed to fetch changes"
+msgstr "가져오기 실패 변경 내용"
+
+msgid "Failed to fetch message IDs."
+msgstr "메시지 ID를 가져오지 못했습니다."
+
+msgid "Failed to generate SSH keypair"
+msgstr "SSH 키 쌍을 생성하지 못했습니다."
+
+msgid "Failed to handle JMAP Push Notification."
+msgstr "JMAP 푸시 알림을 처리하지 못했습니다."
+
+msgid "Failed to load attachment"
+msgstr "첨부 파일을 로드하지 못했습니다."
+
+msgid "Failed to load content from the compressed file."
+msgstr "압축 파일에서 콘텐츠를 로드하지 못했습니다."
+
+msgid "Failed to move mail(s) to mailbox"
+msgstr "메일을 사서함으로 이동하지 못했습니다."
+
+msgid "Failed to move mail(s) to mailbox."
+msgstr "메일을 사서함으로 이동하지 못했습니다."
+
+msgid "Failed to set flagged status for mail(s)"
+msgstr "메일에 플래그 상태를 설정하지 못했습니다."
+
+msgid "Failed to set flagged status for mail(s)."
+msgstr "메일에 플래그가 지정된 상태를 설정하지 못했습니다."
+
+msgid "Failed to set seen status for mail(s)"
+msgstr "메일의 확인 상태를 설정하지 못했습니다."
+
+msgid "Failed to set seen status for mail(s)."
+msgstr "메일의 확인 상태를 설정하지 못했습니다."
+
+msgid "Failed to set spam status for mail(s)"
+msgstr "메일의 스팸 상태 설정에 실패했습니다."
+
+msgid "Failed to set spam status for mail(s)."
+msgstr "메일의 스팸 상태 설정에 실패했습니다."
+
+msgid "Failed to update configuration"
+msgstr "구성 업데이트 실패"
+
+msgid "Failed to update password for Principal {0}. Response: {1}"
+msgstr "주체 {0}의 비밀번호를 업데이트하지 못했습니다. 응답: {1}"
+
+msgid "Failed to update principal {0}: {1}"
+msgstr "주 구성원 {0} 업데이트 실패: {1}"
+
+msgid "Failed to upload ICS data."
+msgstr "ICS 데이터 업로드 실패."
+
+msgid "Failed to upload {0}"
+msgstr "{0} 업로드 실패"
+
+msgid "Failed to verify DNS record."
+msgstr "DNS 레코드 확인 실패."
+
+msgid "Failures"
+msgstr "실패"
+
+msgid "File"
+msgstr "파일"
+
+msgid "File <code>{0}</code> not found."
+msgstr "<code>{0}</code> 파일을 찾을 수 없음."
+
+msgid "File Name"
+msgstr "파일 이름"
+
+msgid "File URL"
+msgstr "파일 URL"
+
+msgid "File not found: {0}"
+msgstr "파일을 찾을 수 없음: {0}"
+
+msgid "File path to the Private Key."
+msgstr "개인 키의 파일 경로."
+
+msgid "File path to the TLS certificate."
+msgstr "TLS의 파일 경로 인증서."
+
+msgid "File uploaded: {0}"
+msgstr "파일 업로드됨: {0}"
+
+msgid "Filebeat Stream Setup (FC)"
+msgstr "Filebeat 스트림 설정(FC)"
+
+msgid "Filebeat stream setup job has been created."
+msgstr "Filebeat 스트림 설정 작업이 생성되었습니다."
+
+msgid "Filesystem"
+msgstr "파일 시스템"
+
+msgid "Filter"
+msgstr "필터"
+
+msgid "Filters"
+msgstr "필터"
+
+msgid "First Name"
+msgstr "이름"
+
+msgid "Flagged"
+msgstr "플래그됨"
+
+msgid "Folder"
+msgstr "폴더"
+
+msgid "Folder Automation Disabled"
+msgstr "폴더 자동화 비활성화됨"
+
+msgid "Folder Automation enabled."
+msgstr "폴더 자동화 활성화됨"
+
+msgid "Folder Settings"
+msgstr "폴더 설정"
+
+msgid "Folder created."
+msgstr "폴더가 생성되었습니다."
+
+msgid "Folder deleted."
+msgstr "폴더가 삭제되었습니다."
+
+msgid "Folder updated."
+msgstr "폴더가 업데이트되었습니다."
+
+msgid "Force Verify and Create Account"
+msgstr "강제 확인 및 계정 만들기"
+
+msgid "Force Verify and Create Domain"
+msgstr "강제 확인 및 도메인 만들기"
+
+msgid "Forgot password?"
+msgstr "비밀번호를 잊으셨나요?"
+
+msgid "Format"
+msgstr "형식"
+
+msgid "Forward"
+msgstr "전달"
+
+msgid "Forward (F)"
+msgstr "전달(F)"
+
+msgid "Forward Mail"
+msgstr "메일 전달"
+
+msgid "Forwarded"
+msgstr "전달됨"
+
+msgid "Forwarded From (Email ID)"
+msgstr "전달한 사람(이메일 ID)"
+
+msgid "FoundationDB"
+msgstr ""
+
+msgid "Free"
+msgstr "무료"
+
+msgid "Free Busy Status"
+msgstr "한가함 사용 가능 상태"
+
+msgid "Frequency (Cron)"
+msgstr "빈도 (Cron)"
+
+msgid "From"
+msgstr ""
+
+msgid "From Date"
+msgstr ""
+
+msgid "From Email"
+msgstr ""
+
+msgid "From Email is required."
+msgstr "From Email이 필요합니다."
+
+msgid "From Host"
+msgstr ""
+
+msgid "From IP"
+msgstr ""
+
+msgid "From Name"
+msgstr ""
+
+msgid "From:"
+msgstr ""
+
+msgid "Full Name"
+msgstr "전체 이름"
+
+msgid "Full Text Index Storage"
+msgstr ""
+
+msgid "General"
+msgstr ""
+
+msgid "General Information"
+msgstr "일반 정보"
+
+msgid "Generate API Key"
+msgstr "API 키 생성"
+
+msgid "Generate Config"
+msgstr "구성 생성"
+
+msgid "Generate JMAP Push Keys"
+msgstr "JMAP 푸시 키 생성"
+
+msgid "Generate Keys"
+msgstr "키 생성"
+
+msgid "Generating API Key..."
+msgstr "API 키 생성 중..."
+
+msgid "Generating Config..."
+msgstr "구성 생성 중..."
+
+msgid "Generating keys…"
+msgstr "키 생성 중..."
+
+msgid "Get"
+msgstr "가져오기"
+
+msgid "Get the app on your device for easy access & a better experience!"
+msgstr "쉬운 액세스와 더 나은 경험을 위해 기기에 앱을 다운로드하세요!"
+
+msgid "Get the app on your iPhone for easy access & a better experience"
+msgstr "쉬운 액세스와 더 나은 경험을 위해 iPhone에 앱을 다운로드하세요"
+
+msgid "Getting Password..."
+msgstr "비밀번호 가져오는 중..."
+
+msgid "Getting Queue Status..."
+msgstr "큐 상태 가져오는 중..."
+
+msgid "Go to First Mail"
+msgstr "첫 번째 메일로 이동"
+
+msgid "Go to Last Mail"
+msgstr "마지막 메일로 이동"
+
+msgid "Go to Next Mail"
+msgstr "다음 메일로 이동"
+
+msgid "Go to Previous Mail"
+msgstr "이동 이전 메일로"
+
+msgid "Go to Starred"
+msgstr "별표 항목으로 이동"
+
+msgid "Go to {0}"
+msgstr "{0}으로 이동"
+
+msgid "GoDaddy"
+msgstr ""
+
+msgid "Gray"
+msgstr "회색"
+
+msgid "Green"
+msgstr "녹색"
+
+msgid "Group"
+msgstr "그룹"
+
+msgid "Group Messages By"
+msgstr "메시지 그룹화 기준"
+
+msgid "Group email messages in the list by time period (e.g., day or month)."
+msgstr "목록의 이메일 메시지를 기간(예: 일 또는 월)별로 그룹화합니다."
+
+msgid "Groups"
+msgstr "그룹"
+
+msgid "HMAC Key"
+msgstr "HMAC 키"
+
+msgid "HTML"
+msgstr ""
+
+msgid "HTML Body"
+msgstr "HTML 본문"
+
+msgid "HTTP"
+msgstr ""
+
+msgid "Hard Limit"
+msgstr "하드 제한"
+
+msgid "Has Attachment"
+msgstr "첨부 파일 있음"
+
+msgid "Has Cached JMAP Connection"
+msgstr "캐시된 JMAP 연결 있음"
+
+msgid "Has Cached JMAP Identities"
+msgstr "캐시된 JMAP ID 있음"
+
+msgid "Has Cached JMAP Mailboxes"
+msgstr "캐시된 JMAP 메일박스 있음"
+
+msgid "Has Keyword"
+msgstr "키워드 있음"
+
+msgid "Has attachments"
+msgstr "첨부 파일 있음"
+
+msgid "Has the user indicated they wish to see this Mailbox in their client?"
+msgstr "사용자가 클라이언트에서 이 메일함을 보고 싶다고 표시했습니까?"
+
+msgid "Header From"
+msgstr "헤더 보낸 사람"
+
+msgid "Headers"
+msgstr "헤더"
+
+msgid "Hello,"
+msgstr "안녕하세요,"
+
+msgid "Hetzner"
+msgstr ""
+
+msgid "Hide Attendees"
+msgstr "참석자 숨기기"
+
+msgid "High"
+msgstr "높음"
+
+msgid "Host"
+msgstr "호스트"
+
+msgid "Hostname"
+msgstr "호스트 이름"
+
+msgid "Hostname of the database server."
+msgstr "데이터베이스 서버의 호스트 이름"
+
+msgid "Hostname of the mail server."
+msgstr "호스트 이름 메일 서버."
+
+msgid "Hostname or IP of the SpamAssassin server."
+msgstr "SpamAssassin 서버의 호스트 이름 또는 IP."
+
+msgid "Hostnames covered by this ACME manager."
+msgstr "이 ACME 관리자가 다루는 호스트 이름."
+
+msgid "Hourly"
+msgstr "시간별"
+
+msgid "How long to keep deleted emails before they are permanently removed from the system."
+msgstr "삭제된 이메일이 시스템에서 영구적으로 제거되기 전에 보관할 기간."
+
+msgid "How long to keep messages in the Trash and Junk Mail folders before auto-expunging."
+msgstr "자동 삭제되기 전에 휴지통 및 정크 메일 폴더에 메시지를 보관할 기간."
+
+msgid "How many changes to keep in the history for each account. This is used to determine the changes that have occurred since the last time the client requested changes."
+msgstr "각 계정의 기록에 보관할 변경 사항 수. 이는 클라이언트가 마지막으로 변경을 요청한 이후 발생한 변경 사항을 확인하는 데 사용됩니다."
+
+msgid "How often to purge the database. Expects a cron expression.\n\n<br>\n<br>\n\n<pre>*  *  *  *  *\n┬  ┬  ┬  ┬  ┬\n│  │  │  │  │\n│  │  │  │  └ day of week (0 - 6) (0 is Sunday)\n│  │  │  └───── month (1 - 12)\n│  │  └────────── day of month (1 - 31)\n│  └─────────────── hour (0 - 23)\n└──────────────────── minute (0 - 59)\n\n---\n\n* - Any value\n/ - Step values\n</pre>"
+msgstr "데이터베이스를 제거하는 빈도입니다. 크론 표현식이 필요합니다.\n\n<br>\n<br>\n\n<예전>* * * * *\n┬ ┬ ┬ ┬ ┬\n│ │ │ │ │\n│ │ │ │ └ 요일(0 - 6) (0은 일요일)\n│ │ │ └───── 월(1~12)\n│ │ └────────── 일(1 - 31)\n│ └─────────────── 시 (0 - 23)\n└──────────────────── 분 (0 - 59)\n\n---\n\n* - 임의의 값\n/ - 단계 값\n</pre>"
+
+msgid "Hybrid Approach"
+msgstr "하이브리드 접근 방식"
+
+msgid "Hybrid Scanning Threshold"
+msgstr "하이브리드 검색 임계값"
+
+msgid "ICS Parsing Error"
+msgstr "ICS 구문 분석 오류"
+
+msgid "ICS Upload Error"
+msgstr "ICS 업로드 오류"
+
+msgid "ID"
+msgstr ""
+
+msgid "IMAP4"
+msgstr ""
+
+msgid "IP Address"
+msgstr "IP 주소"
+
+msgid "IP Based"
+msgstr "IP 기반"
+
+msgid "IP address whitelisted to make API calls."
+msgstr "API 호출을 위해 허용된 IP 주소입니다."
+
+msgid "IPv4 Addresses"
+msgstr "IPv4 주소"
+
+msgid "IPv6 Addresses"
+msgstr "IPv6 주소"
+
+msgid "Icon"
+msgstr "아이콘"
+
+msgid "Icon used to visually represent the mailbox in the UI."
+msgstr "UI에서 사서함을 시각적으로 나타내는 데 사용되는 아이콘."
+
+msgid "Identifier"
+msgstr "식별자"
+
+msgid "Identifies Mailboxes that have a particular common purpose (e.g., the \"inbox\"), regardless of the name property (which may be localised)."
+msgstr "이름 속성(현지화될 수 있음)에 관계없이 특정 공통 목적(예: \"받은 편지함\")을 가진 사서함을 식별합니다."
+
+msgid "Identifies the S3 account."
+msgstr "S3 계정을 식별합니다."
+
+msgid "Identifies the principal responsible for the event."
+msgstr " 이벤트."
+
+msgid "Identities deleted successfully."
+msgstr "ID가 성공적으로 삭제되었습니다."
+
+msgid "Identity"
+msgstr "ID"
+
+msgid "Identity Creation Error"
+msgstr "ID 생성 오류"
+
+msgid "Identity Deletion Error"
+msgstr "ID 삭제 오류"
+
+msgid "Identity Deletion Error(s):<br>{0}"
+msgstr "ID 삭제 오류:<br>{0}"
+
+msgid "Identity Not Found"
+msgstr "ID를 찾을 수 없음"
+
+msgid "Identity Update Error"
+msgstr "ID 업데이트 오류"
+
+msgid "Identity creation request failed."
+msgstr "ID 생성 요청에 실패했습니다."
+
+msgid "Identity updated."
+msgstr "ID가 업데이트되었습니다."
+
+msgid "Identity with ID {0} not found in user {1}."
+msgstr "ID가 {0}인 ID를 사용자 {1}에서 찾을 수 없습니다."
+
+msgid "If enabled, the message will be deleted after successful submission."
+msgstr "활성화되면 메시지는 다음과 같습니다. 제출 성공 후 삭제되었습니다."
+
+msgid "Ignore Errors"
+msgstr "오류 무시"
+
+msgid "Ignore in Developer Mode"
+msgstr "개발자 모드에서 무시"
+
+msgid "Ignored"
+msgstr "무시됨"
+
+msgid "Image"
+msgstr "이미지"
+
+msgid "Immediate"
+msgstr "즉시"
+
+msgid "Implicit TLS"
+msgstr "암시적 TLS"
+
+msgid "Import"
+msgstr "가져오기"
+
+msgid "Import File is required."
+msgstr "가져오기 파일이 필요합니다."
+
+msgid "Import Format is required."
+msgstr "가져오기 형식이 필요합니다."
+
+msgid "Import Mail"
+msgstr "메일 가져오기"
+
+msgid "Import completed"
+msgstr "가져오기 완료"
+
+msgid "Import in progress. We'll email you when it's ready."
+msgstr "가져오기가 진행 중입니다. 준비가 되면 이메일을 보내드리겠습니다."
+
+msgid "Import limit exceeded."
+msgstr "가져오기 한도를 초과했습니다."
+
+msgid "In Mailbox"
+msgstr "사서함에"
+
+msgid "In Progress"
+msgstr "진행 중"
+
+msgid "In Reply To (Email ID)"
+msgstr "답장(이메일 ID)"
+
+msgid "In Reply To (Message ID)"
+msgstr "회신 대상(메시지 ID)"
+
+msgid "In-Memory Storage"
+msgstr "인메모리 스토리지"
+
+msgid "Inbound"
+msgstr "인바운드"
+
+msgid "Inbound Mail Routing"
+msgstr "인바운드 메일 라우팅"
+
+msgid "Include Attachments"
+msgstr "첨부 파일 포함"
+
+msgid "Include In Availability"
+msgstr "가용성에 포함"
+
+msgid "Index"
+msgstr "색인"
+
+msgid "Indexing Batch Size"
+msgstr "인덱싱 배치 크기"
+
+msgid "Indicates how the event affects the availability."
+msgstr ""
+
+msgid "Indicates whether a response is expected from this participant."
+msgstr ""
+
+msgid "Indicates whether calendar-level default alerts should be applied."
+msgstr ""
+
+msgid "Indicates whether scheduling messages (invitations, updates, cancellations) should be sent when the event changes."
+msgstr ""
+
+msgid "Indicates whether the DNS zone is private."
+msgstr "DNS 영역이 비공개인지 여부를 나타냅니다."
+
+msgid "Indicates whether the attendee list should be hidden from other participants."
+msgstr ""
+
+msgid "Indicates whether the event is a draft and not yet finalized or sent."
+msgstr ""
+
+msgid "Indicates whether the event is displayed without a specific start time."
+msgstr "특정 시작 시간 없이 이벤트를 표시할지 여부를 나타냅니다."
+
+msgid "Indicates whether the organizer is allowed to invite additional participants."
+msgstr "주최자가 추가 참가자를 초대할 수 있는지 여부를 나타냅니다."
+
+msgid "Indicates whether the organizer may add themselves as a participant."
+msgstr "주최자가 자신을 참가자로 추가할 수 있는지 여부를 나타냅니다."
+
+msgid "Indicates whether this event is the original source event created by the organizer."
+msgstr "이 이벤트가 주최자가 만든 원본 소스 이벤트인지 여부를 나타냅니다."
+
+msgid "Indicates whether this script is currently active."
+msgstr "이 스크립트가 현재 활성 상태인지 여부를 나타냅니다."
+
+msgid "Individual"
+msgstr "개인"
+
+msgid "Info"
+msgstr "정보"
+
+msgid "Initializing Defaults..."
+msgstr "기본값 초기화 중..."
+
+msgid "Insert"
+msgstr "끼워 넣다"
+
+msgid "Install"
+msgstr "설치"
+
+msgid "Install Ansible (Job)"
+msgstr "Ansible(작업) 설치"
+
+msgid "Install Docker (Ansible Play)"
+msgstr "Docker(Ansible Play) 설치"
+
+msgid "Install Frappe Mail"
+msgstr "Frappe Mail 설치"
+
+msgid "Install Redis"
+msgstr "Redis 설치"
+
+msgid "Install Stalwart (Deployment)"
+msgstr "Stalwart(배포) 설치"
+
+msgid "Install of Ansible initiated."
+msgstr "Ansible 설치가 시작되었습니다."
+
+msgid "Install of Docker initiated."
+msgstr "Docker 설치가 시작되었습니다."
+
+msgid "Install of Stalwart initiated."
+msgstr "Stalwart 설치가 시작되었습니다."
+
+msgid "Installing Ansible..."
+msgstr "Ansible 설치 중..."
+
+msgid "Installing Docker..."
+msgstr "Docker 설치 중..."
+
+msgid "Installing Stalwart..."
+msgstr "Stalwart 설치 중..."
+
+msgid "Internal"
+msgstr "내부"
+
+msgid "Invalid Content-Encoding. Expected 'aes128gcm'."
+msgstr "잘못된 콘텐츠 인코딩. 'aes128gcm'이 필요합니다."
+
+msgid "Invalid JMAP Push Subscription keys: {0}"
+msgstr "잘못된 JMAP 푸시 구독 키: {0}"
+
+msgid "Invalid JMAP Structure"
+msgstr "잘못된 JMAP 구조"
+
+msgid "Invalid JMAP push private key length (must be 32 bytes)."
+msgstr "잘못된 JMAP 푸시 개인 키 길이(32바이트여야 함)."
+
+msgid "Invalid Maildir"
+msgstr "잘못된 Maildir"
+
+msgid "Invalid Maildir format in the following directories: {0}"
+msgstr "다음 디렉터리에 잘못된 Maildir 형식: {0}"
+
+msgid "Invalid Maildir format: at least one of {0} must exist and contain files."
+msgstr "잘못된 Maildir 형식: {0} 중 하나 이상이 존재하고 파일을 포함해야 합니다."
+
+msgid "Invalid OTP. Please try again."
+msgstr "잘못된 OTP. 다시 시도하십시오."
+
+msgid "Invalid Push Notification @type = {0}"
+msgstr "잘못된 푸시 알림 @type = {0}"
+
+msgid "Invalid base64 encoding in JMAP push keys."
+msgstr "JMAP 푸시 키의 base64 인코딩이 잘못되었습니다."
+
+msgid "Invalid date format: {0}"
+msgstr "잘못된 날짜 형식: {0}"
+
+msgid "Invalid delivery mode: {0}"
+msgstr "잘못된 전달 모드: {0}"
+
+msgid "Invalid domain name"
+msgstr "잘못된 도메인 이름"
+
+msgid "Invalid domain name provided for principal."
+msgstr "주체에게 잘못된 도메인 이름이 제공되었습니다."
+
+msgid "Invalid file URL: {0}. File URLs must start with '/files/' or '/private/files/'."
+msgstr "잘못된 파일 URL: {0}. 파일 URL은 '/files/' 또는 '/private/files/'로 시작해야 합니다."
+
+msgid "Invalid file type."
+msgstr "잘못된 파일 형식입니다."
+
+msgid "Invalid nonce base length derived."
+msgstr "잘못된 nonce 기본 길이가 파생되었습니다."
+
+msgid "Invalid padding delimiter in decrypted record."
+msgstr "해독된 레코드의 패딩 구분 기호가 잘못되었습니다."
+
+msgid "Invalid padding in decrypted record."
+msgstr "암호화된 레코드의 패딩 구분 기호가 잘못되었습니다."
+
+msgid "Invalid record size in encrypted payload."
+msgstr "암호화된 페이로드의 레코드 크기가 잘못되었습니다."
+
+msgid "Invalid sender public key in encrypted payload."
+msgstr "암호화된 페이로드의 보낸 사람 공개 키가 잘못되었습니다."
+
+msgid "Invitation Status"
+msgstr "초대 상태"
+
+msgid "Invite updated."
+msgstr "초대가 업데이트되었습니다."
+
+msgid "Invited By"
+msgstr "초대자"
+
+msgid "Invited By is required"
+msgstr "초대자가 필요합니다"
+
+msgid "Invites"
+msgstr "초대"
+
+msgid "Invites deleted."
+msgstr "초대 삭제됨"
+
+msgid "Is Expired"
+msgstr "만료됨"
+
+msgid "Is Verified"
+msgstr "확인됨"
+
+msgid "Is the user allowed to delete this Identity?"
+msgstr "있음 사용자가 이 ID를 삭제하도록 허용되었습니까?"
+
+msgid "It seems that the DNS provider or token is not configured in the {0}. Please manually add this DNS record to your provider for the root domain."
+msgstr "DNS 공급자 또는 토큰이 {0}에 구성되지 않은 것 같습니다. 이 DNS 레코드를 루트 도메인의 공급자에 수동으로 추가하십시오."
+
+msgid "Items in this mailbox will be automatically deleted after 30 days."
+msgstr "이 편지함에 있는 항목은 30일 후에 자동으로 삭제됩니다."
+
+msgid "JMAP"
+msgstr ""
+
+msgid "JMAP Connection"
+msgstr "JMAP 연결"
+
+msgid "JMAP Credentials"
+msgstr "JMAP 자격 증명"
+
+msgid "JMAP Identities"
+msgstr "JMAP ID"
+
+msgid "JMAP Identities can only be synced for Individual principals."
+msgstr "JMAP ID는 개별 주체에 대해서만 동기화될 수 있습니다."
+
+msgid "JMAP Mailboxes"
+msgstr "JMAP 메일박스"
+
+msgid "JMAP Push"
+msgstr "JMAP 푸시"
+
+msgid "JMAP Push Auth Secret"
+msgstr "JMAP 푸시 인증 비밀"
+
+msgid "JMAP Push Key (P256DH)"
+msgstr "JMAP 푸시 키 (P256DH)"
+
+msgid "JMAP Push Private Key"
+msgstr "JMAP 푸시 개인 키"
+
+msgid "JMAP Push Subscription decryption keys are not configured in Mail Settings."
+msgstr "JMAP 푸시 구독 암호 해독 키가 메일 설정에 구성되어 있지 않습니다."
+
+msgid "JMAP Push Subscription keys are incomplete. Use Actions → Generate JMAP Push Keys to regenerate them."
+msgstr "JMAP 푸시 구독 키가 불완전합니다. 작업 → JMAP 푸시 키 생성을 사용하여 다시 생성하세요."
+
+msgid "JMAP Push keys generated successfully."
+msgstr "JMAP 푸시 키가 성공적으로 생성되었습니다."
+
+msgid "JMAP State"
+msgstr "JMAP 상태"
+
+msgid "JMAP Username must be the same as the User name."
+msgstr "JMAP 사용자 이름은 사용자 이름과 동일해야 합니다."
+
+msgid "JMAP username for local user {0} must be the same as the system username."
+msgstr "로컬 사용자 {0}의 JMAP 사용자 이름은 시스템 사용자 이름과 동일해야 합니다."
+
+msgid "Job"
+msgstr ""
+
+msgid "John Doe"
+msgstr ""
+
+msgid "Joined On"
+msgstr ""
+
+msgid "Junk"
+msgstr "정크"
+
+msgid "Junk status restored."
+msgstr "정크 상태가 복원되었습니다."
+
+msgid "Key"
+msgstr "키"
+
+msgid "Key ID"
+msgstr "키 ID"
+
+msgid "Key Prefix"
+msgstr "키 접두사"
+
+msgid "Key derivation failed."
+msgstr "키 파생에 실패했습니다."
+
+msgid "Key for authenticating HTTP requests. Generate one via <i>Actions &gt; Generate API Key</i>."
+msgstr "HTTP 요청 인증을 위한 키입니다. <i>작업 &gt;을 통해 생성하세요. API 키 생성</i>."
+
+msgid "Key used for authorization with the DNS provider."
+msgstr "DNS 공급자 인증에 사용되는 키."
+
+msgid "Key-value storage used primarily by the SMTP server and anti-spam components."
+msgstr "SMTP 서버 및 스팸 방지 구성 요소에서 주로 사용되는 키-값 저장소."
+
+msgid "Keywords"
+msgstr "키워드"
+
+msgid "Kind"
+msgstr "종류"
+
+msgid "LMTP"
+msgstr ""
+
+msgid "LZ4"
+msgstr ""
+
+msgid "Label"
+msgstr "레이블"
+
+msgid "Language"
+msgstr "언어"
+
+msgid "Last Active"
+msgstr "마지막 활성"
+
+msgid "Last Active Sieve Script ID"
+msgstr "마지막 활성 Sieve 스크립트 ID"
+
+msgid "Last Checked At"
+msgstr "마지막으로 확인한 날짜"
+
+msgid "Last Name"
+msgstr "성"
+
+msgid "Last Received At"
+msgstr "마지막 수신 At"
+
+msgid "Last Received Mail"
+msgstr "마지막으로 받은 메일"
+
+msgid "Latest email state retrieved from the server for synchronization."
+msgstr "동기화를 위해 서버에서 검색된 최신 이메일 상태."
+
+msgid "Learn more."
+msgstr "자세히 알아보기"
+
+msgid "Light Mode"
+msgstr "라이트 모드"
+
+msgid "Limit"
+msgstr "제한"
+
+msgid "Limited Access to GoDaddy DNS APIs"
+msgstr "GoDaddy DNS API에 대한 액세스 제한"
+
+msgid "Limits the maximum number of e-mail message that can be parsed in a single request."
+msgstr "단일 요청에서 구문 분석할 수 있는 전자 메일 메시지의 최대 수를 제한합니다."
+
+msgid "Limits the maximum number of iCalendar items that can be parsed in a single request."
+msgstr "단일 요청에서 구문 분석할 수 있는 최대 iCalendar 항목 수를 제한합니다."
+
+msgid "Limits the maximum number of method calls that can be included in a single request."
+msgstr "단일 요청에 포함될 수 있는 최대 메서드 호출 수를 제한합니다."
+
+msgid "Limits the maximum number of vCard items that can be parsed in a single request."
+msgstr "단일 요청에서 구문 분석할 수 있는 최대 vCard 항목 수를 제한합니다."
+
+msgid "Link"
+msgstr "링크"
+
+msgid "Links"
+msgstr "링크"
+
+msgid "Links to external resources associated with the event."
+msgstr " event."
+
+msgid "Linode"
+msgstr ""
+
+msgid "List"
+msgstr ""
+
+msgid "List of port mappings, e.g. [\"25:25\", \"8080:8080\"]."
+msgstr "포트 매핑 목록, 예: [\"25:25\", \"8080:8080\"]."
+
+msgid "List of volume mappings, e.g. [\"/data:/opt/data\"]."
+msgstr "볼륨 매핑 목록(예: [\"/data:/opt/data\"]."
+
+msgid "Listener ID"
+msgstr "리스너 ID"
+
+msgid "Listeners"
+msgstr "리스너"
+
+msgid "Lists"
+msgstr "목록"
+
+msgid "Load Attachments"
+msgstr "첨부 파일 로드"
+
+msgid "Load MIME Message"
+msgstr "MIME 메시지 로드"
+
+msgid "Loading Attachments..."
+msgstr "첨부 파일 로드 중..."
+
+msgid "Loading MIME Message..."
+msgstr "MIME 메시지 로드 중..."
+
+msgid "Loading Mailboxes..."
+msgstr "사서함 로드 중..."
+
+msgid "Loading Vacation Response..."
+msgstr "휴가 응답 로드 중..."
+
+msgid "Loading more mails..."
+msgstr "더 보기 로드 중 메일..."
+
+msgid "Loading..."
+msgstr "로드 중..."
+
+msgid "Locale"
+msgstr "로케일"
+
+msgid "Locality"
+msgstr "지역"
+
+msgid "Location"
+msgstr "위치"
+
+msgid "Locations"
+msgstr "위치"
+
+msgid "Lock timeout must be greater than 0 seconds."
+msgstr "잠금 시간 초과는 0초보다 커야 합니다."
+
+msgid "Log & Metrics"
+msgstr "로그 및 측정항목"
+
+msgid "Log In"
+msgstr "로그인"
+
+msgid "Log Out"
+msgstr "로그아웃"
+
+msgid "Log file"
+msgstr "로그 파일"
+
+msgid "Logging Level"
+msgstr "로깅 수준"
+
+msgid "Look In"
+msgstr "찾아보기"
+
+msgid "Lossy mode"
+msgstr "손실 모드"
+
+msgid "Low"
+msgstr "낮음"
+
+msgid "MIME Message"
+msgstr "MIME 메시지"
+
+msgid "MX"
+msgstr ""
+
+msgid "Machine ID"
+msgstr "머신 ID"
+
+msgid "Machine ID in the FoundationDB cluster."
+msgstr "FoundationDB 클러스터의 머신 ID."
+
+msgid "Mail"
+msgstr "메일"
+
+msgid "Mail Account Request"
+msgstr "메일 계정 요청"
+
+msgid "Mail Admin"
+msgstr "메일 관리"
+
+msgid "Mail Backend Request Failed"
+msgstr "메일 백엔드 요청 실패"
+
+msgid "Mail Cluster"
+msgstr "메일 클러스터"
+
+msgid "Mail Cluster Store"
+msgstr "메일 클러스터 저장소"
+
+msgid "Mail Cluster Trace"
+msgstr "메일 클러스터 추적"
+
+msgid "Mail Cluster {0} already exists."
+msgstr "메일 클러스터 {0}이(가) 이미 존재합니다."
+
+msgid "Mail Cluster {0} is disabled."
+msgstr "메일 클러스터 {0}이(가) 비활성화되었습니다."
+
+msgid "Mail Data Exchange"
+msgstr "메일 데이터 교환"
+
+msgid "Mail Data {0} {1}"
+msgstr "메일 데이터 {0} {1}"
+
+msgid "Mail Domain Request"
+msgstr "메일 도메인 요청"
+
+msgid "Mail Exchange"
+msgstr "메일 교환"
+
+msgid "Mail Exchanges"
+msgstr "메일 교환"
+
+msgid "Mail ID"
+msgstr "메일 ID"
+
+msgid "Mail Message"
+msgstr "메일 메시지"
+
+msgid "Mail Message Mailbox"
+msgstr "메일 메시지 사서함"
+
+msgid "Mail Message Part"
+msgstr "메일 메시지 부분"
+
+msgid "Mail Message Recipient"
+msgstr "메일 메시지 수신자"
+
+msgid "Mail Message does not have a blob ID."
+msgstr "메일 메시지에 Blob ID가 없습니다."
+
+msgid "Mail Message {0} is a draft. Please send it before performing this action."
+msgstr "메일 메시지 {0}은(는) 초안입니다. 이 작업을 수행하기 전에 보내주세요."
+
+msgid "Mail Message {0} is not a draft."
+msgstr "메일 메시지 {0}은(는) 초안이 아닙니다."
+
+msgid "Mail Messages"
+msgstr "메일 메시지"
+
+msgid "Mail Messages deleted successfully."
+msgstr "메일 메시지가 성공적으로 삭제되었습니다."
+
+msgid "Mail Queue"
+msgstr "메일 대기열"
+
+msgid "Mail Server"
+msgstr "메일 서버"
+
+msgid "Mail Server ACME Provider"
+msgstr "메일 서버 ACME 공급자"
+
+msgid "Mail Server Listener"
+msgstr "메일 서버 리스너"
+
+msgid "Mail Server TLS Certificate"
+msgstr "메일 서버 TLS 인증서"
+
+msgid "Mail Server {0} already exists."
+msgstr "메일 서버 {0}이(가) 이미 존재합니다."
+
+msgid "Mail Server {0} is disabled"
+msgstr "메일 서버 {0}이(가) 비활성화되었습니다"
+
+msgid "Mail Server {0} is enabled. Please disable it first."
+msgstr "메일 서버 {0}이(가) 활성화되었습니다. 먼저 비활성화하십시오."
+
+msgid "Mail Settings"
+msgstr "메일 설정"
+
+msgid "Mail Signature"
+msgstr "메일 서명"
+
+msgid "Mail Sync History"
+msgstr "메일 동기화 기록"
+
+msgid "Mail Sync History already exists for this source and user."
+msgstr "이 소스 및 사용자에 대한 메일 동기화 기록이 이미 존재합니다."
+
+msgid "Mail config key '{0}' has invalid type. Expected {1}."
+msgstr "메일 구성 키 '{0}'의 유형이 잘못되었습니다. {1}이(가) 필요합니다."
+
+msgid "Mail config key '{0}' is not set"
+msgstr "메일 구성 키 '{0}'이(가) 설정되지 않았습니다."
+
+msgid "Mail config key '{0}' not found"
+msgstr "메일 구성 키 '{0}'을(를) 찾을 수 없습니다"
+
+msgid "Mail configuration is not set."
+msgstr "메일 구성이 설정되지 않았습니다."
+
+msgid "Mail deleted."
+msgstr "메일이 삭제되었습니다."
+
+msgid "Mail marked as Junk."
+msgstr "정크로 표시된 메일."
+
+msgid "Mail marked as Not Junk."
+msgstr "정크 메일 아님으로 표시된 메일."
+
+msgid "Mail moved back to {0}."
+msgstr "메일이 {0}(으)로 다시 이동되었습니다."
+
+msgid "Mail moved to {0}."
+msgstr "메일이 {0}(으)로 이동되었습니다."
+
+msgid "Mail routing records that ensure messages sent to your domain are delivered to the correct mail server."
+msgstr "도메인으로 전송된 메시지가 올바른 메일 서버로 전달되도록 보장하는 메일 라우팅 기록입니다."
+
+msgid "Mail server URL is not set in Mail Configuration."
+msgstr "메일 구성에 메일 서버 URL이 설정되어 있지 않습니다."
+
+msgid "Mail {0}"
+msgstr "메일 {0}"
+
+msgid "Mailbox"
+msgstr "사서함"
+
+msgid "Mailbox Creation Error"
+msgstr "메일함 생성 오류"
+
+msgid "Mailbox Deletion Error"
+msgstr "메일함 삭제 오류"
+
+msgid "Mailbox Deletion Error(s):<br>{0}"
+msgstr "사서함 삭제 오류:<br>{0}"
+
+msgid "Mailbox ID"
+msgstr "사서함 ID"
+
+msgid "Mailbox Limits"
+msgstr "사서함 제한"
+
+msgid "Mailbox Name"
+msgstr "사서함 이름"
+
+msgid "Mailbox Not Found"
+msgstr "사서함 찾을 수 없음"
+
+msgid "Mailbox Position Update Error"
+msgstr "사서함 위치 업데이트 오류"
+
+msgid "Mailbox Settings"
+msgstr "사서함 설정"
+
+msgid "Mailbox Settings for user {0} with mailbox ID {1} already exists."
+msgstr "사서함 ID가 {1}인 사용자 {0}에 대한 사서함 설정이 이미 존재합니다."
+
+msgid "Mailbox Settings for user {0} with mailbox ID {1} not found."
+msgstr "사서함 ID가 {1}인 사용자 {0}에 대한 사서함 설정을 찾을 수 없습니다."
+
+msgid "Mailbox Update Error"
+msgstr "사서함 업데이트 오류"
+
+msgid "Mailbox cannot be a parent of itself."
+msgstr "사서함은 자체 상위 항목일 수 없습니다."
+
+msgid "Mailbox not found for folder {0}"
+msgstr "폴더 {0}의 사서함을 찾을 수 없습니다."
+
+msgid "Mailbox with ID {0} not found in user {1}."
+msgstr "ID가 {0}인 사서함을 사용자 {1}에서 찾을 수 없습니다."
+
+msgid "Mailboxes"
+msgstr "사서함"
+
+msgid "Mailboxes deleted successfully."
+msgstr "사서함이 성공적으로 삭제되었습니다."
+
+msgid "Mailing List"
+msgstr "메일링 목록"
+
+msgid "Mailing List created."
+msgstr "메일링 목록이 생성되었습니다."
+
+msgid "Mailing Lists"
+msgstr "메일링 목록"
+
+msgid "Mailing list deleted."
+msgstr "메일링 목록이 삭제되었습니다."
+
+msgid "Mailing list updated."
+msgstr "메일링 목록이 업데이트되었습니다."
+
+msgid "Mailing lists deleted."
+msgstr "메일링 목록이 삭제되었습니다."
+
+msgid "Mails With Attachments"
+msgstr "다음 메일링 목록이 삭제되었습니다. 첨부 파일"
+
+msgid "Malformed encrypted payload (invalid key length)."
+msgstr "잘못된 암호화된 페이로드(잘못된 키 길이)."
+
+msgid "Manage ACME TLS certificate providers."
+msgstr "ACME TLS 인증서 공급자를 관리합니다."
+
+msgid "Manage SMTP, IMAP, HTTP, and other listeners."
+msgstr "SMTP, IMAP, HTTP 및 기타 리스너를 관리합니다."
+
+msgid "Manage TLS certificates."
+msgstr "TLS 인증서를 관리합니다."
+
+msgid "Manage data, blob, full-text, and lookup stores."
+msgstr "데이터, Blob, 전체 텍스트 및 조회 저장소를 관리합니다."
+
+msgid "Manage logging and tracing methods."
+msgstr "로깅 및 추적 방법을 관리합니다."
+
+msgid "ManageSieve"
+msgstr ""
+
+msgid "Mandatory"
+msgstr "필수"
+
+msgid "Mark as Junk"
+msgstr "정크로 표시"
+
+msgid "Mark as Junk (!)"
+msgstr "정크로 표시(!)"
+
+msgid "Mark as Not Junk"
+msgstr "정크가 아닌 것으로 표시"
+
+msgid "Mark as Read"
+msgstr "읽은 것으로 표시"
+
+msgid "Mark as Read (Shift+U)"
+msgstr "읽은 것으로 표시(Shift+U)"
+
+msgid "Mark as Unread"
+msgstr "읽지 않은 것으로 표시"
+
+msgid "Mark as Unread (U)"
+msgstr "읽지 않은 것으로 표시(U)"
+
+msgid "Mark {0} {1} as Junk"
+msgstr "{0} {1}을 정크로 표시"
+
+msgid "Marking as Junk..."
+msgstr "정크로 표시 중..."
+
+msgid "Marking as Not Junk..."
+msgstr "정크가 아닌 것으로 표시..."
+
+msgid "Marking as read..."
+msgstr "읽은 것으로 표시 중..."
+
+msgid "Marking as unread..."
+msgstr "읽지 않은 것으로 표시 중..."
+
+msgid "Match If"
+msgstr "일치 조건"
+
+msgid "Max Allowed Packet (Bytes)"
+msgstr "최대 허용된 패킷(바이트)"
+
+msgid "Max Attempts"
+msgstr "최대 시도 횟수"
+
+msgid "Max Concurrent"
+msgstr "최대 동시"
+
+msgid "Max Connections"
+msgstr "최대 연결"
+
+msgid "Max Depth"
+msgstr "최대 깊이"
+
+msgid "Max Number of Emails"
+msgstr "최대 이메일 수"
+
+msgid "Max Objects"
+msgstr "최대 개체"
+
+msgid "Max Results"
+msgstr "최대 결과"
+
+msgid "Max Retries"
+msgstr "최대 재시도 횟수"
+
+msgid "Max Retry Delay (Seconds)"
+msgstr "최대 재시도 지연(초)"
+
+msgid "Max Size (Bytes)"
+msgstr "최대 크기(바이트)"
+
+msgid "Max Wait (Milliseconds)"
+msgstr "최대 대기(밀리초)"
+
+msgid "Maximum amount of time that Stalwart will wait for a response from the OpenTelemetry endpoint."
+msgstr "Stalwart가 응답을 기다리는 최대 시간 OpenTelemetry 엔드포인트."
+
+msgid "Maximum depth of nested directories."
+msgstr "중첩 디렉터리의 최대 깊이."
+
+msgid "Maximum number of connections to the store."
+msgstr "스토어에 대한 최대 연결 수."
+
+msgid "Maximum number of push attempts before a notification is discarded."
+msgstr "알림이 삭제되기 전 최대 푸시 시도 횟수."
+
+msgid "Maximum size of a packet in bytes."
+msgstr "패킷의 최대 크기(바이트)."
+
+msgid "Maximum time to wait between retries."
+msgstr "재시도 간 대기할 수 있는 최대 시간."
+
+msgid "May Add Items"
+msgstr "항목 추가 가능"
+
+msgid "May Admin"
+msgstr "관리자 가능"
+
+msgid "May Create Child"
+msgstr "자녀 생성 가능"
+
+msgid "May Delete"
+msgstr "삭제 가능"
+
+msgid "May Invite Others"
+msgstr "다른 사람 초대 가능"
+
+msgid "May Invite Self"
+msgstr "본인 초대 가능"
+
+msgid "May RSVP"
+msgstr "회신 가능"
+
+msgid "May Read"
+msgstr "읽기 가능"
+
+msgid "May Read Free Busy"
+msgstr "한가롭게 읽을 수 있음 바쁨"
+
+msgid "May Read Items"
+msgstr "항목 읽기 가능"
+
+msgid "May Remove Items"
+msgstr "항목 제거 가능"
+
+msgid "May Rename"
+msgstr "이름 바꾸기 가능"
+
+msgid "May Set Keywords"
+msgstr "키워드 설정 가능"
+
+msgid "May Set Seen"
+msgstr "표시 설정 가능"
+
+msgid "May Submit"
+msgstr "제출 가능"
+
+msgid "May Update Private"
+msgstr "업데이트 가능 비공개"
+
+msgid "May Write"
+msgstr "쓰기 가능"
+
+msgid "May Write All"
+msgstr "모두 쓰기 가능"
+
+msgid "May Write Own"
+msgstr "직접 쓰기 가능"
+
+msgid "Member"
+msgstr "회원"
+
+msgid "Member Of"
+msgstr "회원"
+
+msgid "Member added."
+msgstr "회원이 추가되었습니다."
+
+msgid "Member deleted."
+msgstr "회원이 삭제되었습니다."
+
+msgid "Member invited."
+msgstr "회원이 초대되었습니다."
+
+msgid "Members"
+msgstr "회원"
+
+msgid "Members deleted."
+msgstr "회원이 삭제되었습니다."
+
+msgid "Memberships"
+msgstr "회원"
+
+msgid "Message"
+msgstr "메시지"
+
+msgid "Message ID"
+msgstr "메시지 ID"
+
+msgid "Message Information"
+msgstr "메시지 정보"
+
+msgid "Message Queue"
+msgstr "메시지 큐"
+
+msgid "Message Queue Recipient"
+msgstr "메시지 큐 수신자"
+
+msgid "Message Size"
+msgstr "메시지 크기"
+
+msgid "Message deleted successfully."
+msgstr "메시지가 성공적으로 삭제되었습니다."
+
+msgid "Message not found or you do not have permission to view it."
+msgstr "메시지를 찾을 수 없거나 볼 수 있는 권한이 없습니다."
+
+msgid "Message sent."
+msgstr "메시지가 전송되었습니다."
+
+msgid "Messages may be submitted directly to this Mailbox."
+msgstr "메시지는 이 사서함으로 직접 제출될 수 있습니다."
+
+msgid "Messages that arrive before this date-time (but on or after the From Date if defined) should receive the user's vacation response."
+msgstr "이 날짜 시간 이전(그러나 정의된 경우 시작 날짜 또는 그 이후)에 도착하는 메시지는 사용자의 휴가 응답을 받아야 합니다."
+
+msgid "Messages that arrive on or after this date-time (but before the To Date if defined) should receive the user's vacation response."
+msgstr "이 날짜 시간 또는 이후(그러나 종료 날짜 이전에 도착하는 메시지) 정의된 경우)는 사용자의 휴가 응답을 수신해야 합니다."
+
+msgid "Metadata"
+msgstr "메타데이터"
+
+msgid "Method"
+msgstr "메서드"
+
+msgid "Method Calls"
+msgstr "메서드 호출"
+
+msgid "Method Path"
+msgstr "메서드 경로"
+
+msgid "Methods"
+msgstr "메서드"
+
+msgid "Min Blob Size (Bytes)"
+msgstr "최소 Blob 크기(바이트)"
+
+msgid "Min Connections"
+msgstr "최소 연결"
+
+msgid "Min Size (Bytes)"
+msgstr "최소 크기(바이트)"
+
+msgid "Min Wait (Milliseconds)"
+msgstr "최소 대기(밀리초)"
+
+msgid "Minimum number of connections to the store."
+msgstr "스토어에 대한 최소 연결 수."
+
+msgid "Minimum size of a blob to store in the blob store, smaller blobs are stored in the metadata store."
+msgstr "Blob에 저장할 Blob의 최소 크기 저장소를 사용하면 더 작은 blob이 메타데이터 저장소에 저장됩니다."
+
+msgid "Minimum time to wait between retries."
+msgstr "재시도 간 최소 대기 시간."
+
+msgid "Minutely"
+msgstr "분"
+
+msgid "Missing required files/directories for JMAP format: {0}"
+msgstr "JMAP 형식에 필요한 파일/디렉터리 누락: {0}"
+
+msgid "Missing user query parameter."
+msgstr "사용자 쿼리 매개변수 누락."
+
+msgid "Month"
+msgstr "월"
+
+msgid "More"
+msgstr "자세히"
+
+msgid "More Info"
+msgstr "추가 정보"
+
+msgid "Move"
+msgstr "이동"
+
+msgid "Move To"
+msgstr "이동 위치"
+
+msgid "Move to "
+msgstr "이동 "
+
+msgid "Move to Trash"
+msgstr "휴지통으로 이동"
+
+msgid "Move to Trash (Delete)"
+msgstr "휴지통으로 이동(삭제)"
+
+msgid "Moving to Mailbox..."
+msgstr "사서함으로 이동 중..."
+
+msgid "Moving to {0}..."
+msgstr "{0}(으)로 이동 중..."
+
+msgid "Multiline entries"
+msgstr "여러 줄 항목"
+
+msgid "Multiple {0} files found. Please provide only one."
+msgstr "여러 개의 {0}개 파일이 발견되었습니다. 하나만 제공하십시오."
+
+msgid "NEEDS-ACTION"
+msgstr ""
+
+msgid "Name"
+msgstr "이름"
+
+msgid "Name Breakup"
+msgstr "이름 구분"
+
+msgid "Name Length"
+msgstr "이름 길이"
+
+msgid "Name for the container."
+msgstr "컨테이너 이름"
+
+msgid "Name of the database."
+msgstr "데이터베이스 이름."
+
+msgid "Name of the service (e.g. stalwart, redis)."
+msgstr "서비스 이름(예: stalwart, redis)."
+
+msgid "Namecheap"
+msgstr ""
+
+msgid "Navigation"
+msgstr ""
+
+msgid "Nested Depth"
+msgstr "중첩 깊이"
+
+msgid "Network Mode"
+msgstr "네트워크 모드"
+
+msgid "Network Settings"
+msgstr "네트워크 설정"
+
+msgid "Networking"
+msgstr "네트워킹"
+
+msgid "Never"
+msgstr "사용 안함"
+
+msgid "New"
+msgstr "새"
+
+msgid "New Address Book"
+msgstr "새 주소 도서"
+
+msgid "New Bcc"
+msgstr "새 숨은참조"
+
+msgid "New Contact"
+msgstr "새 연락처"
+
+msgid "New External Member"
+msgstr "새 외부 회원"
+
+msgid "New Folder"
+msgstr "새 폴더"
+
+msgid "New Internal Members"
+msgstr "새 내부 회원"
+
+msgid "New Mailing List"
+msgstr "새 메일링 리스트"
+
+msgid "New Password"
+msgstr "새 비밀번호"
+
+msgid "New Reply To"
+msgstr "새 응답 대상"
+
+msgid "New Sieve Script"
+msgstr "새 Sieve 스크립트"
+
+msgid "New Signature"
+msgstr "새 서명"
+
+msgid "New member? Create an account."
+msgstr "새 멤버? 계정을 만드세요."
+
+msgid "Newest Emails"
+msgstr "최신 이메일"
+
+msgid "Newsletter"
+msgstr "뉴스레터"
+
+msgid "Next"
+msgstr "다음"
+
+msgid "Next Notify"
+msgstr "다음 알림"
+
+msgid "Next Retry"
+msgstr "다음 재시도"
+
+msgid "Next Retry After"
+msgstr "다음 후 재시도"
+
+msgid "Next Thread (↓/J)"
+msgstr "다음 스레드(↓/J)"
+
+msgid "No"
+msgstr "아니요"
+
+msgid "No .eml files found"
+msgstr ".eml 파일이 없습니다"
+
+msgid "No .mbox files found"
+msgstr ".mbox 파일이 없습니다"
+
+msgid "No Bcc addresses added."
+msgstr "Bcc 주소가 추가되지 않았습니다."
+
+msgid "No DMARC reports found."
+msgstr "DMARC 보고서가 없습니다."
+
+msgid "No Reply To addresses added."
+msgstr "추가된 주소에 대한 답장이 없습니다."
+
+msgid "No address book found."
+msgstr "주소록이 없습니다."
+
+msgid "No address books found."
+msgstr "주소록이 없습니다. 발견됨."
+
+msgid "No address books."
+msgstr "주소록이 없습니다."
+
+msgid "No addresses."
+msgstr "주소가 없습니다."
+
+msgid "No allowed IPs found."
+msgstr "허용된 IP가 없습니다."
+
+msgid "No answer for {0}."
+msgstr "{0}에 대한 답변이 없습니다."
+
+msgid "No blocked IPs found."
+msgstr "차단된 IP가 없습니다."
+
+msgid "No blocked email addresses."
+msgstr "차단된 이메일 주소가 없습니다."
+
+msgid "No calendar event parsed from the provided ICS data."
+msgstr "제공된 ICS 데이터에서 구문 분석된 캘린더 이벤트가 없습니다."
+
+msgid "No calendar events found."
+msgstr "캘린더 이벤트가 없습니다."
+
+msgid "No calendars found."
+msgstr "캘린더가 없습니다."
+
+msgid "No contact card found."
+msgstr "연락처 카드가 없습니다."
+
+msgid "No contacts found."
+msgstr "연락처가 없습니다."
+
+msgid "No contacts to add."
+msgstr "추가할 연락처가 없습니다."
+
+msgid "No contacts."
+msgstr "연락처가 없습니다."
+
+msgid "No domains found."
+msgstr "도메인을 찾을 수 없습니다."
+
+msgid "No emails found for export."
+msgstr "내보낼 이메일을 찾을 수 없습니다."
+
+msgid "No emails found for import."
+msgstr "가져올 이메일을 찾을 수 없습니다."
+
+msgid "No emails."
+msgstr "이메일이 없습니다."
+
+msgid "No event notifications found."
+msgstr "이벤트 알림을 찾을 수 없습니다."
+
+msgid "No exports in progress."
+msgstr "진행 중인 내보내기가 없습니다."
+
+msgid "No file found in the request."
+msgstr "요청에서 파일을 찾을 수 없습니다."
+
+msgid "No file part named 'raw_message' found."
+msgstr "'raw_message'라는 이름의 파일 부분을 찾을 수 없습니다."
+
+msgid "No identities found."
+msgstr "ID를 찾을 수 없습니다."
+
+msgid "No imports in progress."
+msgstr "가져오기 진행 중이 없습니다."
+
+msgid "No invites found."
+msgstr "초대 없음 찾았습니다."
+
+msgid "No mail exchanges found."
+msgstr "메일 교환을 찾을 수 없습니다."
+
+msgid "No mailboxes found."
+msgstr "메일함을 찾을 수 없습니다."
+
+msgid "No mailing lists found."
+msgstr "메일링 목록을 찾을 수 없습니다."
+
+msgid "No mails found for the selected filter."
+msgstr "선택한 필터에 대해 메일을 찾을 수 없습니다."
+
+msgid "No members found."
+msgstr "구성원을 찾을 수 없습니다."
+
+msgid "No messages found."
+msgstr "메시지를 찾을 수 없습니다."
+
+msgid "No participant identities found."
+msgstr "참가자 ID를 찾을 수 없습니다."
+
+msgid "No phones."
+msgstr "전화 없음."
+
+msgid "No push subscriptions found."
+msgstr "푸시 구독을 찾을 수 없습니다."
+
+msgid "No quotas found."
+msgstr "할당량을 찾을 수 없습니다."
+
+msgid "No results found for the given query."
+msgstr "주어진 쿼리에 대한 결과를 찾을 수 없습니다."
+
+msgid "No rows."
+msgstr "행이 없습니다."
+
+msgid "No sieve scripts found."
+msgstr "시브 스크립트가 없습니다. 발견되었습니다."
+
+msgid "No signatures found."
+msgstr "서명을 찾을 수 없습니다."
+
+msgid "No {0} file found in the archive."
+msgstr "아카이브에서 {0} 파일을 찾을 수 없습니다."
+
+msgid "Node ID"
+msgstr "노드 ID"
+
+msgid "Node ID {0} already assigned to another Mail Server."
+msgstr "노드 ID {0}이(가) 이미 다른 메일 서버에 할당되었습니다."
+
+msgid "None"
+msgstr "없음"
+
+msgid "Normal"
+msgstr "보통"
+
+msgid "Not Junk"
+msgstr "정크 아님"
+
+msgid "Not Keyword"
+msgstr "키워드 아님"
+
+msgid "Not Verified"
+msgstr "확인되지 않음"
+
+msgid "Not allowed to create automation script."
+msgstr "자동화 스크립트를 생성할 수 없습니다."
+
+msgid "Not permitted"
+msgstr "허용되지 않음"
+
+msgid "Notification is not yet finalized or delivered to the user."
+msgstr "알림이 아직 완료되거나 사용자에게 전달되지 않았습니다."
+
+msgid "Number"
+msgstr "번호"
+
+msgid "Number of Replicas"
+msgstr "복제본 수"
+
+msgid "Number of Shards"
+msgstr "샤드 수"
+
+msgid "Number of items to process in each batch during indexing operations."
+msgstr "인덱싱 작업 중 각 배치에서 처리할 항목 수."
+
+msgid "Number of replicas for the index."
+msgstr "인덱스에 대한 복제본 수."
+
+msgid "Number of retries to connect to the Redis cluster."
+msgstr "재시도 횟수 Redis 클러스터에 연결합니다."
+
+msgid "Number of shards for the index."
+msgstr "인덱스의 샤드 수."
+
+msgid "Number of worker threads to use for the store, defaults to the number of cores."
+msgstr "저장소에 사용할 작업자 스레드 수, 기본값은 코어 수입니다."
+
+msgid "OAuth Client"
+msgstr "OAuth 클라이언트"
+
+msgid "OK"
+msgstr ""
+
+msgid "Off"
+msgstr ""
+
+msgid "Offset"
+msgstr ""
+
+msgid "OffsetTrigger"
+msgstr ""
+
+msgid "Oldest Emails"
+msgstr "가장 오래된 이메일"
+
+msgid "On"
+msgstr ""
+
+msgid "One or more contact cards failed to create"
+msgstr "하나 이상의 연락처 카드를 생성하지 못했습니다."
+
+msgid "Only Administrator can delete Mail Cluster."
+msgstr "관리자만 메일 클러스터를 삭제할 수 있습니다."
+
+msgid "Only Administrator can delete Mail Server."
+msgstr "관리자만 메일을 삭제할 수 있습니다. 서버."
+
+msgid "Only data exchange with status 'Queued', 'In Progress', or 'Failed' can be retried."
+msgstr "'대기 중', '진행 중' 또는 '실패' 상태의 데이터 교환만 재시도할 수 있습니다."
+
+msgid "Only failed ansible plays can be retried."
+msgstr "실패한 Ansible 재생만 재시도할 수 있습니다."
+
+msgid "Only failed deployments can be retried."
+msgstr "실패한 배포만 재시도할 수 있습니다."
+
+msgid "Only failed jobs can be retried."
+msgstr "실패한 작업만 재시도할 수 있습니다."
+
+msgid "Only mail exchange with status 'Queued', 'In Progress', or 'Failed' can be retried."
+msgstr "'대기 중', '진행 중' 또는 '실패' 상태의 메일 교환만 재시도할 수 있습니다."
+
+msgid "Only one ACME Provider can be default."
+msgstr "하나의 ACME 공급자만 기본값이 될 수 있습니다."
+
+msgid "Only one TLS Certificate can be default."
+msgstr "하나의 TLS 인증서만 기본값이 될 수 있습니다."
+
+msgid "Only submitted data exchange can be retried."
+msgstr "제출된 데이터 교환만 재시도할 수 있습니다."
+
+msgid "Only submitted mail exchange can be retried."
+msgstr "제출된 메일 교환만 재시도할 수 있습니다."
+
+msgid "Only {0} files are supported for import."
+msgstr "가져오기에는 {0}개의 파일만 지원됩니다."
+
+msgid "Open Mail"
+msgstr "메일 열기"
+
+msgid "Open Settings"
+msgstr "설정 열기"
+
+msgid "Open Telemetry"
+msgstr "원격 측정 열기"
+
+msgid "OpenTelemetry Push Metrics"
+msgstr "OpenTelemetry 푸시 지표"
+
+msgid "Operation"
+msgstr "작업"
+
+msgid "Optional additional information about the participant."
+msgstr "참여자에 대한 선택적 추가 정보."
+
+msgid "Options"
+msgstr "옵션"
+
+msgid "Organization"
+msgstr "조직"
+
+msgid "Organization Name"
+msgstr "조직 이름"
+
+msgid "Organizer"
+msgstr "주최자"
+
+msgid "Origin"
+msgstr "원본"
+
+msgid "Original RCPT"
+msgstr "원래 RCPT"
+
+msgid "Other"
+msgstr "기타"
+
+msgid "Other services this one depends on."
+msgstr "이 서비스가 의존하는 기타 서비스."
+
+msgid "Outbound Only"
+msgstr "아웃바운드 전용"
+
+msgid "Outgoing"
+msgstr "발신"
+
+msgid "Output"
+msgstr "출력"
+
+msgid "P-256 ECDH public key for JMAP PushSubscription encryption."
+msgstr "P-256 JMAP PushSubscription용 ECDH 공개 키 암호화."
+
+msgid "P256DH"
+msgstr ""
+
+msgid "POP3"
+msgstr ""
+
+msgid "Parent"
+msgstr "상위"
+
+msgid "Parent ID"
+msgstr "상위 ID"
+
+msgid "Parsing Limits"
+msgstr "구문 분석 제한"
+
+msgid "Part ID"
+msgstr "부품 ID"
+
+msgid "Participant Identities deleted successfully."
+msgstr "참가자 ID가 삭제되었습니다."
+
+msgid "Participant Identity"
+msgstr "참가자 ID"
+
+msgid "Participant Identity Creation Error"
+msgstr "참가자 ID 생성 오류"
+
+msgid "Participant Identity Deletion Error"
+msgstr "참가자 ID 삭제 오류"
+
+msgid "Participant Identity Deletion Error(s):<br>{0}"
+msgstr "참가자 ID 삭제 오류:<br>{0}"
+
+msgid "Participant Identity Not Found"
+msgstr "참가자 ID를 찾을 수 없음"
+
+msgid "Participant Identity Update Error"
+msgstr "참가자 ID 업데이트 오류"
+
+msgid "Participant Identity with ID {0} not found in user {1}."
+msgstr "ID가 {0}인 참가자 ID를 사용자 {1}에서 찾을 수 없습니다."
+
+msgid "Participants"
+msgstr "참여자"
+
+msgid "Password"
+msgstr "비밀번호"
+
+msgid "Password Secret"
+msgstr "비밀번호 비밀"
+
+msgid "Password for administrative access to the cluster."
+msgstr "클러스터에 대한 관리 액세스를 위한 비밀번호입니다."
+
+msgid "Password is required to create account."
+msgstr "계정을 생성하려면 비밀번호가 필요합니다."
+
+msgid "Password must be at least 16 characters long."
+msgstr "비밀번호는 16자 이상이어야 합니다."
+
+msgid "Password to connect to the database."
+msgstr "데이터베이스에 연결하기 위한 비밀번호입니다."
+
+msgid "Password updated."
+msgstr "비밀번호가 업데이트되었습니다."
+
+msgid "Passwords do not match"
+msgstr "비밀번호가 일치하지 않습니다."
+
+msgid "Path"
+msgstr "경로"
+
+msgid "Path to the cluster file for the FoundationDB cluster."
+msgstr "FoundationDB 클러스터의 클러스터 파일 경로입니다."
+
+msgid "Pause"
+msgstr "일시 중지"
+
+msgid "Pausing Queue..."
+msgstr "큐 일시 중지 중..."
+
+msgid "Pending"
+msgstr "보류 중"
+
+msgid "People"
+msgstr ""
+
+msgid "Permanently Delete"
+msgstr "영구적으로 삭제"
+
+msgid "Permissions"
+msgstr "권한"
+
+msgid "Personal"
+msgstr "개인"
+
+msgid "Personal Signup Domain"
+msgstr "개인 가입 도메인"
+
+msgid "Phone"
+msgstr "전화"
+
+msgid "Phones"
+msgstr "전화"
+
+msgid "Play"
+msgstr ""
+
+msgid "Play record must be created before creating task records."
+msgstr "작업 레코드를 생성하기 전에 플레이 레코드를 생성해야 합니다."
+
+msgid "Playbook"
+msgstr "플레이북"
+
+msgid "Playbook is required"
+msgstr "플레이북이 필요합니다"
+
+msgid "Playbook {0} does not exist"
+msgstr "플레이북 {0}이(가) 존재하지 않습니다"
+
+msgid "Playbook {0} does not exist."
+msgstr "플레이북 {0}이(가) 존재하지 않습니다."
+
+msgid "Please add at least one command to execute."
+msgstr "실행할 명령을 하나 이상 추가하십시오."
+
+msgid "Please add at least one recipient."
+msgstr "수신자를 한 명 이상 추가하십시오."
+
+msgid "Please confirm your email address by clicking the button below."
+msgstr "아래 버튼을 클릭하여 이메일 주소를 확인하십시오."
+
+msgid "Please enter a contact email"
+msgstr "연락처 이메일을 입력하십시오"
+
+msgid "Please generate the Server Config before installing Stalwart."
+msgstr "Stalwart를 설치하기 전에 서버 구성을 생성하십시오."
+
+msgid "Please select a user to view address books."
+msgstr "주소를 보려면 사용자를 선택하십시오 책."
+
+msgid "Please select a user to view calendar events."
+msgstr "캘린더 이벤트를 보려면 사용자를 선택하십시오."
+
+msgid "Please select a user to view calendars."
+msgstr "캘린더를 보려면 사용자를 선택하십시오."
+
+msgid "Please select a user to view contact cards."
+msgstr "연락처 카드를 보려면 사용자를 선택하십시오."
+
+msgid "Please select a user to view event notifications."
+msgstr "이벤트 알림을 보려면 사용자를 선택하십시오."
+
+msgid "Please select a user to view identities."
+msgstr "ID를 보려면 사용자를 선택하십시오."
+
+msgid "Please select a user to view mailboxes."
+msgstr "사서함을 보려면 사용자를 선택하십시오."
+
+msgid "Please select a user to view messages."
+msgstr "메시지를 보려면 사용자를 선택하십시오."
+
+msgid "Please select a user to view participant identities."
+msgstr "참가자 ID를 보려면 사용자를 선택하십시오."
+
+msgid "Please select a user to view push subscriptions."
+msgstr "푸시 구독을 보려면 사용자를 선택하십시오."
+
+msgid "Please select a user to view quotas."
+msgstr "선택하십시오. 할당량을 보려면 사용자를 선택하십시오."
+
+msgid "Please select a user to view the Sieve Scripts."
+msgstr "Sieve 스크립트를 보려면 사용자를 선택하십시오."
+
+msgid "Please select a user to view vacation response details."
+msgstr "휴가 응답 세부 정보를 보려면 사용자를 선택하십시오."
+
+msgid "Please select recipients to cancel delivery."
+msgstr "배달을 취소하려면 수신자를 선택하십시오."
+
+msgid "Please set the DNS Provider Access Key and Secret."
+msgstr "DNS 공급자 액세스 키 및 비밀을 설정하십시오."
+
+msgid "Please set the DNS Provider Key and Secret."
+msgstr "DNS 공급자 키 및 비밀을 설정하십시오."
+
+msgid "Please set the DNS Provider Token."
+msgstr "DNS 공급자 토큰을 설정하십시오."
+
+msgid "Please set the DNS Provider Username and Client IP."
+msgstr "DNS 공급자 사용자 이름 및 클라이언트 IP를 설정하십시오."
+
+msgid "Please set the Root Domain Name before configuring the DNS Provider."
+msgstr "DNS를 구성하기 전에 루트 도메인 이름을 설정하십시오. 공급자."
+
+msgid "Please set the Root Domain Name in Mail Settings."
+msgstr "메일 설정에서 루트 도메인 이름을 설정하세요."
+
+msgid "Please verify SSH connection for Mail Server {0}"
+msgstr "메일 서버에 대한 SSH 연결을 확인하십시오. {0}"
+
+msgid "Please verify the SSH connection before installing Ansible."
+msgstr "Ansible을 설치하기 전에 SSH 연결을 확인하십시오."
+
+msgid "Please verify the SSH connection before installing Docker."
+msgstr "Docker를 설치하기 전에 SSH 연결을 확인하십시오."
+
+msgid "Please verify the SSH connection before installing Stalwart."
+msgstr "Stalwart를 설치하기 전에 SSH 연결을 확인하십시오."
+
+msgid "Please verify the email address first."
+msgstr "먼저 이메일 주소를 확인하십시오."
+
+msgid "Please verify the {0} for the new {1}."
+msgstr "새 {1}의 {0}을 확인하십시오."
+
+msgid "Pools"
+msgstr "풀"
+
+msgid "Pop Out"
+msgstr "팝 아웃"
+
+msgid "Port"
+msgstr "포트"
+
+msgid "Port for connecting to the SpamAssassin server."
+msgstr "SpamAssassin 서버에 연결하기 위한 포트."
+
+msgid "Port of the database server."
+msgstr "데이터베이스의 포트 서버."
+
+msgid "Port to use for SSH access."
+msgstr "SSH 액세스에 사용할 포트."
+
+msgid "Ports"
+msgstr "포트"
+
+msgid "Post Deployment SSL Setup (FC)"
+msgstr "배포 후 SSL 설정(FC)"
+
+msgid "Postcode"
+msgstr "우편 번호"
+
+msgid "PostgreSQL"
+msgstr ""
+
+msgid "Prefix"
+msgstr "접두사"
+
+msgid "Prevents editing of system scripts (e.g., vacation)."
+msgstr "시스템 스크립트 편집을 방지합니다(예: 휴가)."
+
+msgid "Preview"
+msgstr "미리 보기"
+
+msgid "Preview emails alongside the message list."
+msgstr "메시지 목록과 함께 이메일을 미리 봅니다."
+
+msgid "Preview not available for this file type"
+msgstr "이 파일 형식에는 미리 볼 수 없습니다."
+
+msgid "Previous State (Email)"
+msgstr "이전 상태(이메일)"
+
+msgid "Previous Thread (↑/K)"
+msgstr "이전 스레드 (↑/K)"
+
+msgid "Previously synced email state used to detect changes from the server."
+msgstr "서버에서 변경 사항을 감지하는 데 사용되는 이전에 동기화된 이메일 상태입니다."
+
+msgid "Principal"
+msgstr "주체"
+
+msgid "Principal DNS Record"
+msgstr "주요 DNS 레코드"
+
+msgid "Principal Email"
+msgstr "주체 이메일"
+
+msgid "Principal ID"
+msgstr "주체 ID"
+
+msgid "Principal List"
+msgstr "주체 목록"
+
+msgid "Principal Member"
+msgstr "주요 구성원"
+
+msgid "Principal Member Of"
+msgstr "주요 구성원"
+
+msgid "Principal Name"
+msgstr "주체 이름"
+
+msgid "Principal Password"
+msgstr "주체 비밀번호"
+
+msgid "Principal Permission"
+msgstr "주체 권한"
+
+msgid "Principal Role"
+msgstr "주체 역할"
+
+msgid "Principal Settings"
+msgstr "주체 설정"
+
+msgid "Principal Settings for {0} does not exist. Please create Principal Settings with the principal name same as the JMAP username."
+msgstr "{0}에 대한 주체 설정이 존재하지 않습니다. JMAP 사용자 이름과 동일한 주체 이름으로 주체 설정을 생성하십시오."
+
+msgid "Principal Type"
+msgstr "주체 유형"
+
+msgid "Principal URL"
+msgstr "주체 URL"
+
+msgid "Principal name or type cannot be changed directly. Please create a new principal."
+msgstr "주체 이름이나 유형은 직접 변경할 수 없습니다. 새 주 구성원을 생성하십시오."
+
+msgid "Principal type {0} is not supported yet."
+msgstr "주체 유형 {0}은(는) 아직 지원되지 않습니다."
+
+msgid "Principal {0} not found in backend."
+msgstr "주체 {0}을(를) 백엔드에서 찾을 수 없습니다."
+
+msgid "Prior mailbox ID {0} not found."
+msgstr "이전 사서함 ID {0}을(를) 찾을 수 없습니다."
+
+msgid "Priority"
+msgstr "우선순위"
+
+msgid "Privacy"
+msgstr "개인정보 보호"
+
+msgid "Private"
+msgstr "개인"
+
+msgid "Private Key"
+msgstr "개인 키"
+
+msgid "Private Key Path"
+msgstr "개인 키 경로"
+
+msgid "Private Zone"
+msgstr "개인 영역"
+
+msgid "Private key in PEM format."
+msgstr "PEM의 개인 키 format."
+
+msgid "Processed"
+msgstr "처리됨"
+
+msgid "Profile"
+msgstr "프로필"
+
+msgid "Profile photo updated."
+msgstr "프로필 사진이 업데이트되었습니다."
+
+msgid "Profile updated."
+msgstr "프로필이 업데이트되었습니다."
+
+msgid "Prometheus Pull Metrics"
+msgstr ""
+
+msgid "Protocol"
+msgstr "프로토콜"
+
+msgid "Provide a JSON array of objects with display_name and email. <br>\nExample: <code>[{\"display_name\": \"Jane Smith\", \"email\": \"jane@example.com\"}]</code>"
+msgstr "display_name 및 이메일이 포함된 JSON 객체 배열을 제공하세요. <br>\n예: <code>[{\"display_name\": \"Jane Smith\", \"email\": \"jane@example.com\"}]</code>"
+
+msgid "Provide a JSON array of recipients with type, display_name, and email. <br>\n<b>type</b> must be \"To\", \"Cc\", or \"Bcc\". <br>\nExample: <code>[{\"type\": \"To\", \"display_name\": \"Jane Smith\", \"email\": \"jane@example.com\"}]</code>"
+msgstr "유형, display_name 및 이메일을 포함하는 수신자의 JSON 배열을 제공합니다. <br>\n<b>유형</b>은 \"받는 사람\", \"참조\" 또는 \"숨은 참조\"여야 합니다. <br>\n예: <code>[{\"type\": \"To\", \"display_name\": \"Jane Smith\", \"email\": \"jane@example.com\"}]</code>"
+
+msgid "Provide a JSON array with file_url, disposition (inline or attachment), and cid. <br>\nExample: <code>[{\"file_url\": \"/private/files/image.png\", \"disposition\": \"inline\", \"cid\": \"j80BhiEC5o\"}]</code>"
+msgstr "file_url, disposition(인라인 또는 첨부 파일) 및 cid가 포함된 JSON 배열을 제공합니다. <br>\n예: <code>[{\"file_url\": \"/private/files/image.png\", \"disposition\": \"inline\", \"cid\": \"j80BhiEC5o\"}]</code>"
+
+msgid "Provide a JSON object with header name–value pairs. <br>\nExample: <code>{\"X-Custom-Header\": \"Value\"}</code>"
+msgstr "헤더 이름-값 쌍이 있는 JSON 객체를 제공합니다. <br>\n예: <code>{\"X-Custom-Header\": \"값\"}</code>"
+
+msgid "Proxy"
+msgstr "프록시"
+
+msgid "Public"
+msgstr "공개"
+
+msgid "Public IPv4"
+msgstr "공개 IPv4"
+
+msgid "Public IPv4 address of this mail server (used for external communication)."
+msgstr "이 메일 서버의 공개 IPv4 주소(외부 통신에 사용됨)."
+
+msgid "Public IPv4 addresses assigned to this cluster."
+msgstr "이 클러스터에 할당된 공개 IPv4 주소."
+
+msgid "Public IPv6"
+msgstr "공개 IPv6"
+
+msgid "Public IPv6 address of this mail server (used for external communication)."
+msgstr "이 메일 서버의 공개 IPv6 주소(외부 통신에 사용됨)."
+
+msgid "Public IPv6 addresses assigned to this cluster."
+msgstr "이 클러스터에 할당된 공개 IPv6 주소."
+
+msgid "Public Key"
+msgstr "공개 키"
+
+msgid "Public key used to authenticate API requests."
+msgstr "API를 인증하는 데 사용되는 공개 키 요청."
+
+msgid "Published Policy"
+msgstr "게시된 정책"
+
+msgid "Purge Frequency (Cron)"
+msgstr "삭제 빈도(Cron)"
+
+msgid "Purple"
+msgstr "보라색"
+
+msgid "Push Interval (Seconds)"
+msgstr "푸시 간격(초)"
+
+msgid "Push Notification permission denied"
+msgstr "푸시 알림 권한 거부됨"
+
+msgid "Push Subscription"
+msgstr "푸시 구독"
+
+msgid "Push Subscription Creation Error"
+msgstr "푸시 구독 생성 오류"
+
+msgid "Push Subscription Deletion Error"
+msgstr "푸시 구독 삭제 오류"
+
+msgid "Push Subscription Deletion Error(s):<br>{0}"
+msgstr "푸시 구독 삭제 오류:<br>{0}"
+
+msgid "Push Subscription Not Found"
+msgstr "푸시 구독을 찾을 수 없음"
+
+msgid "Push Subscription Renewal Error"
+msgstr "푸시 구독 갱신 오류"
+
+msgid "Push Subscription with ID {0} not found in user {1}."
+msgstr "푸시 사용자 {1}에게서 ID가 {0}인 구독을 찾을 수 없습니다."
+
+msgid "Push Subscriptions deleted successfully."
+msgstr "푸시 구독이 성공적으로 삭제되었습니다."
+
+msgid "Push Timeouts"
+msgstr "푸시 시간 초과"
+
+msgid "Push notifications are currently frozen for this user."
+msgstr "이 사용자에 대한 푸시 알림이 현재 동결되었습니다."
+
+msgid "Push notifications disabled"
+msgstr "푸시 알림이 비활성화되었습니다."
+
+msgid "Push notifications have been disabled on your site"
+msgstr "사이트에서 푸시 알림이 비활성화되었습니다."
+
+msgid "Query"
+msgstr "쿼리"
+
+msgid "Queue"
+msgstr "큐"
+
+msgid "Queue paused successfully."
+msgstr "큐가 성공적으로 일시 중지되었습니다."
+
+msgid "Queue resumed successfully."
+msgstr "큐가 성공적으로 재개되었습니다."
+
+msgid "Queued"
+msgstr "큐에 추가됨"
+
+msgid "Queued After (Seconds)"
+msgstr "큐에 추가된 시간(초)"
+
+msgid "Queued At"
+msgstr "큐에 추가됨"
+
+msgid "Queued At - Creation"
+msgstr "큐에 추가됨 - 생성"
+
+msgid "Quota"
+msgstr "할당량"
+
+msgid "Quota (in Bytes)"
+msgstr "할당량(바이트)"
+
+msgid "Quota (in GB)"
+msgstr "할당량(GB)"
+
+msgid "Quota Not Found"
+msgstr "할당량을 찾을 수 없음"
+
+msgid "Quota Usage"
+msgstr "할당량 사용량"
+
+msgid "Quota with ID {0} not found in user {1}."
+msgstr "ID가 {0}인 할당량을 사용자 {1}에서 찾을 수 없습니다."
+
+msgid "Rate Limit"
+msgstr "속도 제한"
+
+msgid "Raw Message"
+msgstr "원시 메시지"
+
+msgid "Read From Replicas"
+msgstr "복제본에서 읽기"
+
+msgid "Read Only"
+msgstr "읽기 만"
+
+msgid "Read Status"
+msgstr "읽기 상태"
+
+msgid "Read status restored."
+msgstr "읽기 상태가 복원되었습니다."
+
+msgid "Read-Only Sieve Script"
+msgstr "읽기 전용 Sieve 스크립트"
+
+msgid "Reason"
+msgstr "이유"
+
+msgid "Received After (Seconds)"
+msgstr "수신 시간(초)"
+
+msgid "Received At"
+msgstr "수신 시간"
+
+msgid "Received At (ASC)"
+msgstr "수신 시간(ASC)"
+
+msgid "Received At (DESC)"
+msgstr "수신 시간(DESC)"
+
+msgid "Received At - Sent At"
+msgstr "수신 시간 - 전송 시간"
+
+msgid "Received From"
+msgstr "수신 시간"
+
+msgid "Receiving"
+msgstr "수신"
+
+msgid "Receiving Record"
+msgstr "수신 시간 기록"
+
+msgid "Recipients"
+msgstr "수신자"
+
+msgid "Recommended"
+msgstr "추천"
+
+msgid "Records"
+msgstr "기록"
+
+msgid "Records that allow mail and sync apps to automatically locate and connect to your domain’s email, calendar, and contacts services."
+msgstr "메일 및 동기화 앱이 도메인의 이메일, 캘린더 및 연락처 서비스를 자동으로 찾아 연결하도록 허용하는 레코드입니다."
+
+msgid "Recovery"
+msgstr "복구"
+
+msgid "Recurrence"
+msgstr "반복"
+
+msgid "Recurrence ID"
+msgstr "반복 ID"
+
+msgid "Recurrence ID Time Zone"
+msgstr "반복 ID 시간대"
+
+msgid "Recurrence Rule"
+msgstr "반복 규칙"
+
+msgid "Red"
+msgstr ""
+
+msgid "Redirecting..."
+msgstr "리디렉션..."
+
+msgid "Redis Cluster"
+msgstr "Redis 클러스터"
+
+msgid "Redis Single Node"
+msgstr "Redis 단일 노드"
+
+msgid "Redis URL(s)"
+msgstr "Redis URL"
+
+msgid "Redis/Memcached"
+msgstr ""
+
+msgid "Reference"
+msgstr "참조"
+
+msgid "Refresh"
+msgstr "새로 고침"
+
+msgid "Refresh DNS Records"
+msgstr "DNS 레코드 새로 고침"
+
+msgid "Refreshing DNS Records..."
+msgstr "DNS 레코드 새로 고침 중..."
+
+msgid "Regenerate Secret"
+msgstr "비밀번호 재생성"
+
+msgid "Region"
+msgstr "지역"
+
+msgid "Relative To"
+msgstr "다음 대상"
+
+msgid "Remember your password? Log in."
+msgstr "비밀번호를 기억하십니까? 로그인합니다."
+
+msgid "Reminders or notifications associated with the event."
+msgstr "이벤트와 관련된 미리 알림 또는 알림."
+
+msgid "Remove"
+msgstr "제거"
+
+msgid "Remove Addresses"
+msgstr "주소 제거"
+
+msgid "Remove Contacts"
+msgstr "연락처 제거"
+
+msgid "Remove Current Photo"
+msgstr "현재 사진 제거"
+
+msgid "Remove Emails"
+msgstr "이메일 제거"
+
+msgid "Remove Phones"
+msgstr "전화 제거"
+
+msgid "Remove from Address Books"
+msgstr "주소록에서 제거"
+
+msgid "Renew"
+msgstr "갱신"
+
+msgid "Renew Before (Days)"
+msgstr "이전 갱신(일)"
+
+msgid "Renewing..."
+msgstr "갱신 중..."
+
+msgid "Reply"
+msgstr "답장"
+
+msgid "Reply (R)"
+msgstr "답장(R)"
+
+msgid "Reply / Forward"
+msgstr "답장 / 전달"
+
+msgid "Reply All"
+msgstr "전체 답장"
+
+msgid "Reply All (Shift+R)"
+msgstr "모두 답장(Shift+R)"
+
+msgid "Reply All to Mail"
+msgstr "메일에 모두 답장"
+
+msgid "Reply To"
+msgstr "답장"
+
+msgid "Reply To: "
+msgstr "답장: "
+
+msgid "Reply to Mail"
+msgstr "메일에 답장"
+
+msgid "Report Begin"
+msgstr "보고 시작"
+
+msgid "Report Details"
+msgstr "보고 세부 정보"
+
+msgid "Report End"
+msgstr "보고서 종료"
+
+msgid "Report ID"
+msgstr "보고서 ID"
+
+msgid "Request Key"
+msgstr "요청 키"
+
+msgid "Request Limits"
+msgstr "요청 제한"
+
+msgid "Request Timeout (Milliseconds)"
+msgstr "요청 시간 초과(밀리초)"
+
+msgid "Required"
+msgstr "필수"
+
+msgid "Rescued"
+msgstr "구조됨"
+
+msgid "Reset Password"
+msgstr "암호 재설정"
+
+msgid "Resource"
+msgstr "리소스"
+
+msgid "Resource Type"
+msgstr "리소스 유형"
+
+msgid "Response"
+msgstr "응답"
+
+msgid "Restart"
+msgstr "다시 시작"
+
+msgid "Restricts the maximum depth of nested mailboxes a user can create."
+msgstr "사용자가 생성할 수 있는 중첩된 사서함의 최대 깊이를 제한합니다."
+
+msgid "Restricts the number of concurrent file uploads a user can perform."
+msgstr "사용자가 수행할 수 있는 동시 파일 업로드 수를 제한합니다."
+
+msgid "Restricts the number of concurrent requests a user can make to the JMAP server."
+msgstr "사용자가 JMAP에 대해 수행할 수 있는 동시 요청 수를 제한합니다. server."
+
+msgid "Result"
+msgstr "결과"
+
+msgid "Resume"
+msgstr "재개"
+
+msgid "Resuming Queue..."
+msgstr "큐 재개 중..."
+
+msgid "Retries"
+msgstr "재시도"
+
+msgid "Retry"
+msgstr "재시도"
+
+msgid "Retry Interval (Milliseconds)"
+msgstr "재시도 간격(밀리초)"
+
+msgid "Retry Limit"
+msgstr "재시도 제한"
+
+msgid "Retry Num"
+msgstr "재시도 횟수"
+
+msgid "Retrying Delivery..."
+msgstr "전송 재시도 중..."
+
+msgid "Retrying..."
+msgstr "재시도 중..."
+
+msgid "Return Path"
+msgstr "반환 경로"
+
+msgid "Return to Home"
+msgstr "홈으로 돌아가기"
+
+msgid "Rights"
+msgstr ""
+
+msgid "RocksDB"
+msgstr ""
+
+msgid "Role"
+msgstr "역할"
+
+msgid "Roles"
+msgstr "역할"
+
+msgid "Root Domain Name"
+msgstr "루트 도메인 이름"
+
+msgid "Rotate DKIM Keys"
+msgstr "DKIM 키 순환"
+
+msgid "Rotate Frequency"
+msgstr "빈도 순환"
+
+msgid "Rotating DKIM Keys..."
+msgstr "회전 중 DKIM 키..."
+
+msgid "Row #{0}: Address Book ID is required."
+msgstr "행 #{0}: 주소록 ID가 필요합니다."
+
+msgid "Row #{0}: Calendar ID is required."
+msgstr "행 #{0}: 캘린더 ID가 필요합니다."
+
+msgid "Row #{0}: Certificate ID {1} is duplicated."
+msgstr "행 #{0}: 인증서 ID {1}이(가) 중복되었습니다."
+
+msgid "Row #{0}: Certificate or Certificate Path is required."
+msgstr "행 #{0}: 인증서 또는 인증서 경로가 필요합니다."
+
+msgid "Row #{0}: Directory ID {1} is duplicated."
+msgstr "행 #{0}: 디렉터리 ID {1}이(가) 중복되었습니다."
+
+msgid "Row #{0}: Failed to verify {1} : {2}"
+msgstr "행 #{0}: {1}을(를) 확인하지 못했습니다: {2}"
+
+msgid "Row #{0}: Listener ID {1} is duplicated."
+msgstr "행 #{0}: 리스너 ID {1}이(가) 중복되었습니다."
+
+msgid "Row #{0}: Private Key or Private Key Path is required."
+msgstr "행 #{0}: 개인 키 또는 개인 키 경로가 필요합니다."
+
+msgid "Row #{0}: Store ID {1} is duplicated."
+msgstr "행 #{0}: 저장소 ID {1}이(가) 중복되었습니다."
+
+msgid "Row #{0}: Tracer ID {1} is duplicated."
+msgstr "행 #{0}: 추적자 ID {1}이(가) 중복되었습니다."
+
+msgid "Running"
+msgstr "실행 중"
+
+msgid "S3-compatible"
+msgstr "S3 호환"
+
+msgid "SAS Token"
+msgstr "SAS 토큰"
+
+msgid "SAS Token, when not using access-key based authentication."
+msgstr "액세스 키 기반 인증을 사용하지 않는 경우 SAS 토큰."
+
+msgid "SMTP"
+msgstr ""
+
+msgid "SPF"
+msgstr ""
+
+msgid "SPF Alignment"
+msgstr "SPF 정렬"
+
+msgid "SPF Description"
+msgstr "SPF 설명"
+
+msgid "SPF Result"
+msgstr "SPF 결과"
+
+msgid "SPF Results"
+msgstr "SPF 결과"
+
+msgid "SQLite"
+msgstr ""
+
+msgid "SRV"
+msgstr ""
+
+msgid "SSH"
+msgstr ""
+
+msgid "SSH Key"
+msgstr "SSH 키"
+
+msgid "SSH Port"
+msgstr "SSH 포트"
+
+msgid "SSH User"
+msgstr "SSH 사용자"
+
+msgid "SSH connection failed. Error: {0}"
+msgstr "SSH 연결에 실패했습니다. 오류: {0}"
+
+msgid "SSH connection successful."
+msgstr "SSH 연결에 성공했습니다."
+
+msgid "SSL setup job has been created."
+msgstr "SSL 설정 작업이 생성되었습니다."
+
+msgid "Save"
+msgstr "저장"
+
+msgid "Saving Draft..."
+msgstr "초안 저장 중..."
+
+msgid "Scanning Mode"
+msgstr "스캔 모드"
+
+msgid "Schedule ID"
+msgstr "예약 ID"
+
+msgid "Scope"
+msgstr "범위"
+
+msgid "Script Content"
+msgstr "스크립트 콘텐츠"
+
+msgid "Script Name"
+msgstr "스크립트 이름"
+
+msgid "Search"
+msgstr "검색"
+
+msgid "Search ({0}+K)"
+msgstr "검색({0}+K)"
+
+msgid "Search Mail"
+msgstr "메일 검색"
+
+msgid "Search Store"
+msgstr "스토어 검색"
+
+msgid "Search by keyword"
+msgstr "키워드로 검색"
+
+msgid "Search..."
+msgstr "검색..."
+
+msgid "Secondary email address used for account recovery and important notifications."
+msgstr "계정 복구 및 중요에 사용되는 보조 이메일 주소 알림."
+
+msgid "Seconds"
+msgstr "초"
+
+msgid "Secret"
+msgstr "비밀"
+
+msgid "Secret Key"
+msgstr "비밀 키"
+
+msgid "Secret key paired with the access key for authentication."
+msgstr "인증을 위해 액세스 키와 쌍을 이루는 비밀 키."
+
+msgid "Secret used along with the auth key for secure access."
+msgstr "보안 액세스를 위해 인증 키와 함께 사용되는 비밀입니다."
+
+msgid "Security Token"
+msgstr "보안 토큰"
+
+msgid "See MIME Message"
+msgstr "MIME 메시지 보기"
+
+msgid "Seen"
+msgstr "확인"
+
+msgid "Select All ({0}+A)"
+msgstr "모두 선택({0}+A)"
+
+msgid "Select All Mails"
+msgstr "모든 메일 선택"
+
+msgid "Select Contacts"
+msgstr "연락처 선택"
+
+msgid "Select From"
+msgstr "다음에서 선택"
+
+msgid "Select an email to view the thread."
+msgstr "스레드를 보려면 이메일을 선택하세요."
+
+msgid "Select from contacts"
+msgstr "다음에서 선택 연락처"
+
+msgid "Selector"
+msgstr "선택기"
+
+msgid "Send"
+msgstr "보내기"
+
+msgid "Send ({0}+Enter)"
+msgstr "보내기({0}+Enter)"
+
+msgid "Send Invite"
+msgstr "초대 보내기"
+
+msgid "Send Mail"
+msgstr "메일 보내기"
+
+msgid "Send Reset Link"
+msgstr "재설정 링크 보내기"
+
+msgid "Send Scheduling Messages"
+msgstr "예약 메시지 보내기"
+
+msgid "Send To"
+msgstr "보내기"
+
+msgid "Send Verification Email"
+msgstr "확인 이메일 보내기"
+
+msgid "Sender Email"
+msgstr "보내는 사람 이메일"
+
+msgid "Sender Name"
+msgstr "보내는 사람 이름"
+
+msgid "Sending"
+msgstr "보내는 중"
+
+msgid "Sending Record"
+msgstr "보내는 기록"
+
+msgid "Sent At"
+msgstr "보낸 사람"
+
+msgid "Sequence"
+msgstr "시퀀스"
+
+msgid "Server"
+msgstr "서버"
+
+msgid "Server Ansible Play"
+msgstr ""
+
+msgid "Server Ansible Play Task"
+msgstr ""
+
+msgid "Server Ansible Play Variable"
+msgstr ""
+
+msgid "Server Config"
+msgstr "서버 구성"
+
+msgid "Server Config created."
+msgstr "서버 구성이 생성되었습니다."
+
+msgid "Server Deployment"
+msgstr "서버 배포"
+
+msgid "Server Deployment Service"
+msgstr "서버 배포 서비스"
+
+msgid "Server Job"
+msgstr "서버 작업"
+
+msgid "Server Job Command"
+msgstr "서버 작업 명령"
+
+msgid "Server Record"
+msgstr "서버 기록"
+
+msgid "Server Response"
+msgstr "서버 응답"
+
+msgid "Server Type"
+msgstr "서버 유형"
+
+msgid "Server URL"
+msgstr "서버 URL"
+
+msgid "Server URL and App Password are required to validate JMAP settings."
+msgstr "JMAP 설정을 확인하려면 서버 URL과 앱 비밀번호가 필요합니다."
+
+msgid "Server URL must be set in either the user's settings or the site configuration."
+msgstr "서버 URL은 사용자 설정 또는 사이트에서 설정되어야 합니다. 구성."
+
+msgid "Service"
+msgstr "서비스"
+
+msgid "Service Configuration Records"
+msgstr "서비스 구성 레코드"
+
+msgid "Service Discovery Records"
+msgstr "서비스 검색 레코드"
+
+msgid "Service records that enable automatic mail setup and enforce secure transport for your domain."
+msgstr "자동 메일 설정을 활성화하고 도메인에 대한 보안 전송을 시행하는 서비스 레코드입니다."
+
+msgid "Services"
+msgstr "서비스"
+
+msgid "Set"
+msgstr "설정"
+
+msgid "Set Default"
+msgstr "기본값 설정"
+
+msgid "Set Default Signature"
+msgstr "기본 서명 설정"
+
+msgid "Set Restriction"
+msgstr "제한 설정"
+
+msgid "Set as Default"
+msgstr "기본값으로 설정"
+
+msgid "Set as default Participant Identity."
+msgstr "기본 참가자 ID로 설정."
+
+msgid "Set up organization"
+msgstr "조직 설정"
+
+msgid "Sets the maximum number of results that a Query method can return."
+msgstr "쿼리 메서드가 반환할 수 있는 최대 결과 수를 설정합니다."
+
+msgid "Setting up Filebeat Stream..."
+msgstr "Filebeat 설정 스트림..."
+
+msgid "Setting up SSL..."
+msgstr "SSL 설정 중..."
+
+msgid "Settings"
+msgstr "설정"
+
+msgid "Setup SSL"
+msgstr "SSL 설정"
+
+msgid "Share With"
+msgstr "공유 대상"
+
+msgid "Shortcuts"
+msgstr "단축키"
+
+msgid "Should a vacation response be sent if a message arrives between the From Date and To Date?"
+msgstr "발신일과 종료일 사이에 메시지가 도착하면 휴가 응답을 보내야 합니까?"
+
+msgid "Should the calendar's events be displayed to the user at the moment?"
+msgstr "캘린더의 이벤트를 현재 사용자에게 표시해야 합니까?"
+
+msgid "Show App Password"
+msgstr "앱 비밀번호 표시"
+
+msgid "Show Password"
+msgstr "비밀번호 표시"
+
+msgid "Show Reading Pane"
+msgstr "읽기 창 표시"
+
+msgid "Show Without Time"
+msgstr "시간 없이 표시"
+
+msgid "Show a preview pane beside the email list for quick reading."
+msgstr "빠른 읽기를 위해 이메일 목록 옆에 미리보기 창을 표시합니다."
+
+msgid "Showing top 5 results. "
+msgstr "상위 5개 결과 표시. "
+
+msgid "Sieve"
+msgstr ""
+
+msgid "Sieve Script"
+msgstr "Sieve 스크립트"
+
+msgid "Sieve Script Creation Error"
+msgstr "Sieve 스크립트 생성 오류"
+
+msgid "Sieve Script Deletion Error"
+msgstr "Sieve 스크립트 삭제 오류"
+
+msgid "Sieve Script Deletion Error(s):<br>{0}"
+msgstr "Sieve 스크립트 삭제 오류:<br>{0}"
+
+msgid "Sieve Script Not Found"
+msgstr "Sieve 스크립트를 찾을 수 없음"
+
+msgid "Sieve Script Update Error"
+msgstr "Sieve 스크립트 업데이트 오류"
+
+msgid "Sieve Script Validation Error"
+msgstr "Sieve 스크립트 유효성 검사 오류"
+
+msgid "Sieve Script with ID {0} not found in user {1}."
+msgstr "ID가 {0}인 Sieve 스크립트를 사용자 {1}에서 찾을 수 없습니다."
+
+msgid "Sieve Script with ID {0} not found."
+msgstr "Sieve ID가 {0}인 스크립트를 찾을 수 없습니다."
+
+msgid "Sieve Scripts"
+msgstr "Sieve 스크립트"
+
+msgid "Sieve Scripts deleted successfully."
+msgstr "Sieve 스크립트가 성공적으로 삭제되었습니다."
+
+msgid "Sieve script content cannot be empty."
+msgstr "Sieve 스크립트 콘텐츠는 비워둘 수 없습니다."
+
+msgid "Sieve script created."
+msgstr "Sieve 스크립트가 생성되었습니다."
+
+msgid "Sieve script deleted."
+msgstr "Sieve 스크립트가 삭제되었습니다."
+
+msgid "Sieve script is valid."
+msgstr "Sieve 스크립트가 유효합니다."
+
+msgid "Sieve script updated."
+msgstr "Sieve 스크립트가 업데이트되었습니다."
+
+msgid "Sieve scripts let you automatically filter and organize incoming emails."
+msgstr "Sieve 스크립트를 사용하면 수신 이메일을 자동으로 필터링하고 구성할 수 있습니다."
+
+msgid "Sign Up"
+msgstr "가입"
+
+msgid "Sign in to your account"
+msgstr "계정에 로그인"
+
+msgid "Signature"
+msgstr "서명"
+
+msgid "Signature Body"
+msgstr "서명 본문"
+
+msgid "Signature Name"
+msgstr "서명 이름"
+
+msgid "Signature created."
+msgstr "서명이 생성되었습니다."
+
+msgid "Signature updated."
+msgstr "서명이 업데이트되었습니다."
+
+msgid "Signatures"
+msgstr "서명"
+
+msgid "Signatures let you automatically add personalized content to your emails."
+msgstr "서명을 사용하면 이메일에 개인화된 콘텐츠를 자동으로 추가할 수 있습니다."
+
+msgid "Signup"
+msgstr "가입"
+
+msgid "Signup Domains"
+msgstr "가입 도메인"
+
+msgid "Signup is disabled."
+msgstr "가입이 비활성화되었습니다."
+
+msgid "Size"
+msgstr "크기"
+
+msgid "Size (Bytes)"
+msgstr "크기(바이트)"
+
+msgid "Size of the write buffer in bytes, used to batch writes to the store."
+msgstr "쓰기 크기 저장소에 대한 일괄 쓰기에 사용되는 바이트 단위의 버퍼입니다."
+
+msgid "Skip Schedule Fetch Changes"
+msgstr "일정 가져오기 변경 사항 건너뛰기"
+
+msgid "Skip periodic fetching of email changes (new, updated, or deleted)."
+msgstr "이메일 변경 사항(신규, 업데이트 또는 삭제됨)의 주기적 가져오기를 건너뜁니다."
+
+msgid "Skipped"
+msgstr "건너뛰었습니다"
+
+msgid "Soft Limit"
+msgstr "소프트 제한"
+
+msgid "Sort"
+msgstr "정렬"
+
+msgid "Sort Order"
+msgstr "정렬 순서"
+
+msgid "Source"
+msgstr "소스"
+
+msgid "Source Host"
+msgstr "소스 호스트"
+
+msgid "Source IP"
+msgstr "소스 IP"
+
+msgid "Source IP Address"
+msgstr "소스 IP 주소"
+
+msgid "Spam Check Log"
+msgstr "스팸 확인 로그"
+
+msgid "Spam Detection Failed"
+msgstr "스팸 감지 실패"
+
+msgid "Spam Detection is disabled"
+msgstr "스팸 감지는 다음과 같습니다. 비활성화됨"
+
+msgid "Spam Score"
+msgstr "스팸 점수"
+
+msgid "Spam score not found in output."
+msgstr "출력에서 스팸 점수를 찾을 수 없습니다."
+
+msgid "SpamAssassin"
+msgstr ""
+
+msgid "SpamAssassin did not return the expected response. This may indicate a permission issue or an unauthorized connection. Please check the following: {0}"
+msgstr "SpamAssassin이 예상한 응답을 반환하지 않았습니다. 이는 권한 문제 또는 승인되지 않은 연결을 나타낼 수 있습니다. 다음을 확인하세요. {0}"
+
+msgid "Specifies how often tombstoned messages are deleted from the database.\n\n<br>\n<br>\n\n<pre>*  *  *  *  *\n┬  ┬  ┬  ┬  ┬\n│  │  │  │  │\n│  │  │  │  └ day of week (0 - 6) (0 is Sunday)\n│  │  │  └───── month (1 - 12)\n│  │  └────────── day of month (1 - 31)\n│  └─────────────── hour (0 - 23)\n└──────────────────── minute (0 - 59)\n\n---\n\n* - Any value\n/ - Step values\n</pre>\n"
+msgstr "삭제 메시지가 데이터베이스에서 삭제되는 빈도를 지정합니다.\n\n<br>\n<br>\n\n<예전>* * * * *\n┬ ┬ ┬ ┬ ┬\n│ │ │ │ │\n│ │ │ │ └ 요일(0 - 6) (0은 일요일)\n│ │ │ └───── 월(1~12)\n│ │ └────────── 일(1 - 31)\n│ └─────────────── 시 (0 - 23)\n└──────────────────── 분 (0 - 59)\n\n---\n\n* - 임의의 값\n/ - 단계 값\n</pre>\n"
+
+msgid "Specifies how the alert is delivered to the user."
+msgstr "경고가 사용자에게 전달되는 방법을 지정합니다."
+
+msgid "Specifies the Time-To-Live (TTL) for each uploaded file, after which the file is deleted from temporary storage."
+msgstr "업로드된 각 파일에 대해 TTL(Time-To-Live)을 지정하고 그 이후에는 파일이 임시 저장소에서 삭제됩니다."
+
+msgid "Specifies the event reference point used for offset-based alerts."
+msgstr "오프셋 기반 경고에 사용되는 이벤트 참조 지점을 지정합니다."
+
+msgid "Specifies the maximum number of files that a user can upload within a certain period."
+msgstr "특정 기간 내에 사용자가 업로드할 수 있는 최대 파일 수를 지정합니다."
+
+msgid "Specifies the maximum size for an email attachment."
+msgstr "이메일 첨부 파일의 최대 크기를 지정합니다."
+
+msgid "Stalwart CLI not found at {0}."
+msgstr "Stalwart CLI를 찾을 수 없음 {0}."
+
+msgid "Stalwart service not found in deployment {0}"
+msgstr "배포 {0}"
+
+msgid "Star"
+msgstr "별표"
+
+msgid "Starred"
+msgstr "별표 표시"
+
+msgid "Starred Mails"
+msgstr "별표 표시된 메일"
+
+msgid "Start"
+msgstr "시작"
+
+msgid "Start From"
+msgstr "시작 시작"
+
+msgid "Start time is required for non-draft events."
+msgstr "초안이 아닌 이벤트에는 시작 시간이 필요합니다."
+
+msgid "Started"
+msgstr "시작"
+
+msgid "Started After (Seconds)"
+msgstr "다음 이후 시작 시간(초)"
+
+msgid "Started At"
+msgstr "시작 시간"
+
+msgid "Started At - Creation"
+msgstr "시작 시간 - 생성"
+
+msgid "Started At - Queued At"
+msgstr "시작 시간 - 대기 시간"
+
+msgid "State Last Update (Email)"
+msgstr "상태 마지막 업데이트 (이메일)"
+
+msgid "Statistics"
+msgstr "통계"
+
+msgid "Status"
+msgstr "상태"
+
+msgid "Storage"
+msgstr "스토리지"
+
+msgid "Storage Account Name"
+msgstr "스토리지 계정 이름"
+
+msgid "Storage Settings"
+msgstr "스토리지 설정"
+
+msgid "Storage Used (in Bytes)"
+msgstr "사용된 스토리지(바이트)"
+
+msgid "Storage Used (in GB)"
+msgstr "사용된 스토리지(GB)"
+
+msgid "Storage backend type."
+msgstr "스토리지 백엔드 유형."
+
+msgid "Store ID"
+msgstr "스토어 ID"
+
+msgid "Store with Store ID {0} not found."
+msgstr "스토어 ID가 {0}인 스토어를 찾을 수 없습니다."
+
+msgid "Stores"
+msgstr "스토어"
+
+msgid "Stores user accounts, passwords, email addresses, and settings. Used for authentication, email validation, and account management."
+msgstr "사용자 계정, 비밀번호, 이메일 주소 및 설정을 저장합니다. 인증, 이메일 검증 및 계정 관리에 사용됩니다."
+
+msgid "Street"
+msgstr "거리"
+
+msgid "Subaddressing is not allowed in the email address."
+msgstr "이메일 주소에는 하위 주소 지정이 허용되지 않습니다."
+
+msgid "Subdomain Policy"
+msgstr "하위 도메인 정책"
+
+msgid "Subject"
+msgstr "제목"
+
+msgid "Subject Alternative Names"
+msgstr "제목 대체 이름"
+
+msgid "Subject Alternative Names (SAN) for the certificate."
+msgstr "인증서의 제목 대체 이름(SAN)."
+
+msgid "Subject Contains"
+msgstr "제목 포함"
+
+msgid "Subject Names"
+msgstr "제목 이름"
+
+msgid "Subject: "
+msgstr "제목: "
+
+msgid "Submitted"
+msgstr "제출됨"
+
+msgid "Submitted After (Seconds)"
+msgstr "제출 후(초)"
+
+msgid "Submitted At"
+msgstr "제출됨 At"
+
+msgid "Submitted At - Creation"
+msgstr "제출 날짜 - 생성"
+
+msgid "Subscribed"
+msgstr "구독"
+
+msgid "Success"
+msgstr "성공"
+
+msgid "Successfully retried {0} emails."
+msgstr "{0} 이메일을 성공적으로 재시도했습니다."
+
+msgid "Supported file format: .eml"
+msgstr "지원되는 파일 형식: .eml"
+
+msgid "Supported file formats: .zip, .tar, .tgz"
+msgstr "지원되는 파일 형식: .zip, .tar, .tgz"
+
+msgid "Supported: <code>.eml</code>, <code>.zip</code>, <code>.tgz</code>, <code>.tar.gz</code>"
+msgstr "지원: <code>.eml</code>, <code>.zip</code>, <code>.tgz</code>, <code>.tar.gz</code>"
+
+msgid "Supported: <code>.zip</code>, <code>.tgz</code>, <code>.tar.gz</code>"
+msgstr "지원됨: <code>.zip</code>, <code>.tgz</code>, <code>.tar.gz</code>"
+
+msgid "Sync DNS Record"
+msgstr "DNS 레코드 동기화"
+
+msgid "Sync JMAP Identities"
+msgstr "JMAP ID 동기화"
+
+msgid "Syncing DNS Record..."
+msgstr "DNS 레코드 동기화 중..."
+
+msgid "Syncing JMAP Identities..."
+msgstr "JMAP ID 동기화 중..."
+
+msgid "System Default"
+msgstr "시스템 기본값"
+
+msgid "System Manager"
+msgstr "시스템 관리자"
+
+msgid "Systemd Journal"
+msgstr "시스템 저널"
+
+msgid "TENTATIVE"
+msgstr "임시"
+
+msgid "TLS"
+msgstr ""
+
+msgid "TLS Certificates"
+msgstr "TLS 인증서"
+
+msgid "TLS Options"
+msgstr "TLS 옵션"
+
+msgid "TLS Reporting"
+msgstr "TLS 보고"
+
+msgid "TLS certificate in PEM format."
+msgstr "PEM 형식의 TLS 인증서."
+
+msgid "TLS-ALPN-01"
+msgstr ""
+
+msgid "TTL"
+msgstr ""
+
+msgid "TTL (Recommended)"
+msgstr "TTL(권장)"
+
+msgid "TXT"
+msgstr ""
+
+msgid "TXT records that enforce encrypted mail delivery and provide reporting on failed or insecure SMTP connections."
+msgstr "암호화된 메일 배달을 시행하고 실패하거나 안전하지 않은 SMTP 연결에 대한 보고를 제공하는 TXT 레코드."
+
+msgid "Target mailbox ID {0} not found."
+msgstr "대상 사서함 ID가 {0} 아님 발견됨"
+
+msgid "Task"
+msgstr "작업"
+
+msgid "Task {0} already exists in play {1}"
+msgstr "작업 {0}이(가) 이미 플레이 {1}에 존재합니다."
+
+msgid "Team Frappe"
+msgstr ""
+
+msgid "Team Updates"
+msgstr "팀 업데이트"
+
+msgid "Tentative"
+msgstr "미정"
+
+msgid "Text"
+msgstr "텍스트"
+
+msgid "Text Body"
+msgstr "텍스트 본문"
+
+msgid "The \"From\" email address the client must use when creating a new Email from this Identity."
+msgstr "클라이언트가 이 ID에서 새 이메일을 생성할 때 사용해야 하는 \"보낸 사람\" 이메일 주소."
+
+msgid "The \"From\" name the client should use when creating a new Email from this Identity."
+msgstr "이 ID에서 새 이메일을 생성할 때 클라이언트가 사용해야 하는 \"보낸 사람\" 이름."
+
+msgid "The \"Scope\" of this quota as defined in `#scope`."
+msgstr "이 할당량의 \"범위\"는 다음에 정의되어 있습니다. `#scope`."
+
+msgid "The '{0}' sieve script cannot be modified."
+msgstr "'{0}' 시브 스크립트는 수정할 수 없습니다."
+
+msgid "The ACME challenge type used to validate domain ownership."
+msgstr "도메인 소유권을 확인하는 데 사용되는 ACME 챌린지 유형."
+
+msgid "The Azure Storage Account where blobs (e-mail messages, Sieve scripts, etc.) will be stored."
+msgstr "Blob(이메일 메시지, 시브 스크립트 등)이 저장되는 Azure Storage 계정."
+
+msgid "The Bcc value the client should set when creating a new Email from this Identity."
+msgstr "이 ID에서 새 이메일을 생성할 때 클라이언트가 설정해야 하는 Bcc 값."
+
+msgid "The External Account Binding (EAB) HMAC key."
+msgstr "외부 계정 바인딩(EAB) HMAC 키"
+
+msgid "The External Account Binding (EAB) key ID."
+msgstr "외부 계정 바인딩(EAB) 키 ID."
+
+msgid "The HTML body to send in response to messages when the vacation response is enabled."
+msgstr "부재 응답이 활성화된 경우 메시지에 대한 응답으로 보낼 HTML 본문입니다."
+
+msgid "The ID of the Address Book."
+msgstr "주소록의 ID"
+
+msgid "The ID of the CalendarEvent that this notification is about."
+msgstr "이 알림에 관한 CalendarEvent의 ID."
+
+msgid "The ID of the Contact Card."
+msgstr "연락처 카드의 ID."
+
+msgid "The ID of the Principal corresponding to the person who made the change, if any."
+msgstr "변경을 수행한 사람에 해당하는 주체의 ID(있는 경우)."
+
+msgid "The ID of the blob containing the raw octets of the script."
+msgstr "스크립트의 원시 옥텟을 포함하는 blob의 ID."
+
+msgid "The ID of the calendar."
+msgstr "캘린더의 ID."
+
+msgid "The ID of the push subscription."
+msgstr "푸시 구독의 ID."
+
+msgid "The ID of the script."
+msgstr "스크립트의 ID."
+
+msgid "The JMAP Push Subscription Private Key does not correspond to the P256DH public key."
+msgstr "JMAP 푸시 구독 개인 키가 일치하지 않습니다. P256DH 공개 키에."
+
+msgid "The JMAP Push Subscription {0} key must be URL-safe base64 encoded."
+msgstr "JMAP 푸시 구독 {0} 키는 URL 안전 base64로 인코딩되어야 합니다."
+
+msgid "The Linux user account to use for SSH connections."
+msgstr "SSH 연결에 사용할 Linux 사용자 계정."
+
+msgid "The Mailbox ID for the parent of this Mailbox."
+msgstr "이 메일박스의 상위 항목에 대한 메일박스 ID."
+
+msgid "The Mailbox link for the parent of this Mailbox."
+msgstr "이 메일박스의 상위 항목에 대한 메일박스 링크."
+
+msgid "The Prometheus endpoint's secret for Basic authentication."
+msgstr "기본 인증을 위한 Prometheus 엔드포인트의 비밀."
+
+msgid "The Prometheus endpoint's username for Basic authentication."
+msgstr "기본 인증을 위한 Prometheus 엔드포인트의 사용자 이름."
+
+msgid "The Reply-To value the client should set when creating a new Email from this Identity."
+msgstr "클라이언트가 설정해야 하는 회신 값 이 ID에서 새 이메일을 생성할 때."
+
+msgid "The S3 bucket where blobs (e-mail messages, Sieve scripts, etc.) will be stored."
+msgstr "Blob(이메일 메시지, Sieve 스크립트 등)이 저장될 S3 버킷."
+
+msgid "The Sieve script code used for mail filtering rules."
+msgstr "메일 필터링 규칙에 사용되는 Sieve 스크립트 코드."
+
+msgid "The URI pointing to the linked resource."
+msgstr "링크된 리소스를 가리키는 URI."
+
+msgid "The URL must start with 'https://'."
+msgstr "|URL은 'https://'로 시작해야 합니다."
+
+msgid "The URL of the ACME directory endpoint."
+msgstr "ACME 디렉터리 엔드포인트의 URL."
+
+msgid "The UTC timestamp of the most recent modification to the event."
+msgstr "이벤트에 대한 가장 최근 수정의 UTC 타임스탬프."
+
+msgid "The UTC timestamp when the event was created."
+msgstr "UTC 타임스탬프 이벤트가 생성되었을 때"
+
+msgid "The access key for the Azure Storage Account."
+msgstr "Azure Storage 계정에 대한 액세스 키."
+
+msgid "The addresses the listener will bind to."
+msgstr "리스너가 바인딩할 주소."
+
+msgid "The calendars to which this event belongs."
+msgstr "이 이벤트가 속한 달력."
+
+msgid "The contact email address, which is used for important communications regarding your ACME account and certificates."
+msgstr "ACME 계정 및 인증서와 관련된 중요한 통신에 사용되는 연락처 이메일 주소."
+
+msgid "The current usage of the defined quota."
+msgstr "정의된 할당량의 현재 사용량."
+
+msgid "The data before the change (if updated or destroyed), or the data after creation (if created)."
+msgstr "변경 전 데이터(업데이트 또는 삭제된 경우) 또는 생성 후 데이터(생성된 경우)."
+
+msgid "The delivery address used for scheduling messages related to this participant."
+msgstr "이 참가자와 관련된 메시지를 예약하는 데 사용되는 배달 주소."
+
+msgid "The display name of the participant to use when adding this participant to an event."
+msgstr "이 참가자를 이벤트에 추가할 때 사용할 참가자의 표시 이름입니다."
+
+msgid "The display name of the participant."
+msgstr "참가자의 표시 이름입니다."
+
+msgid "The domain name used to create DNS records."
+msgstr "DNS 레코드를 생성하는 데 사용되는 도메인 이름입니다."
+
+msgid "The domain {0} is not verified. Please verify the domain or use an email address with a verified domain."
+msgstr "도메인 {0}이(가) 확인되지 않았습니다. 도메인을 확인하거나 확인된 도메인이 있는 이메일 주소를 사용하십시오."
+
+msgid "The email address associated with the participant."
+msgstr "참여자와 연결된 이메일 주소."
+
+msgid "The email address {0} is already assigned."
+msgstr "이메일 주소 {0}이(가) 이미 할당되었습니다."
+
+msgid "The email address {0} is already blocked for user {1}."
+msgstr "이메일 주소 {0}은(는) 사용자 {1}에 대해 이미 차단되었습니다."
+
+msgid "The email of the person who made the change."
+msgstr "변경을 수행한 사람의 이메일."
+
+msgid "The endpoint for Open Telemetry."
+msgstr "Open Telemetry의 엔드포인트."
+
+msgid "The exact date and time when the alert should trigger."
+msgstr "경고가 트리거되어야 하는 정확한 날짜 및 시간."
+
+msgid "The frequency to rotate the log file."
+msgstr "로그 파일을 회전하는 빈도."
+
+msgid "The geographical region where the bucket resides."
+msgstr "버킷이 있는 지리적 지역 상주합니다."
+
+msgid "The hard limit set by this quota."
+msgstr "이 할당량에 의해 설정된 엄격한 제한입니다."
+
+msgid "The header <b>{0}</b> is a standard email header and cannot be overridden. Please use custom headers prefixed with <code>X-</code>."
+msgstr "<b>{0}</b> 헤더는 표준 이메일 헤더이며 재정의될 수 없습니다. <code>X-</code> 접두사가 붙은 사용자 정의 헤더를 사용하십시오."
+
+msgid "The human-readable name of the calendar."
+msgstr "사람이 읽을 수 있는 캘린더 이름"
+
+msgid "The id of the Event Notification."
+msgstr "이벤트 알림의 ID"
+
+msgid "The id of the Identity."
+msgstr "ID의 ID"
+
+msgid "The id of the Mailbox."
+msgstr "사서함의 ID"
+
+msgid "The id of the Participant Identity."
+msgstr "참여자 ID의 ID."
+
+msgid "The length of the event expressed as a duration (e.g., PT30M, P1D)."
+msgstr "기간(예: PT30M, P1D)으로 표현되는 이벤트의 길이(예: PT30M, P1D)."
+
+msgid "The link to the CalendarEvent that this notification is about."
+msgstr "이 알림이 포함된 CalendarEvent에 대한 링크 정보."
+
+msgid "The logging level for this tracer."
+msgstr "이 추적 프로그램의 로깅 수준입니다."
+
+msgid "The mail cluster this server belongs to."
+msgstr "이 서버가 속한 메일 클러스터."
+
+msgid "The maximum number of concurrent connections the server will accept."
+msgstr "서버가 허용할 최대 동시 연결 수."
+
+msgid "The maximum number of times to retry failed requests. Set to 0 to disable retries."
+msgstr "실패한 요청을 재시도하는 최대 횟수입니다. 재시도를 비활성화하려면 0으로 설정하세요."
+
+msgid "The media type describing the linked resource."
+msgstr "링크된 리소스를 설명하는 미디어 유형입니다."
+
+msgid "The message is required."
+msgstr "메시지가 필요합니다."
+
+msgid "The method {method} is missing the required {decorator} decorator. Please add it to enforce dynamic rate limiting."
+msgstr "{method} 메서드에 필수 {장식자} 데코레이터가 없습니다. 동적 속도 제한을 적용하려면 추가하세요."
+
+msgid "The minimum amount of time that must pass between each push request to the OpenTelemetry endpoint."
+msgstr "OpenTelemetry 엔드포인트에 대한 각 푸시 요청 사이에 통과해야 하는 최소 시간입니다."
+
+msgid "The minimum amount of time that must pass between each request to the OpenTelemetry endpoint."
+msgstr "OpenTelemetry 엔드포인트에 대한 각 요청 사이에 통과해야 하는 최소 시간입니다."
+
+msgid "The name of the container in the Storage Account."
+msgstr "스토리지 계정에 있는 컨테이너의 이름."
+
+msgid "The name of the person who made the change."
+msgstr "변경한 사람의 이름."
+
+msgid "The name of the quota object."
+msgstr "할당량 개체의 이름."
+
+msgid "The network address (hostname and optionally a port) of the S3 service. For S3-compatible services, you will need to specify the endpoint explicitly."
+msgstr "S3 서비스의 네트워크 주소(호스트 이름 및 선택적으로 포트). S3 호환 서비스의 경우 엔드포인트를 명시적으로 지정해야 합니다."
+
+msgid "The number of Emails in this Mailbox that have neither the `$seen` keyword nor the `$draft` keyword."
+msgstr "`$seen` 키워드나 `$draft` 키워드가 없는 이 메일박스의 이메일 수."
+
+msgid "The number of Emails in this Mailbox."
+msgstr "이 메일박스에 있는 이메일 수."
+
+msgid "The number of Threads where at least one Email in the Thread is in this Mailbox."
+msgstr "스레드에 있는 하나 이상의 이메일이 이 메일박스에 있는 스레드 수."
+
+msgid "The overall status of the event."
+msgstr "이벤트의 전체 상태."
+
+msgid "The participant’s current participation status."
+msgstr "참여자의 현재 참여 상태."
+
+msgid "The path to the log file."
+msgstr "로그 파일의 경로."
+
+msgid "The people or entities involved in the event."
+msgstr " 이벤트에 관련된 사람 또는 단체."
+
+msgid "The physical or virtual locations where the event takes place."
+msgstr "이벤트가 발생하는 물리적 또는 가상 위치."
+
+msgid "The plaintext body to send in response to messages when the vacation response is enabled."
+msgstr "부재 응답이 활성화될 때 메시지에 대한 응답으로 보낼 일반 텍스트 본문."
+
+msgid "The prefix for the log file."
+msgstr "로그 파일의 접두사."
+
+msgid "The principal may create, modify or destroy all events in this calendar, or move events to or from this calendar."
+msgstr "주체는 이 캘린더의 모든 이벤트를 생성, 수정 또는 삭제하거나 이 캘린더에서 이벤트를 이동할 수 있습니다."
+
+msgid "The principal may create, modify or destroy an event on this calendar if either they are the owner of the event or the event has no owner."
+msgstr "주체는 이벤트의 소유자이거나 이벤트에 소유자가 없는 경우 이 캘린더에서 이벤트를 생성, 수정 또는 삭제할 수 있습니다."
+
+msgid "The principal may delete the calendar itself."
+msgstr "주체는 다음을 삭제할 수 있습니다. 달력 자체."
+
+msgid "The principal may fetch the events in this calendar."
+msgstr "주체는 이 달력의 이벤트를 가져올 수 있습니다."
+
+msgid "The principal may modify per-user properties on all events in the calendar."
+msgstr "주체는 달력의 모든 이벤트에 대한 사용자별 속성을 수정할 수 있습니다."
+
+msgid "The principal may modify the \"shareWith\" property for this calendar."
+msgstr "주체는 이 달력에 대한 \"shareWith\" 속성을 수정할 수 있습니다."
+
+msgid "The principal may modify the properties of any Participant object that corresponds to one of the user's Participant Identity objects in the account."
+msgstr "주체는 계정에 있는 사용자의 참가자 ID 개체 중 하나에 해당하는 모든 참가자 개체의 속성을 수정할 수 있습니다."
+
+msgid "The principal may read the free-busy information for this calendar as part of a call to `Principal/getAvailability`."
+msgstr "주체는 호출의 일부로 이 달력의 한가함/바쁨 정보를 읽을 수 있습니다. `Principal/getAvailability`."
+
+msgid "The principals this calendar is shared with, and the access rights granted to each."
+msgstr "이 캘린더를 공유하는 주체 및 각 주체에게 부여된 액세스 권한입니다."
+
+msgid "The protocol used by the listener."
+msgstr "리스너가 사용하는 프로토콜입니다."
+
+msgid "The raw message exceeds the maximum allowed size of {0} MB."
+msgstr "원시 메시지가 허용되는 최대 크기인 {0}MB를 초과했습니다."
+
+msgid "The raw message is required."
+msgstr "원시 메시지가 필요합니다."
+
+msgid "The resource type of the quota as defined in `#resourcetype`."
+msgstr "`#resourcetype`에 정의된 할당량의 리소스 유형입니다."
+
+msgid "The scheduleId URI of the person who made the change, if any."
+msgstr "변경한 사람의 ScheduleId URI(있는 경우)"
+
+msgid "The scheduling identifier used to uniquely identify this participant in scheduling messages."
+msgstr " 메시지 예약에서 이 참가자를 고유하게 식별합니다."
+
+msgid "The secret key for the S3 account."
+msgstr "S3 계정의 비밀 키입니다."
+
+msgid "The security token for the S3 account."
+msgstr "S3 계정의 보안 토큰."
+
+msgid "The server-assigned unique identifier of the event."
+msgstr "서버에서 할당한 이벤트의 고유 식별자."
+
+msgid "The service provider managing your root domain's DNS records."
+msgstr "루트 도메인의 DNS 레코드를 관리하는 서비스 공급자."
+
+msgid "The set of Address Book IDs this Contact Card belongs to. A card must belong to at least one Address Book at all times (until it is destroyed)."
+msgstr "이 연락처 카드가 속한 주소록 ID 집합입니다. 카드는 항상 하나 이상의 주소록에 속해야 합니다(폐기될 때까지)."
+
+msgid "The soft limit set by this quota object."
+msgstr "이 할당량 개체에 의해 설정된 소프트 제한."
+
+msgid "The start date-time of the event."
+msgstr "이벤트의 시작 날짜-시간."
+
+msgid "The subject that will be used by the message sent in response to messages when the vacation response is enabled."
+msgstr "휴가 응답이 활성화될 때 메시지에 대한 응답으로 전송된 메시지에서 사용되는 제목."
+
+msgid "The time offset relative to the event start or end."
+msgstr "이벤트 시작 또는 종료를 기준으로 한 시간 오프셋."
+
+msgid "The time this notification was created."
+msgstr "이 알림이 생성된 시간"
+
+msgid "The time this push subscription expires."
+msgstr "이 푸시 구독이 만료되는 시간."
+
+msgid "The time zone in which the event start time is defined."
+msgstr "이벤트가 시작되는 시간대 시간이 정의됩니다."
+
+msgid "The time zone to use for events without a time zone."
+msgstr "시간대가 없는 이벤트에 사용할 시간대입니다."
+
+msgid "The token used to authenticate with your DNS provider."
+msgstr "DNS 공급자를 인증하는 데 사용되는 토큰입니다."
+
+msgid "The transport protocol for Open Telemetry."
+msgstr "Open Telemetry용 전송 프로토콜입니다."
+
+msgid "The type of participant."
+msgstr "참가자 유형입니다."
+
+msgid "The type of tracer."
+msgstr "추적자의 유형입니다."
+
+msgid "The unique identifier for this quota."
+msgstr "이 할당량에 대한 고유 식별자입니다."
+
+msgid "The unique identifier of a principal (user, group, or resource) to grant access to this calendar."
+msgstr "이 달력에 대한 액세스 권한을 부여하는 주체(사용자, 그룹 또는 리소스)의 고유 식별자입니다."
+
+msgid "The unique identifier of the calendar in which the event is stored."
+msgstr "이벤트가 저장되는 달력의 고유 식별자입니다."
+
+msgid "The user may add mail to this Mailbox (by either creating a new Email or moving an existing one)."
+msgstr "사용자는 다음을 수행할 수 있습니다. (새 이메일을 생성하거나 기존 이메일을 이동하여) 이 사서함에 메일을 추가합니다."
+
+msgid "The user may add or remove any keyword other than `$seen` to/from an Email."
+msgstr "사용자는 이메일에서 `$seen` 이외의 키워드를 이메일에 추가하거나 제거할 수 있습니다."
+
+msgid "The user may add or remove the `$seen` keyword to/from an Email."
+msgstr "사용자는 이메일에서 `$seen` 키워드를 추가하거나 제거할 수 있습니다."
+
+msgid "The user may create a Mailbox with this Mailbox as its parent."
+msgstr "사용자는 이 사서함을 상위로 사용하여 사서함을 생성할 수 있습니다."
+
+msgid "The user may create, modify or destroy all Contact Cards in this Address Book, or move them to or from this Address Book."
+msgstr "사용자는 이 주소록에 있는 모든 연락처 카드를 생성, 수정 또는 파기하거나 이 주소록으로 또는 이 주소록에서 이동할 수 있습니다."
+
+msgid "The user may create, modify or destroy all events in this calendar, or move events to or from this calendar."
+msgstr " 사용자는 이 캘린더의 모든 이벤트를 생성, 수정 또는 삭제하거나 이 캘린더에서 이벤트를 이동할 수 있습니다."
+
+msgid "The user may create, modify or destroy an event on this calendar if either they are the owner of the event or the event has no owner."
+msgstr "사용자는 이벤트의 소유자이거나 이벤트에 소유자가 없는 경우 이 캘린더에서 이벤트를 생성, 수정 또는 삭제할 수 있습니다."
+
+msgid "The user may delete the Address Book itself."
+msgstr "사용자는 주소록 자체를 삭제할 수 있습니다."
+
+msgid "The user may delete the Mailbox itself."
+msgstr "사용자는 사서함 자체를 삭제할 수 있습니다."
+
+msgid "The user may delete the calendar itself."
+msgstr "캘린더 자체를 삭제할 수 있습니다."
+
+msgid "The user may fetch the Contact Cards in this Address Book."
+msgstr "사용자는 이 주소록에서 연락처 카드를 가져올 수 있습니다."
+
+msgid "The user may fetch the events in this calendar."
+msgstr "사용자는 이 달력의 이벤트를 가져올 수 있습니다."
+
+msgid "The user may modify per-user properties on all events in the calendar."
+msgstr "사용자는 달력의 모든 이벤트에 대한 사용자별 속성을 수정할 수 있습니다."
+
+msgid "The user may modify the \"shareWith\" property for this Address Book."
+msgstr "사용자는 이 주소록에 대한 \"shareWith\" 속성을 수정할 수 있습니다."
+
+msgid "The user may modify the \"shareWith\" property for this calendar."
+msgstr "사용자는 이 달력에 대한 \"shareWith\" 속성을 수정할 수 있습니다."
+
+msgid "The user may modify the properties of any Participant object that corresponds to one of the user's Participant Identity objects in the account."
+msgstr "사용자는 계정에 있는 사용자의 참가자 ID 개체 중 하나에 해당하는 모든 참가자 개체의 속성을 수정할 수 있습니다."
+
+msgid "The user may read the free-busy information for this calendar as part of a call to `Principal/getAvailability`."
+msgstr "사용자는 호출의 일부로 이 달력에 대한 한가함/바쁨 정보를 읽을 수 있습니다. `Principal/getAvailability`."
+
+msgid "The user may remove mail from this Mailbox (by either changing the Mailboxes of an Email or destroying the Email)."
+msgstr "사용자는 이 메일함에서 메일을 제거할 수 있습니다(이메일의 메일함을 변경하거나 이메일을 파기하여)."
+
+msgid "The user may rename the Mailbox or make it a child of another Mailbox."
+msgstr "사용자는 메일함의 이름을 바꾸거나 다른 메일함의 하위 항목으로 만들 수 있습니다."
+
+msgid "The user may use this Mailbox as part of a filter in an `Email/query` call, and the Mailbox may be included in the mailboxIds property of Email objects."
+msgstr "사용자는 이 메일함을 '이메일/쿼리' 호출에서 필터의 일부로 사용할 수 있으며 메일함은 이메일 개체의 MailboxIds 속성에 포함될 수 있습니다."
+
+msgid "The user this address book belongs to."
+msgstr "이 주소록이 속한 사용자 대상."
+
+msgid "The user this calendar belongs to."
+msgstr "이 캘린더가 속한 사용자."
+
+msgid "The user this contact card belongs to."
+msgstr "이 연락처 카드가 속한 사용자."
+
+msgid "The user this event belongs to."
+msgstr "이 이벤트가 속한 사용자."
+
+msgid "The user this identity belongs to."
+msgstr "이 ID가 속한 사용자."
+
+msgid "The user this mailbox belongs to."
+msgstr "이 사서함이 속한 사용자."
+
+msgid "The user this notification belongs to."
+msgstr "이 알림이 속한 사용자."
+
+msgid "The user this push subscription belongs to."
+msgstr "이 푸시 구독이 속한 사용자."
+
+msgid "The user this quota belongs to."
+msgstr "이 할당량이 속한 사용자."
+
+msgid "The user this script belongs to."
+msgstr "이 스크립트가 속한 사용자."
+
+msgid "The user this settings belongs to."
+msgstr "이 설정이 속한 사용자."
+
+msgid "The user this vacation response belongs to."
+msgstr "이 휴가 응답이 속한 사용자 대상."
+
+msgid "The user to whom these mailbox settings apply."
+msgstr "이 편지함 설정이 적용되는 사용자."
+
+msgid "The user-visible name of the Address Book."
+msgstr "사용자에게 표시되는 주소록 이름."
+
+msgid "The user-visible name of the calendar."
+msgstr "사용자에게 표시되는 달력 이름."
+
+msgid "The warn limit set by this quota object."
+msgstr "이 할당량 개체에 의해 설정된 경고 제한."
+
+msgid "This method is only meant for developer mode"
+msgstr "이 방법은 개발자 모드에만 사용됩니다."
+
+msgid "This request has expired. Please create a new one."
+msgstr "이 요청이 만료되었습니다. 새 주소록을 만드세요."
+
+msgid "This sender is blocked"
+msgstr "이 보낸 사람이 차단되었습니다."
+
+msgid "This should be true for exactly one Address Book in any account, and must not be true for more than one Address Book within an account."
+msgstr "이는 모든 계정의 정확히 하나의 주소록에 해당되어야 하며, 계정 내의 하나 이상의 주소록에 대해서는 해당되지 않아야 합니다."
+
+msgid "This should be true for exactly one calendar in any account."
+msgstr "이는 모든 계정의 정확히 하나의 달력에 해당되어야 합니다."
+
+msgid "This will replace any existing JMAP Push keys. Existing push subscriptions must be recreated after generating new keys. Continue?"
+msgstr "이는 기존 JMAP 푸시 키를 대체합니다. 새 키를 생성한 후 기존 푸시 구독을 다시 생성해야 합니다. 계속하시겠습니까?"
+
+msgid "Thread"
+msgstr "스레드"
+
+msgid "Thread ID"
+msgstr "스레드 ID"
+
+msgid "Thread Pool Size"
+msgstr "스레드 풀 크기"
+
+msgid "Thread deleted."
+msgstr "스레드가 삭제되었습니다."
+
+msgid "Thread marked as {0}."
+msgstr "{0}로 표시된 스레드."
+
+msgid "Thread moved back."
+msgstr "스레드가 뒤로 이동되었습니다."
+
+msgid "Thread moved to {0}."
+msgstr "스레드가 {0}으로 이동되었습니다."
+
+msgid "Threads"
+msgstr "스레드"
+
+msgid "Threads deleted."
+msgstr "스레드가 삭제되었습니다."
+
+msgid "Threads marked as {0}."
+msgstr "{0}로 표시된 스레드."
+
+msgid "Threads moved back."
+msgstr "스레드가 뒤로 이동되었습니다."
+
+msgid "Threads moved to {0}."
+msgstr "스레드가 {0}로 이동되었습니다."
+
+msgid "Threshold for when to switch from scanning only the email body to scanning attachments selectively."
+msgstr "스캔 전용에서 전환할 때의 임계값 첨부 파일을 선택적으로 검색하기 위한 이메일 본문입니다."
+
+msgid "Throttle (Milliseconds)"
+msgstr "스로틀(밀리초)"
+
+msgid "Time Zone"
+msgstr "시간대"
+
+msgid "Time before a connection with a push service URL times out."
+msgstr "푸시 서비스 URL과의 연결이 시간 초과되기 전의 시간입니다."
+
+msgid "Time to wait before sending a new request to the push service."
+msgstr "푸시 서비스에 새 요청을 보내기 전에 기다리는 시간입니다."
+
+msgid "Time to wait between push attempts."
+msgstr "푸시 시도 사이에 대기하는 시간입니다."
+
+msgid "Time to wait between retry attempts."
+msgstr "재시도 사이에 대기하는 시간입니다."
+
+msgid "Time to wait for the push service to verify a subscription."
+msgstr "푸시 서비스가 구독을 확인할 때까지 기다리는 시간입니다."
+
+msgid "Timed out waiting for response from SpamAssassin."
+msgstr "SpamAssassin의 응답을 기다리는 동안 시간이 초과되었습니다."
+
+msgid "Timeout (Seconds)"
+msgstr "시간 초과 (초)"
+
+msgid "Timestamp of the last successful email state synchronization."
+msgstr "마지막으로 성공한 이메일 상태 동기화의 타임스탬프입니다."
+
+msgid "Title"
+msgstr "제목"
+
+msgid "To"
+msgstr "받는 사람"
+
+msgid "To Date"
+msgstr "끝 날짜"
+
+msgid "To Date must be after From Date."
+msgstr "끝 날짜는 보낸 날짜 이후여야 합니다."
+
+msgid "To:"
+msgstr "받는 사람:"
+
+msgid "To: "
+msgstr "받는 사람:"
+
+msgid "Toggle Select Downwards"
+msgstr "아래쪽 선택 토글"
+
+msgid "Toggle Select Upwards"
+msgstr "위쪽 선택 토글"
+
+msgid "Toggle Sidebar"
+msgstr "사이드바 토글"
+
+msgid "Token"
+msgstr "토큰"
+
+msgid "Total Cached Blobs"
+msgstr "캐시된 총 Blob"
+
+msgid "Total Cached Contact Cards"
+msgstr "캐시된 총 연락처 카드"
+
+msgid "Total Cached Mail Messages"
+msgstr "캐시된 총 메일 메시지"
+
+msgid "Total Contacts"
+msgstr "총 연락처"
+
+msgid "Total Emails"
+msgstr "총 이메일"
+
+msgid "Total Files"
+msgstr "총 파일"
+
+msgid "Total Members"
+msgstr "총 멤버"
+
+msgid "Total Quota"
+msgstr "총 할당량"
+
+msgid "Total Size (MB)"
+msgstr "총 크기(MB)"
+
+msgid "Total Threads"
+msgstr "총 스레드"
+
+msgid "Trace"
+msgstr "추적"
+
+msgid "Tracer ID"
+msgstr "추적자 ID"
+
+msgid "Tracer configuration"
+msgstr "추적자 구성"
+
+msgid "Traces"
+msgstr "추적"
+
+msgid "Track status"
+msgstr "추적 상태"
+
+msgid "Tracking Record"
+msgstr "추적 기록"
+
+msgid "Transaction Settings"
+msgstr "트랜잭션 설정"
+
+msgid "Transaction maximum retry delay."
+msgstr "거래 최대 재시도 지연."
+
+msgid "Transaction retry limit."
+msgstr "트랜잭션 재시도 제한."
+
+msgid "Transaction timeout."
+msgstr "트랜잭션 시간 초과"
+
+msgid "Transport"
+msgstr "전송"
+
+msgid "Trash Auto-Expunge (Days)"
+msgstr "휴지통 자동 삭제(일)"
+
+msgid "Trusted Networks"
+msgstr "신뢰할 수 있는 네트워크"
+
+msgid "Type"
+msgstr "유형"
+
+msgid "Type of Redis server."
+msgstr "Redis 서버 유형"
+
+msgid "Type something..."
+msgstr "뭔가를 입력하세요..."
+
+msgid "Types"
+msgstr "유형"
+
+msgid "UI"
+msgstr ""
+
+msgid "UID"
+msgstr ""
+
+msgid "URL"
+msgstr ""
+
+msgid "URL of the JMAP server."
+msgstr "JMAP 서버의 URL."
+
+msgid "URL of the store."
+msgstr "스토어의 URL."
+
+msgid "URL where HTTP requests are sent before being forwarded to mail servers."
+msgstr "HTTP 요청이 메일 서버로 전달되기 전에 전송되는 URL."
+
+msgid "URL where HTTP requests are sent."
+msgstr "HTTP 요청이 전송되는 URL."
+
+msgid "URL(s) of the Redis server(s)."
+msgstr "Redis 서버의 URL."
+
+msgid "URLs"
+msgstr ""
+
+msgid "Un-delete Period (Days)"
+msgstr "삭제 취소 기간(일)"
+
+msgid "Unable to connect to the JMAP server. Please check the server URL and your network connection."
+msgstr "JMAP 서버에 연결할 수 없습니다. 서버 URL과 네트워크 연결을 확인하세요."
+
+msgid "Unable to connect to the JMAP server. Please check your credentials."
+msgstr "JMAP 서버에 연결할 수 없습니다. 자격 증명을 확인하십시오."
+
+msgid "Unable to save appearance settings."
+msgstr "모양 설정을 저장할 수 없습니다."
+
+msgid "Unblock"
+msgstr "차단 해제"
+
+msgid "Unblock Email Addresses"
+msgstr "이메일 주소 차단 해제"
+
+msgid "Unblock Sender"
+msgstr "발신자 차단 해제"
+
+msgid "Unblocking email address..."
+msgstr "이메일 주소 차단 해제 중..."
+
+msgid "Undo Last Action"
+msgstr "마지막 작업 실행 취소"
+
+msgid "Undoing..."
+msgstr "실행 취소 중..."
+
+msgid "Unique identifier for the ACME provider."
+msgstr "ACME 제공업체의 고유 식별자."
+
+msgid "Unique identifier for the TLS certificate."
+msgstr "TLS 인증서의 고유 식별자."
+
+msgid "Unique identifier for the listener."
+msgstr "리스너의 고유 식별자."
+
+msgid "Unique identifier for the store."
+msgstr "스토어의 고유 식별자."
+
+msgid "Unique identifier for the tracer."
+msgstr "추적 프로그램의 고유 식별자."
+
+msgid "Unique identifier for this node in the cluster."
+msgstr "고유 클러스터에 있는 이 노드의 식별자입니다."
+
+msgid "Unique identifier for your DNS zone."
+msgstr "DNS 영역의 고유 식별자입니다."
+
+msgid "Unique identifier of the mailbox associated with the user."
+msgstr "사용자와 연결된 사서함의 고유 식별자입니다."
+
+msgid "Unlimited"
+msgstr "무제한"
+
+msgid "Unlimited ({0} used)"
+msgstr "무제한({0}개 사용됨)"
+
+msgid "Unreachable"
+msgstr "연결할 수 없음"
+
+msgid "Unread"
+msgstr "읽지 않음"
+
+msgid "Unread Emails"
+msgstr "읽지 않은 이메일"
+
+msgid "Unread Mails"
+msgstr "읽지 않은 메일"
+
+msgid "Unread Threads"
+msgstr "읽지 않은 스레드"
+
+msgid "Unsafe file path detected: {0}"
+msgstr "안전하지 않은 파일 경로가 감지되었습니다: {0}"
+
+msgid "Unstar"
+msgstr ""
+
+msgid "Unsupported algorithm. Use 'rsa-sha256' or 'ed25519-sha256'."
+msgstr "지원되지 않는 알고리즘입니다. 'rsa-sha256' 또는 'ed25519-sha256'을 사용하세요."
+
+msgid "Unsupported export format: {0}"
+msgstr "지원되지 않는 내보내기 형식: {0}"
+
+msgid "Unsupported file format: {0}"
+msgstr "지원되지 않는 파일 형식: {0}"
+
+msgid "Unsupported import format: {0}"
+msgstr "지원되지 않는 가져오기 형식: {0}"
+
+msgid "Unsupported output file format. Supported formats are .zip, .tgz, and .tar.gz."
+msgstr "지원되지 않는 출력 파일 형식. 지원되는 형식은 .zip, .tgz 및 .tar.gz입니다."
+
+msgid "Update config.toml"
+msgstr "업데이트 config.toml"
+
+msgid "Updated"
+msgstr "업데이트"
+
+msgid "Updated (UTC)"
+msgstr "업데이트(UTC)"
+
+msgid "Updated At"
+msgstr "업데이트 날짜"
+
+msgid "Updated On"
+msgstr "업데이트 날짜"
+
+msgid "Updating Configuration..."
+msgstr "구성 업데이트 중..."
+
+msgid "Upload File"
+msgstr "파일 업로드"
+
+msgid "Upload Limits"
+msgstr "업로드 제한"
+
+msgid "Upload New Photo"
+msgstr "새 사진 업로드"
+
+msgid "Uploading ({0}%)"
+msgstr "업로드 중({0}%)"
+
+msgid "Use ANSI colors"
+msgstr "ANSI 색상 사용"
+
+msgid "Use Default Alerts"
+msgstr "기본 경고 사용"
+
+msgid "Use Saved Signature"
+msgstr "사용 저장된 서명"
+
+msgid "Use TLS to connect to the store."
+msgstr "TLS를 사용하여 스토어에 연결합니다."
+
+msgid "Used"
+msgstr "사용됨"
+
+msgid "Used Percentage"
+msgstr "사용된 백분율"
+
+msgid "Used Quota"
+msgstr "사용된 할당량"
+
+msgid "Used for storing large binary objects such as emails, sieve scripts, and other files."
+msgstr "이메일, 시브 스크립트 및 기타 파일과 같은 대형 바이너리 개체를 저장하는 데 사용됩니다."
+
+msgid "Used when retrieving credentials from a shared credentials file. If specified, the server will use the access key ID, secret access key, and session token (if available) associated with the given profile."
+msgstr "공유 자격 증명 파일에서 자격 증명을 검색할 때 사용됩니다. 지정된 경우 서버는 지정된 프로필과 연결된 액세스 키 ID, 보안 액세스 키 및 세션 토큰(사용 가능한 경우)을 사용합니다."
+
+msgid "User"
+msgstr "사용자"
+
+msgid "User Details"
+msgstr "사용자 세부 정보"
+
+msgid "User Settings"
+msgstr "사용자 설정"
+
+msgid "User and Mail IDs are required."
+msgstr "사용자 및 메일 ID가 필요합니다."
+
+msgid "User and Mailbox ID are required."
+msgstr "사용자 및 메일함 ID가 필요합니다."
+
+msgid "User and Thread IDs are required."
+msgstr "사용자 및 스레드 ID가 필요합니다."
+
+msgid "User and filter are required."
+msgstr "사용자 및 필터가 필요합니다."
+
+msgid "User associated email address to use when adding this participant to an event."
+msgstr "이 참가자를 이벤트에 추가할 때 사용할 사용자 관련 이메일 주소입니다."
+
+msgid "User does not exist or is disabled."
+msgstr "사용자가 존재하지 않거나 비활성화되었습니다."
+
+msgid "User is required"
+msgstr "사용자 필수"
+
+msgid "User is required."
+msgstr "사용자가 필요합니다."
+
+msgid "User with email {0} already exists."
+msgstr "이메일 {0}을(를) 가진 사용자가 이미 존재합니다."
+
+msgid "User {0} do not have permission to access the file <code>{1}</code>."
+msgstr "사용자 {0}은(는) <code>{1}</code> 파일에 액세스할 수 있는 권한이 없습니다."
+
+msgid "User {0} does not exist."
+msgstr "사용자 {0}은(는) 존재하지 않습니다."
+
+msgid "User {0} does not have JMAP settings configured."
+msgstr "사용자 {0}은(는) 구성된 JMAP 설정이 없습니다."
+
+msgid "User {0} does not have Mail Admin role."
+msgstr "사용자 {0}은(는) 메일 관리자 역할이 없습니다."
+
+msgid "User {0} does not have User Settings configured."
+msgstr "사용자 {0}은(는) 구성된 사용자 설정이 없습니다."
+
+msgid "User {0} does not have permission to create identity for user {1}."
+msgstr "사용자 {0}은(는) 사용자에 대한 ID를 생성할 권한이 없습니다. {1}."
+
+msgid "User {0} does not have permission to invite."
+msgstr "사용자 {0}은(는) 초대할 권한이 없습니다."
+
+msgid "User {0} does not have permission to view identities for user {1}."
+msgstr "사용자 {0}은(는) 사용자 {1}의 ID를 볼 수 있는 권한이 없습니다."
+
+msgid "User {0} is already registered."
+msgstr "사용자 {0}은(는) 이미 등록되어 있습니다."
+
+msgid "User {0} is disabled."
+msgstr "사용자 {0}이(가) 비활성화되었습니다."
+
+msgid "User {0} is not a Mail Admin."
+msgstr "사용자 {0}은(는) 메일 관리자가 아닙니다."
+
+msgid "User {0} is not a local user."
+msgstr "사용자 {0}은(는) 로컬 사용자가 아닙니다."
+
+msgid "User, Mail IDs, and Mailbox ID are required."
+msgstr "사용자, 메일 ID 및 사서함 ID가 필요합니다."
+
+msgid "User-visible name for the Mailbox, e.g., \"Inbox\"."
+msgstr "사서함의 사용자 표시 이름, 예: \"Inbox\"."
+
+msgid "Username"
+msgstr "사용자 이름"
+
+msgid "Username already taken."
+msgstr "사용자 이름이 이미 사용되었습니다."
+
+msgid "Username for administrative access to the cluster."
+msgstr "클러스터에 대한 관리 액세스를 위한 사용자 이름입니다."
+
+msgid "Username to connect to the database."
+msgstr "데이터베이스에 연결할 사용자 이름."
+
+msgid "Users"
+msgstr "사용자"
+
+msgid "Vacation Response"
+msgstr "휴가 응답"
+
+msgid "Vacation response updated."
+msgstr "휴가 응답이 업데이트되었습니다."
+
+msgid "Validate Script"
+msgstr "스크립트 유효성 검사"
+
+msgid "Validating Script..."
+msgstr "스크립트 유효성 검사 중..."
+
+msgid "Value"
+msgstr "값"
+
+msgid "Variable value cannot be of type {0}"
+msgstr "변수 값은 {0} 유형일 수 없습니다"
+
+msgid "Variables"
+msgstr "변수"
+
+msgid "Verification Details"
+msgstr "확인 세부 정보"
+
+msgid "Verification Key"
+msgstr "확인 키"
+
+msgid "Verification Timeout (Milliseconds)"
+msgstr "확인 시간 제한(밀리초)"
+
+msgid "Verification email sent successfully."
+msgstr "확인 이메일 전송됨 성공적으로."
+
+msgid "Verified"
+msgstr "확인됨"
+
+msgid "Verified {0}:{1} record."
+msgstr "확인된 {0}:{1} 레코드."
+
+msgid "Verifies that the server is reachable with the provided SSH details."
+msgstr "제공된 SSH 세부정보로 서버에 연결할 수 있는지 확인합니다."
+
+msgid "Verify"
+msgstr "확인"
+
+msgid "Verify Account"
+msgstr "계정 확인"
+
+msgid "Verify DNS"
+msgstr "DNS 확인"
+
+msgid "Verify DNS Record"
+msgstr "DNS 레코드 확인"
+
+msgid "Verify DNS Records"
+msgstr "DNS 레코드 확인"
+
+msgid "Verify SSH Connection"
+msgstr "SSH 연결 확인"
+
+msgid "Verify and Create Domain"
+msgstr "도메인 확인 및 생성"
+
+msgid "Verify your DNS Records"
+msgstr "DNS 레코드 확인"
+
+msgid "Verifying DNS Record..."
+msgstr "DNS 레코드 확인 중..."
+
+msgid "Verifying DNS Records..."
+msgstr "DNS 확인 중 기록..."
+
+msgid "Verifying SSH Connection..."
+msgstr "SSH 연결 확인 중..."
+
+msgid "Video Preview"
+msgstr "동영상 미리보기"
+
+msgid "View Shortcuts"
+msgstr "바로가기 보기"
+
+msgid "View details for this exchange."
+msgstr "이 교환에 대한 세부정보를 봅니다."
+
+msgid "View history"
+msgstr "기록 보기"
+
+msgid "View in Bytes"
+msgstr "바이트 단위로 보기"
+
+msgid "View in Desk"
+msgstr "데스크에서 보기"
+
+msgid "View more."
+msgstr "더 보기."
+
+msgid "View remaining attachments"
+msgstr "나머지 첨부 파일 보기"
+
+msgid "View {0}"
+msgstr "{0} 보기"
+
+msgid "Visible"
+msgstr "표시"
+
+msgid "Volumes"
+msgstr "볼륨"
+
+msgid "Warn"
+msgstr "경고"
+
+msgid "Warn Limit"
+msgstr "제한 경고"
+
+msgid "We have sent an email to {0}. Please click on the link received to reset your password."
+msgstr "{0}(으)로 이메일을 보냈습니다. 비밀번호를 재설정하려면 받은 링크를 클릭하세요."
+
+msgid "What calendar's events be used as part of availability calculation?"
+msgstr "가용성 계산의 일부로 어떤 캘린더의 이벤트가 사용됩니까?"
+
+msgid "When"
+msgstr "언제"
+
+msgid "When checked, the email will be saved as a draft instead of being sent."
+msgstr "선택하면 이메일이 전송되지 않고 초안으로 저장됩니다."
+
+msgid "Where to store the data in the server's filesystem."
+msgstr "서버의 파일 시스템에서 데이터를 저장할 위치."
+
+msgid "Whether the certificates generated by this provider should be the default when no SNI is provided."
+msgstr "SNI가 제공되지 않을 때 이 공급자가 생성한 인증서가 기본값이어야 하는지 여부."
+
+msgid "Whether this certificate should be the default when no SNI is provided."
+msgstr "SNI가 제공되지 않을 때 이 인증서가 기본값이어야 하는지 여부."
+
+msgid "Whether to buffer log entries before writing to console."
+msgstr "이전에 로그 항목을 버퍼링할지 여부 콘솔에 쓰기."
+
+msgid "Whether to drop log entries if there is backlog."
+msgstr "백로그가 있는 경우 로그 항목을 삭제할지 여부."
+
+msgid "Whether to export logs to OpenTelemetry."
+msgstr "OpenTelemetry로 로그를 내보낼지 여부."
+
+msgid "Whether to export spans to OpenTelemetry."
+msgstr "OpenTelemetry로 범위를 내보낼지 여부."
+
+msgid "Whether to read from replicas."
+msgstr "복제본에서 읽을지 여부."
+
+msgid "Whether to use ANSI colors in logs."
+msgstr "로그에서 ANSI 색상을 사용할지 여부."
+
+msgid "Whether to use implicit TLS."
+msgstr "암시적 TLS를 사용할지 여부."
+
+msgid "Whether to write log entries as a single line or multiline."
+msgstr "로그 항목을 한 줄 또는 여러 줄로 쓸지 여부."
+
+msgid "Wildcard characters ({0}) are not allowed in email addresses."
+msgstr "와일드카드 문자({0})는 이메일에 허용되지 않습니다. 주소."
+
+msgid "Work"
+msgstr "직장"
+
+msgid "Work Contacts"
+msgstr "직장 연락처"
+
+msgid "Work signature"
+msgstr "직장 서명"
+
+msgid "Write Buffer Size (MB)"
+msgstr "쓰기 버퍼 크기(MB)"
+
+msgid "Write your signature here"
+msgstr "여기에 서명을 작성하세요"
+
+msgid "Yes"
+msgstr "예"
+
+msgid "Yesterday"
+msgstr "어제"
+
+msgid "You are not authorized to perform this action."
+msgstr "이 작업을 수행할 권한이 없습니다."
+
+msgid "You cannot send email from {0} using user {1}. Please use the email address associated with the user."
+msgstr "사용자 {1}을(를) 사용하여 {0}에서 이메일을 보낼 수 없습니다. 사용자와 연결된 이메일 주소를 사용하십시오."
+
+msgid "You do not have permission to access the JMAPConnection for user {0}."
+msgstr "사용자 {0}의 JMAPConnection에 액세스할 수 있는 권한이 없습니다."
+
+msgid "You do not have permission to access the mail backend."
+msgstr "메일 백엔드에 액세스할 수 있는 권한이 없습니다."
+
+msgid "You do not have permission to access this resource."
+msgstr "이 리소스에 액세스할 수 있는 권한이 없습니다."
+
+msgid "You do not have permission to view messages for this user."
+msgstr "이 사용자에 대한 메시지를 볼 수 있는 권한이 없습니다."
+
+msgid "You have been invited by {0} to join Frappe Mail"
+msgstr "{0}에서 Frappe Mail에 가입하도록 초대했습니다."
+
+msgid "You have been invited by {0} to join Frappe Mail."
+msgstr "{0}에서 Frappe Mail에 가입하도록 초대했습니다."
+
+msgid "You have no mails in this folder."
+msgstr "메일이 없습니다. 이 폴더에 있습니다."
+
+msgid "You have reached the maximum limit of {0} accounts."
+msgstr "계정의 최대 한도인 {0}개에 도달했습니다."
+
+msgid "You have reached the maximum limit of {0} domains."
+msgstr "도메인의 최대 한도인 {0}개에 도달했습니다."
+
+msgid "You have reached the maximum limit of {0} groups."
+msgstr "그룹의 최대 한도인 {0}개에 도달했습니다."
+
+msgid "You have reached the maximum limit of {0} lists."
+msgstr "목록의 최대 한도인 {0}개에 도달했습니다."
+
+msgid "Zone ID"
+msgstr "영역 ID"
+
+msgid "[No Subject]"
+msgstr "[제목 없음]"
+
+msgid "[No subject]"
+msgstr "[아니요 제목]"
+
+msgid "activate"
+msgstr "활성화"
+
+msgid "activated"
+msgstr "활성화됨"
+
+msgid "always"
+msgstr "항상"
+
+msgid "archive"
+msgstr ""
+
+msgid "attachment"
+msgstr ""
+
+msgid "bridge"
+msgstr ""
+
+msgid "deactivate"
+msgstr ""
+
+msgid "description"
+msgstr ""
+
+msgid "disable"
+msgstr ""
+
+msgid "drafts"
+msgstr ""
+
+msgid "emails.json not found in the import directory."
+msgstr "emails.json을 가져오기 디렉터리에서 찾을 수 없습니다."
+
+msgid "eml"
+msgstr ""
+
+msgid "enable"
+msgstr ""
+
+msgid "enabled"
+msgstr ""
+
+msgid "gRPC"
+msgstr ""
+
+msgid "host"
+msgstr ""
+
+msgid "important"
+msgstr "중요"
+
+msgid "inbox"
+msgstr ""
+
+msgid "inline"
+msgstr ""
+
+msgid "jmap"
+msgstr ""
+
+msgid "junk"
+msgstr ""
+
+msgid "mailboxIds are required in Metadata for EML format."
+msgstr "mailboxId는 EML 형식의 메타데이터에 필요합니다."
+
+msgid "mailboxIds are required in Metadata for EML, MBOX, and Maildir formats."
+msgstr "mailboxId는 EML, MBOX 및 Maildir 형식의 메타데이터에 필요합니다."
+
+msgid "mailboxIds are required in Metadata for MBOX format."
+msgstr "mailboxId는 MBOX 형식의 메타데이터에 필요합니다."
+
+msgid "mailboxIds are required in Metadata for Maildir format."
+msgstr "mailboxId는 다음과 같습니다. Maildir 형식의 메타데이터에 필요합니다."
+
+msgid "maildir"
+msgstr ""
+
+msgid "maildir-nested"
+msgstr ""
+
+msgid "mbox"
+msgstr ""
+
+msgid "mySQL"
+msgstr ""
+
+msgid "no"
+msgstr ""
+
+msgid "none"
+msgstr ""
+
+msgid "notCreateddescription"
+msgstr ""
+
+msgid "notDestroyeddescription"
+msgstr ""
+
+msgid "notFounddescription"
+msgstr ""
+
+msgid "notParsabledescription"
+msgstr ""
+
+msgid "notUpdateddescription"
+msgstr ""
+
+msgid "on-failure"
+msgstr ""
+
+msgid "or"
+msgstr "또는"
+
+msgid "report_end"
+msgstr ""
+
+msgid "result"
+msgstr ""
+
+msgid "results"
+msgstr "결과"
+
+msgid "sent"
+msgstr ""
+
+msgid "tenant-admin"
+msgstr ""
+
+msgid "then"
+msgstr ""
+
+msgid "thread"
+msgstr ""
+
+msgid "threads"
+msgstr ""
+
+msgid "trash"
+msgstr ""
+
+msgid "type is required for blob attachments."
+msgstr "blob 첨부 파일에는 유형이 필요합니다."
+
+msgid "unless-stopped"
+msgstr ""
+
+msgid "unread"
+msgstr ""
+
+msgid "user"
+msgstr ""
+
+msgid "{0} (Delivered after {1} seconds)"
+msgstr "{0}({1}초 후에 전달됨)"
+
+msgid "{0} + {1} more"
+msgstr "{0} + {1} 더보기"
+
+msgid "{0} Enabled"
+msgstr "{0} 활성화됨"
+
+msgid "{0} cannot be both allowed and blocked."
+msgstr "{0}은(는) 허용 및 차단될 수 없습니다."
+
+msgid "{0} deactivated."
+msgstr "{0} 비활성화되었습니다."
+
+msgid "{0} does not exist."
+msgstr "{0}이(가) 존재하지 않습니다."
+
+msgid "{0} emptied."
+msgstr "{0}이(가) 비어 있습니다."
+
+msgid "{0} has an invalid store type '{1}'. Allowed types are: {2}."
+msgstr "{0}에 잘못된 저장소 유형 '{1}'이(가) 있습니다. 허용되는 유형은 다음과 같습니다. {2}."
+
+msgid "{0} is not a valid Cron expression."
+msgstr "{0}은(는) 유효한 Cron 표현식이 아닙니다."
+
+msgid "{0} items selected"
+msgstr "{0} 항목이 선택되었습니다."
+
+msgid "{0} job has been created."
+msgstr "{0} 작업이 생성되었습니다."
+
+msgid "{0} with IP {1}"
+msgstr "IP가 {1}"
+
+msgid "{0}: {1}"
+msgstr "{0}인 {0}: {1}"
+
+msgid "— No message body —"
+msgstr "— 메시지 본문 없음 —"
+
